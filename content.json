@@ -1,0 +1,43 @@
+{
+  "meta": {
+    "title": "STRANYOV — Video Engineer / VJ"
+  },
+
+  "nav": {
+    "logo_text": "STRANYOV"
+  },
+
+  "hero": {
+    "tag": "Video Engineer & VJ · Dubai, UAE",
+    "name_line1": "YURI",
+    "name_line2": "STRANYOV",
+    "description": "Senior Video Engineer with 10+ years in real-time video systems, immersive environments, and large-scale live productions. Core expertise in disguise (d3) — certified trainer.",
+    "stats": [
+      { "num": "12+", "label": "Years" },
+      { "num": "100+", "label": "Projects" },
+      { "num": "15+", "label": "Countries" }
+    ]
+  },
+
+  "about": {
+    "paragraph1": "I'm Yuri Stranyov — Freelance Video Engineer and VJ based in Dubai. Over 10 years I've designed, built, and operated real-time video systems for some of the world's most demanding live productions — from F1 concerts and world championship ceremonies to immersive installations seen by millions.",
+    "paragraph2": "My core tool is disguise (d3). I work across the full production cycle: system architecture, multi-server pipelines with full redundancy, projection calculations, content mapping, and on-site technical leadership under live conditions. disguise Certified Trainer.",
+    "paragraph3": "Available for freelance engagements worldwide — live events, touring, XR stages, immersive environments, and permanent installations. Currently based in Dubai, open to travel."
+  },
+
+  "contact": {
+    "headline_line1": "GET IN",
+    "headline_line2": "TOUCH",
+    "tag": "Let's work together",
+    "links": [
+      { "label": "stranyov@gmail.com", "href": "mailto:stranyov@gmail.com" },
+      { "label": "+971 50 910 0292", "href": "tel:+971509100292" },
+      { "label": "Telegram @stranyov", "href": "https://t.me/stranyov" },
+      { "label": "Instagram @stranyov", "href": "https://instagram.com/stranyov" }
+    ]
+  },
+
+  "footer": {
+    "copy": "© 2025 Yuri Stranyov · Dubai, UAE"
+  }
+}

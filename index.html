@@ -55,8 +55,8 @@
   nav {
     position: fixed; top: 0; left: 0; right: 0; z-index: 100;
     display: flex; align-items: center; justify-content: space-between;
-    padding: 28px 48px;
-    mix-blend-mode: normal;
+    padding: 12px 36px;
+    background: var(--black);
   }
   nav::after {
     content: ''; position: absolute; bottom: 0; left: 48px; right: 48px;
@@ -68,7 +68,7 @@
     align-items: center;
   }
   .nav-logo img {
-    height: 200px;
+    height: 36px;
     width: auto;
     display: block;
   }
@@ -141,7 +141,7 @@
   .hero-stats {
     display: flex; gap: 48px;
   }
-  .stat-item { text-align: right; }
+  .stat-item { text-align: center; }
   .stat-num {
     font-family: 'Bebas Neue', sans-serif;
     font-size: 48px;
@@ -177,7 +177,7 @@
   }
 
   /* SECTION COMMON */
-  section { padding: 120px 48px; }
+  section { padding: 120px 48px; scroll-margin-top: 72px; }
   .section-header {
     display: flex; align-items: flex-start; justify-content: space-between;
     margin-bottom: 80px;
@@ -202,9 +202,17 @@
   #about { background: #0a0a0a; }
   .about-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 80px;
+    grid-template-columns: 280px 1fr 1fr;
+    gap: 64px;
     align-items: start;
+  }
+  .about-photo {
+    width: 100%;
+    aspect-ratio: 3/4;
+    object-fit: cover;
+    object-position: top;
+    filter: grayscale(100%) brightness(0.85);
+    display: block;
   }
   .about-text {
     font-size: 16px;
@@ -227,27 +235,49 @@
     margin-bottom: 48px;
   }
   .skill-tag {
-    border: 1px solid rgba(240,237,232,0.12);
+    border: 1px solid rgba(240,237,232,0.18);
     padding: 7px 14px;
     font-size: 12px;
     font-family: 'DM Mono', monospace;
-    color: rgba(240,237,232,0.5);
+    color: rgba(240,237,232,0.75);
     letter-spacing: 0.05em;
     transition: border-color 0.3s, color 0.3s;
   }
-  .skill-tag:hover { border-color: rgba(240,237,232,0.4); color: var(--white); }
+  .skill-tag:hover { border-color: rgba(240,237,232,0.5); color: var(--white); }
+  .skill-tag.secondary {
+    border-color: rgba(240,237,232,0.07);
+    color: rgba(240,237,232,0.3);
+    font-size: 11px;
+  }
+  .skill-tag.secondary:hover { border-color: rgba(240,237,232,0.2); color: rgba(240,237,232,0.55); }
+  .skills-also {
+    display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+    width: 100%;
+    padding-top: 4px;
+    border-top: 1px solid rgba(240,237,232,0.06);
+  }
+  .skills-etc {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: rgba(240,237,232,0.18);
+  }
   .cert-badge {
-    display: inline-flex; align-items: center; gap: 10px;
+    display: inline-flex; align-items: center; gap: 12px;
     border: 1px solid rgba(240,237,232,0.2);
-    padding: 12px 20px;
-    font-size: 12px;
+    padding: 10px 16px;
+  }
+  .cert-badge img {
+    height: 28px;
+    width: auto;
+    display: block;
+    opacity: 0.9;
+  }
+  .cert-badge-text {
+    font-size: 11px;
     letter-spacing: 0.1em;
     color: rgba(240,237,232,0.6);
-  }
-  .cert-dot {
-    width: 6px; height: 6px;
-    background: var(--white);
-    border-radius: 50%;
+    font-family: 'DM Mono', monospace;
   }
 
   /* EXPERIENCE */
@@ -521,7 +551,8 @@
     #hero { padding: 0 24px 60px; }
     h1 { font-size: 72px; }
     h1 .line2 { padding-left: 40px; }
-    .about-grid { grid-template-columns: 1fr; gap: 48px; }
+    .about-grid { grid-template-columns: 1fr; gap: 32px; }
+    .about-photo { aspect-ratio: 4/3; }
     .exp-item { grid-template-columns: 1fr; gap: 8px; }
     .exp-loc { text-align: left; }
     .projects-grid { grid-template-columns: 1fr; }
@@ -542,9 +573,10 @@
   <a href="#hero" class="nav-logo"><img src="images/str_white.png" alt="STRANYOV"></a>
   <ul class="nav-links">
     <li><a href="#about">About</a></li>
+    <li><a href="#work">Projects</a></li>
     <li><a href="#experience">Experience</a></li>
-    <li><a href="#work">Work</a></li>
     <li><a href="#contact">Contact</a></li>
+    <li><a href="patterns/led.html">Test Patterns</a></li>
   </ul>
 </nav>
 
@@ -553,8 +585,8 @@
   <div class="hero-content">
     <div class="hero-tag">Video Engineer &amp; VJ · Dubai, UAE</div>
     <h1>
-      IURII
-      <span class="line2">STRANEV</span>
+      YURI
+      <span class="line2">STRANYOV</span>
     </h1>
     <div class="hero-bottom">
       <p class="hero-desc">
@@ -562,7 +594,7 @@
       </p>
       <div class="hero-stats">
         <div class="stat-item">
-          <div class="stat-num">10+</div>
+          <div class="stat-num">12+</div>
           <div class="stat-label">Years</div>
         </div>
         <div class="stat-item">
@@ -614,118 +646,42 @@
     <h2>ABOUT<br>ME</h2>
   </div>
   <div class="about-grid fade-up">
+    <img class="about-photo" src="images/AI GEN BW Photo.png" alt="Yuri Stranyov">
     <div class="about-text">
-      <p>I'm Iurii Stranev — Senior Video Engineer and VJ based in Dubai. Over the past decade I've built and operated real-time video systems for some of the world's most demanding live productions.</p>
-      <p>My core expertise is Disguise (D3), from single-server rigs to complex multi-server pipelines with full redundancy. I handle everything from projection calculations and mapping workflows to on-site technical leadership under live conditions.</p>
-      <p>I've worked across concerts, exhibitions, XR stages, branded installations, and ceremonial events — collaborating with international teams in the Middle East, Europe, and Asia.</p>
+      <p>I'm Yuri Stranyov — Freelance Video Engineer and VJ based in Dubai. Over 10 years I've designed, built, and operated real-time video systems for some of the world's most demanding live productions — from F1 concerts and world championship ceremonies to immersive installations seen by millions.</p>
+      <p>My core tool is disguise (d3). I work across the full production cycle: system architecture, multi-server pipelines with full redundancy, projection calculations, content mapping, and on-site technical leadership under live conditions. disguise Certified Trainer.</p>
+      <p>Available for freelance engagements worldwide — live events, touring, XR stages, immersive environments, and permanent installations. Currently based in Dubai, open to travel.</p>
     </div>
     <div class="about-right">
-      <div class="skills-label">Technical skills</div>
+      <div class="skills-label">Core tools</div>
       <div class="skills-list">
-        <span class="skill-tag">Disguise (D3)</span>
+        <span class="skill-tag">disguise (d3)</span>
         <span class="skill-tag">Resolume Arena</span>
-        <span class="skill-tag">TouchDesigner</span>
-        <span class="skill-tag">Stage Precision</span>
+        <span class="skill-tag">SP Grid</span>
         <span class="skill-tag">Mapping Matter</span>
         <span class="skill-tag">SketchUp</span>
-        <span class="skill-tag">Blender</span>
         <span class="skill-tag">Blackmagic</span>
+        <div class="skills-also">
+          <span class="skill-tag secondary">TouchDesigner</span>
+          <span class="skill-tag secondary">Blender</span>
+          <span class="skill-tag secondary">Light Act</span>
+          <span class="skill-tag secondary">qLab</span>
+          <span class="skill-tag secondary">Novastar Tools</span>
+          <span class="skill-tag secondary">Projection Tools</span>
+          <span class="skills-etc">&amp; etc.</span>
+        </div>
       </div>
       <div class="cert-badge">
-        <div class="cert-dot"></div>
-        Disguise Certified Trainer
+        <img src="images/cert_d3.png" alt="disguise Certified Trainer" onerror="this.style.display='none'">
+        <div class="cert-badge-text">disguise Certified Trainer</div>
       </div>
-    </div>
-  </div>
-</section>
-
-<section id="experience">
-  <div class="section-header fade-up">
-    <div class="section-num">02</div>
-    <h2>WORK<br>EXPERIENCE</h2>
-  </div>
-  <div class="exp-list">
-    <div class="exp-item fade-up">
-      <div class="exp-dates">2024 — 2025</div>
-      <div>
-        <div class="exp-role">Lead Video &amp; Systems Engineer</div>
-        <div class="exp-company">Vivid Studios</div>
-        <ul class="exp-bullets">
-          <li>Technical lead for large-scale immersive and multimedia installations</li>
-          <li>System design, video architecture planning, and integration</li>
-          <li>On-site supervision and delivery of production-ready systems</li>
-        </ul>
-      </div>
-      <div class="exp-loc">Dubai, UAE</div>
-    </div>
-    <div class="exp-item fade-up">
-      <div class="exp-dates">2023 — 2024</div>
-      <div>
-        <div class="exp-role">Senior Video Engineer</div>
-        <div class="exp-company">Sila Sveta</div>
-        <ul class="exp-bullets">
-          <li>Disguise-based real-time video systems for international projects</li>
-          <li>Multi-server setups, synchronization, and show control</li>
-        </ul>
-      </div>
-      <div class="exp-loc">Dubai, UAE</div>
-    </div>
-    <div class="exp-item fade-up">
-      <div class="exp-dates">2022 — 2023</div>
-      <div>
-        <div class="exp-role">Senior Video Engineer</div>
-        <div class="exp-company">PRG</div>
-        <ul class="exp-bullets">
-          <li>Design and deployment of Disguise systems for live events</li>
-          <li>Multi-server configurations, redundancy planning</li>
-          <li>On-site technical leadership during live productions</li>
-        </ul>
-      </div>
-      <div class="exp-loc">Dubai, UAE</div>
-    </div>
-    <div class="exp-item fade-up">
-      <div class="exp-dates">2020 — 2022</div>
-      <div>
-        <div class="exp-role">Senior Video Engineer</div>
-        <div class="exp-company">Sila Sveta</div>
-        <ul class="exp-bullets">
-          <li>XR stages and immersive environments</li>
-          <li>Disguise and Blacktrax integration</li>
-          <li>Projection calculations and mapping workflows</li>
-        </ul>
-      </div>
-      <div class="exp-loc">Moscow, Russia</div>
-    </div>
-    <div class="exp-item fade-up">
-      <div class="exp-dates">2018 — 2020</div>
-      <div>
-        <div class="exp-role">Video Engineer</div>
-        <div class="exp-company">Sila Sveta</div>
-        <ul class="exp-bullets">
-          <li>Projection mapping and media server operation</li>
-          <li>Timecode-based show synchronization</li>
-        </ul>
-      </div>
-      <div class="exp-loc">Moscow, Russia</div>
-    </div>
-    <div class="exp-item fade-up">
-      <div class="exp-dates">2013 — 2015</div>
-      <div>
-        <div class="exp-role">Technician / Video Engineer</div>
-        <div class="exp-company">Reactor-Video</div>
-        <ul class="exp-bullets">
-          <li>LED screen assembly, configuration, and patching</li>
-          <li>Multi-camera broadcast systems</li>
-        </ul>
-      </div>
-      <div class="exp-loc">Perm, Russia</div>
     </div>
   </div>
 </section>
 
 <section id="work">
   <div class="section-header fade-up">
-    <div class="section-num">03</div>
+    <div class="section-num">02</div>
     <h2>SELECTED<br>WORK</h2>
   </div>
   <div class="projects-filter">
@@ -1077,6 +1033,90 @@
   </div>
 </section>
 
+<section id="experience">
+  <div class="section-header fade-up">
+    <div class="section-num">03</div>
+    <h2>WORK<br>EXPERIENCE</h2>
+  </div>
+  <div class="exp-list">
+    <div class="exp-item fade-up">
+      <div class="exp-dates">2024 — 2025</div>
+      <div>
+        <div class="exp-role">Lead Video &amp; Systems Engineer</div>
+        <div class="exp-company">Vivid Studios</div>
+        <ul class="exp-bullets">
+          <li>Technical lead for large-scale immersive and multimedia installations</li>
+          <li>System design, video architecture planning, and integration</li>
+          <li>On-site supervision and delivery of production-ready systems</li>
+        </ul>
+      </div>
+      <div class="exp-loc">Dubai, UAE</div>
+    </div>
+    <div class="exp-item fade-up">
+      <div class="exp-dates">2023 — 2024</div>
+      <div>
+        <div class="exp-role">Senior Video Engineer</div>
+        <div class="exp-company">Sila Sveta</div>
+        <ul class="exp-bullets">
+          <li>Disguise-based real-time video systems for international projects</li>
+          <li>Multi-server setups, synchronization, and show control</li>
+        </ul>
+      </div>
+      <div class="exp-loc">Dubai, UAE</div>
+    </div>
+    <div class="exp-item fade-up">
+      <div class="exp-dates">2022 — 2023</div>
+      <div>
+        <div class="exp-role">Senior Video Engineer</div>
+        <div class="exp-company">PRG</div>
+        <ul class="exp-bullets">
+          <li>Design and deployment of Disguise systems for live events</li>
+          <li>Multi-server configurations, redundancy planning</li>
+          <li>On-site technical leadership during live productions</li>
+        </ul>
+      </div>
+      <div class="exp-loc">Dubai, UAE</div>
+    </div>
+    <div class="exp-item fade-up">
+      <div class="exp-dates">2020 — 2022</div>
+      <div>
+        <div class="exp-role">Senior Video Engineer</div>
+        <div class="exp-company">Sila Sveta</div>
+        <ul class="exp-bullets">
+          <li>XR stages and immersive environments</li>
+          <li>Disguise and Blacktrax integration</li>
+          <li>Projection calculations and mapping workflows</li>
+        </ul>
+      </div>
+      <div class="exp-loc">Moscow, Russia</div>
+    </div>
+    <div class="exp-item fade-up">
+      <div class="exp-dates">2018 — 2020</div>
+      <div>
+        <div class="exp-role">Video Engineer</div>
+        <div class="exp-company">Sila Sveta</div>
+        <ul class="exp-bullets">
+          <li>Projection mapping and media server operation</li>
+          <li>Timecode-based show synchronization</li>
+        </ul>
+      </div>
+      <div class="exp-loc">Moscow, Russia</div>
+    </div>
+    <div class="exp-item fade-up">
+      <div class="exp-dates">2013 — 2015</div>
+      <div>
+        <div class="exp-role">Technician / Video Engineer</div>
+        <div class="exp-company">Reactor-Video</div>
+        <ul class="exp-bullets">
+          <li>LED screen assembly, configuration, and patching</li>
+          <li>Multi-camera broadcast systems</li>
+        </ul>
+      </div>
+      <div class="exp-loc">Perm, Russia</div>
+    </div>
+  </div>
+</section>
+
 <section id="contact">
   <div class="contact-inner fade-up">
     <div>
@@ -1093,8 +1133,8 @@
 </section>
 
 <footer>
-  <div class="footer-copy">© 2025 Iurii Stranev · Dubai, UAE</div>
-  <div class="footer-logo">STRANYOV</div>
+  <div class="footer-copy">© 2025 Yuri Stranyov · Dubai, UAE</div>
+  <img src="images/str_white.png" alt="STRANYOV" style="height:40px;width:auto;">
 </footer>
 
 <script>
