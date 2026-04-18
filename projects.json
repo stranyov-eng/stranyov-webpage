@@ -1,0 +1,380 @@
+[
+  {
+    "title": "GOTF Opening Ceremony",
+    "meta": "Abu Dhabi, UAE · 2025",
+    "role": "Disguise Engineer",
+    "category": "disguise",
+    "image": "gotf.png",
+    "link": "https://www.youtube.com/watch?v=uQtXQmlZ1A0",
+    "wide": true
+  },
+  {
+    "title": "President's Cup",
+    "meta": "Abu Dhabi, UAE · 2025",
+    "role": "Disguise Engineer · PRG",
+    "category": "disguise",
+    "image": "",
+    "link": "",
+    "wide": false
+  },
+  {
+    "title": "EWC 25 Opening Ceremony",
+    "meta": "Riyadh, Saudi Arabia · 2025",
+    "role": "Disguise Engineer · PRG",
+    "category": "disguise",
+    "image": "",
+    "link": "",
+    "wide": false
+  },
+  {
+    "title": "The Last Crescendo",
+    "meta": "Riyadh, Saudi Arabia · 2025",
+    "role": "Disguise Engineer · PRG",
+    "category": "disguise",
+    "image": "",
+    "link": "",
+    "wide": false
+  },
+  {
+    "title": "Joy Awards 25",
+    "meta": "Riyadh, Saudi Arabia · 2025",
+    "role": "Disguise Engineer · PRG",
+    "category": "disguise",
+    "image": "",
+    "link": "",
+    "wide": false
+  },
+  {
+    "title": "F1 Concerts 2025",
+    "meta": "Abu Dhabi, UAE · 2025",
+    "role": "Disguise Engineer · PRG",
+    "category": "disguise",
+    "image": "",
+    "link": "",
+    "wide": false
+  },
+  {
+    "title": "Rave Rebels",
+    "meta": "Brussels, Belgium · 2025",
+    "role": "VJ · Sila Sveta",
+    "category": "vj",
+    "image": "",
+    "link": "",
+    "wide": false
+  },
+  {
+    "title": "Rodina Restaurant",
+    "meta": "Dubai, UAE · 2025",
+    "role": "Video Systems Engineer · Vivid Studios",
+    "category": "integration",
+    "image": "",
+    "link": "",
+    "wide": false
+  },
+  {
+    "title": "Blume Restaurant",
+    "meta": "Dubai, UAE · 2025",
+    "role": "Video Systems Engineer · Vivid Studios",
+    "category": "integration",
+    "image": "",
+    "link": "",
+    "wide": false
+  },
+  {
+    "title": "Woohoo Restaurant",
+    "meta": "Dubai, UAE · 2025",
+    "role": "Video Systems Engineer · Vivid Studios",
+    "category": "integration",
+    "image": "",
+    "link": "",
+    "wide": false
+  },
+  {
+    "title": "Latino Night",
+    "meta": "Riyadh, Saudi Arabia · 2024",
+    "role": "Disguise Engineer · PRG",
+    "category": "disguise",
+    "image": "",
+    "link": "",
+    "wide": false
+  },
+  {
+    "title": "F1 Concerts 2024",
+    "meta": "Abu Dhabi, UAE · 2024",
+    "role": "Disguise Engineer · PRG",
+    "category": "disguise",
+    "image": "",
+    "link": "",
+    "wide": false
+  },
+  {
+    "title": "Usyk vs Fury 2",
+    "meta": "Riyadh, Saudi Arabia · 2024",
+    "role": "Disguise Engineer · PRG",
+    "category": "disguise",
+    "image": "",
+    "link": "",
+    "wide": false
+  },
+  {
+    "title": "Six Kings Slam",
+    "meta": "Riyadh, Saudi Arabia · 2024",
+    "role": "Disguise Engineer · PRG",
+    "category": "disguise",
+    "image": "",
+    "link": "",
+    "wide": false
+  },
+  {
+    "title": "Ambani's Wedding",
+    "meta": "Mumbai, India · 2024",
+    "role": "Disguise Engineer · Blue I",
+    "category": "disguise",
+    "image": "",
+    "link": "",
+    "wide": false
+  },
+  {
+    "title": "Luxuria Karaoke Club",
+    "meta": "Dubai, UAE · 2024",
+    "role": "Video Systems Engineer · Vivid Studios",
+    "category": "integration",
+    "image": "",
+    "link": "",
+    "wide": false
+  },
+  {
+    "title": "Tutankhamun — The Immersive Experience",
+    "meta": "Cairo, Egypt · 2023",
+    "role": "Projection Engineer · Sila Sveta",
+    "category": "disguise",
+    "image": "",
+    "link": "",
+    "wide": true
+  },
+  {
+    "title": "Bridge of Love — The Link",
+    "meta": "Dubai, UAE · 2023",
+    "role": "Disguise Engineer · Vivid Studios",
+    "category": "integration",
+    "image": "",
+    "link": "",
+    "wide": false
+  },
+  {
+    "title": "Qatar Expo 2023 Opening Ceremony",
+    "meta": "Doha, Qatar · 2023",
+    "role": "Disguise Engineer · Andrey Fomin Production",
+    "category": "disguise",
+    "image": "",
+    "link": "",
+    "wide": false
+  },
+  {
+    "title": "Flag Day 2023",
+    "meta": "Riyadh, Saudi Arabia · 2023",
+    "role": "Disguise Engineer · PRG",
+    "category": "disguise",
+    "image": "",
+    "link": "",
+    "wide": false
+  },
+  {
+    "title": "Gamers 8",
+    "meta": "Riyadh, Saudi Arabia · 2023",
+    "role": "Video Systems Engineer · PRG",
+    "category": "disguise",
+    "image": "",
+    "link": "",
+    "wide": false
+  },
+  {
+    "title": "The Weaving",
+    "meta": "Dubai, UAE · 2023",
+    "role": "Disguise Engineer",
+    "category": "integration",
+    "image": "",
+    "link": "",
+    "wide": false
+  },
+  {
+    "title": "Zenon Restaurant",
+    "meta": "Dubai, UAE · 2023",
+    "role": "Resolume Engineer · Vivid Studios",
+    "category": "integration",
+    "image": "",
+    "link": "",
+    "wide": false
+  },
+  {
+    "title": "FIFA Fan Festival 2022",
+    "meta": "Doha, Qatar · 2022",
+    "role": "Disguise Engineer · PRG",
+    "category": "disguise",
+    "image": "",
+    "link": "",
+    "wide": false
+  },
+  {
+    "title": "ADIPEC 2022",
+    "meta": "Abu Dhabi, UAE · 2022",
+    "role": "Disguise Engineer · PRG",
+    "category": "disguise",
+    "image": "",
+    "link": "",
+    "wide": false
+  },
+  {
+    "title": "Banyan Tree Hotel Opening",
+    "meta": "Al Ula, Saudi Arabia · 2022",
+    "role": "Disguise Engineer · PRG",
+    "category": "disguise",
+    "image": "",
+    "link": "",
+    "wide": false
+  },
+  {
+    "title": "KPOP Festival — Saranghae KSA",
+    "meta": "Jeddah, Saudi Arabia · 2022",
+    "role": "Disguise Engineer · PRG",
+    "category": "disguise",
+    "image": "",
+    "link": "",
+    "wide": false
+  },
+  {
+    "title": "Rage on the Red Sea",
+    "meta": "Jeddah, Saudi Arabia · 2022",
+    "role": "Video Systems Engineer · PRG",
+    "category": "disguise",
+    "image": "",
+    "link": "",
+    "wide": false
+  },
+  {
+    "title": "IN TO POLELAB",
+    "meta": "Moscow, Russia · 2022",
+    "role": "Disguise Engineer · Sila Sveta",
+    "category": "disguise",
+    "image": "",
+    "link": "",
+    "wide": false
+  },
+  {
+    "title": "Beyond — Lexus LX Launch",
+    "meta": "Riyadh, Saudi Arabia · 2021",
+    "role": "Disguise Engineer · Sila Sveta",
+    "category": "disguise",
+    "image": "",
+    "link": "",
+    "wide": false
+  },
+  {
+    "title": "First Man In Space",
+    "meta": "Baikonur, Kazakhstan · 2021",
+    "role": "Disguise Engineer · Sila Sveta",
+    "category": "disguise",
+    "image": "",
+    "link": "",
+    "wide": false
+  },
+  {
+    "title": "IN TO TSEH",
+    "meta": "Nikola-Lenivets, Russia · 2021",
+    "role": "Resolume Engineer · Sila Sveta",
+    "category": "vj",
+    "image": "",
+    "link": "",
+    "wide": false
+  },
+  {
+    "title": "NECHTO",
+    "meta": "Kyiv, Ukraine · 2021",
+    "role": "VJ · Sila Sveta",
+    "category": "vj",
+    "image": "",
+    "link": "",
+    "wide": false
+  },
+  {
+    "title": "Space Ark",
+    "meta": "Yerevan, Armenia · 2021",
+    "role": "VJ · Sila Sveta",
+    "category": "vj",
+    "image": "",
+    "link": "",
+    "wide": false
+  },
+  {
+    "title": "Sila Sveta in Tretyakov Gallery",
+    "meta": "Moscow, Russia · 2020",
+    "role": "Disguise Engineer · Sila Sveta",
+    "category": "disguise",
+    "image": "",
+    "link": "",
+    "wide": false
+  },
+  {
+    "title": "Levitation 2",
+    "meta": "Moscow, Russia · 2020",
+    "role": "Disguise Engineer · Sila Sveta",
+    "category": "disguise",
+    "image": "",
+    "link": "",
+    "wide": false
+  },
+  {
+    "title": "IN TO",
+    "meta": "Perm, Russia · 2020",
+    "role": "Disguise Engineer · Sila Sveta",
+    "category": "disguise",
+    "image": "",
+    "link": "",
+    "wide": false
+  },
+  {
+    "title": "American University in Cairo",
+    "meta": "Cairo, Egypt · 2020",
+    "role": "Resolume Engineer · Sila Sveta",
+    "category": "integration",
+    "image": "",
+    "link": "",
+    "wide": false
+  },
+  {
+    "title": "Arma XII",
+    "meta": "Moscow, Russia · 2020",
+    "role": "VJ · Sila Sveta",
+    "category": "vj",
+    "image": "",
+    "link": "",
+    "wide": false
+  },
+  {
+    "title": "Trans Studio Theme Park",
+    "meta": "Jakarta, Indonesia · 2019",
+    "role": "Disguise Engineer · Sila Sveta",
+    "category": "integration",
+    "image": "",
+    "link": "",
+    "wide": false
+  },
+  {
+    "title": "Lamborghini Huracán Launch",
+    "meta": "Berlin & Milan · 2019",
+    "role": "Disguise Engineer · Sila Sveta",
+    "category": "disguise",
+    "image": "",
+    "link": "",
+    "wide": false
+  },
+  {
+    "title": "Mercedes EQC Launch",
+    "meta": "Beijing, China · 2019",
+    "role": "Disguise Engineer · Sila Sveta",
+    "category": "disguise",
+    "image": "",
+    "link": "",
+    "wide": false
+  }
+]
