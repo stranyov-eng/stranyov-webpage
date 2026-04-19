@@ -215,12 +215,12 @@
     display: block;
   }
   .about-text {
-    font-size: 16px;
-    line-height: 1.9;
+    font-size: 22px;
+    line-height: 1.7;
     color: rgba(240,237,232,0.65);
     font-weight: 300;
   }
-  .about-text p + p { margin-top: 24px; }
+  .about-text p + p { margin-top: 28px; }
   .about-right {}
   .skills-label {
     font-family: 'DM Mono', monospace;
@@ -282,76 +282,97 @@
 
   /* EXPERIENCE */
   #experience { background: #0d0d0d; }
-  .exp-list { display: flex; flex-direction: column; }
-  .exp-item {
-    display: grid;
-    grid-template-columns: 160px 1fr auto;
-    gap: 40px;
-    align-items: start;
-    padding: 36px 0;
+  .exp-section-header {
+    display: flex;
+    align-items: center;
     border-bottom: 1px solid var(--line);
-    transition: background 0.3s;
+    margin-bottom: 2px;
+  }
+  .exp-section-label {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 0.05em;
+    color: var(--white);
+    padding: 10px 36px 10px 0;
+    border-right: 1px solid var(--line);
+  }
+  .exp-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--line);
+  }
+  .exp-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    padding: 28px 32px 28px 0;
+    background: #0d0d0d;
     position: relative;
+    transition: background 0.3s;
   }
-  .exp-item::before {
-    content: '';
-    position: absolute; left: -48px; right: -48px; top: 0; bottom: 0;
-    background: rgba(240,237,232,0.02);
-    opacity: 0;
-    transition: opacity 0.3s;
-  }
-  .exp-item:hover::before { opacity: 1; }
+  .exp-item:hover { background: #111; }
   .exp-dates {
     font-family: 'DM Mono', monospace;
-    font-size: 12px;
+    font-size: 10px;
     color: rgba(240,237,232,0.3);
-    letter-spacing: 0.05em;
-    padding-top: 4px;
+    letter-spacing: 0.08em;
+    margin-bottom: 10px;
   }
   .exp-role {
-    font-size: 18px;
+    font-size: 15px;
     font-weight: 400;
     color: var(--white);
-    margin-bottom: 4px;
+    margin-bottom: 2px;
+    line-height: 1.3;
   }
   .exp-company {
-    font-size: 13px;
+    font-size: 12px;
     color: rgba(240,237,232,0.4);
-    margin-bottom: 16px;
+    margin-bottom: 14px;
   }
   .exp-bullets {
     list-style: none;
-    display: flex; flex-direction: column; gap: 6px;
+    display: flex; flex-direction: column; gap: 5px;
   }
   .exp-bullets li {
-    font-size: 13px;
-    color: rgba(240,237,232,0.35);
-    padding-left: 16px;
+    font-size: 12px;
+    color: rgba(240,237,232,0.3);
+    padding-left: 14px;
     position: relative;
-    line-height: 1.6;
+    line-height: 1.55;
   }
   .exp-bullets li::before {
     content: '—';
     position: absolute; left: 0;
-    color: rgba(240,237,232,0.2);
+    color: rgba(240,237,232,0.15);
   }
   .exp-loc {
     font-family: 'DM Mono', monospace;
     font-size: 10px;
-    color: rgba(240,237,232,0.2);
+    color: rgba(240,237,232,0.15);
     letter-spacing: 0.1em;
-    text-align: right;
-    padding-top: 4px;
-    white-space: nowrap;
+    margin-top: auto;
+    padding-top: 14px;
   }
 
   /* WORK / PROJECTS */
   #work { background: #0a0a0a; }
   .projects-filter {
     display: flex;
+    align-items: center;
     gap: 0;
-    margin-bottom: 40px;
+    margin-bottom: 2px;
     border-bottom: 1px solid var(--line);
+  }
+  .projects-label {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 0.05em;
+    color: var(--white);
+    padding: 10px 36px 10px 0;
+    margin-right: 12px;
+    border-right: 1px solid var(--line);
   }
   .filter-btn {
     font-family: 'DM Mono', monospace;
@@ -380,8 +401,14 @@
 
   .projects-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: calc(25vw * 0.75);
     gap: 2px;
+    grid-auto-flow: dense;
+  }
+  .projects-grid.category-view {
+    grid-template-columns: repeat(5, 1fr);
+    grid-auto-rows: calc(20vw * 0.75);
   }
   .project-card[hidden] { display: none; }
   .project-card.no-image { background: #111; }
@@ -391,21 +418,26 @@
   }
   .project-card {
     position: relative;
-    aspect-ratio: 4/3;
     overflow: hidden;
     background: #111;
     cursor: none;
   }
-  .project-card.wide {
-    grid-column: span 2;
-    aspect-ratio: auto;
+  /* wide: 2 cols × 1 row → 8:3 */
+  .project-card.wide { grid-column: span 2; }
+  /* tall: 1 col × 2 rows → 4:6 */
+  .project-card.tall { grid-row: span 2; }
+  /* category view: all uniform 1×1 */
+  .projects-grid.category-view .project-card.wide,
+  .projects-grid.category-view .project-card.tall {
+    grid-column: span 1 !important;
+    grid-row: span 1 !important;
   }
   .project-img {
     width: 100%; height: 100%;
     object-fit: cover;
     display: block;
     filter: grayscale(20%) brightness(0.7);
-    transition: filter 0.6s ease, transform 0.8s cubic-bezier(.23,1,.32,1);
+    transition: filter 0.6s ease, transform 0.8s cubic-bezier(.23,1,.32,1), opacity 0.4s ease;
   }
   .project-card:hover .project-img {
     filter: grayscale(0%) brightness(0.85);
@@ -553,8 +585,9 @@
     h1 .line2 { padding-left: 40px; }
     .about-grid { grid-template-columns: 1fr; gap: 32px; }
     .about-photo { aspect-ratio: 4/3; }
-    .exp-item { grid-template-columns: 1fr; gap: 8px; }
-    .exp-loc { text-align: left; }
+    .exp-list { grid-template-columns: 1fr; }
+    .exp-item { padding: 24px 0; }
+    .exp-loc { padding-top: 10px; }
     .projects-grid { grid-template-columns: 1fr; }
     .project-card.wide { grid-column: span 1; }
     .contact-inner { flex-direction: column; gap: 40px; }
@@ -590,7 +623,7 @@
     </h1>
     <div class="hero-bottom">
       <p class="hero-desc">
-        Senior Video Engineer with 10+ years in real-time video systems, immersive environments, and large-scale live productions. Core expertise in Disguise (D3) — certified trainer.
+        Senior Video Engineer with 10+ years in real-time video systems, immersive environments, and large-scale live productions. Core expertise in disguise (d3) — certified trainer.
       </p>
       <div class="hero-stats">
         <div class="stat-item">
@@ -606,7 +639,7 @@
           <div class="stat-label">Countries</div>
         </div>
       </div>
-    </div>
+    </a>
   </div>
   <div class="scroll-hint">Scroll</div>
 </section>
@@ -648,9 +681,9 @@
   <div class="about-grid fade-up">
     <img class="about-photo" src="images/AI GEN BW Photo.png" alt="Yuri Stranyov">
     <div class="about-text">
-      <p>I'm Yuri Stranyov — Freelance Video Engineer and VJ based in Dubai. Over 10 years I've designed, built, and operated real-time video systems for some of the world's most demanding live productions — from F1 concerts and world championship ceremonies to immersive installations seen by millions.</p>
-      <p>My core tool is disguise (d3). I work across the full production cycle: system architecture, multi-server pipelines with full redundancy, projection calculations, content mapping, and on-site technical leadership under live conditions. disguise Certified Trainer.</p>
-      <p>Available for freelance engagements worldwide — live events, touring, XR stages, immersive environments, and permanent installations. Currently based in Dubai, open to travel.</p>
+      <p>I'm Yuri Stranyov — Freelance Video Engineer and VJ. 10+ years building real-time video systems for live events that can't fail — F1 concerts, world championship ceremonies, immersive installations.</p>
+      <p>disguise (d3) specialist and certified trainer. I work the full cycle: system architecture, multi-server pipelines, projection mapping, on-site leadership.</p>
+      <p>Based in Dubai, available anywhere the show is.</p>
     </div>
     <div class="about-right">
       <div class="skills-label">Core tools</div>
@@ -675,16 +708,13 @@
         <img src="images/cert_d3.png" alt="disguise Certified Trainer" onerror="this.style.display='none'">
         <div class="cert-badge-text">disguise Certified Trainer</div>
       </div>
-    </div>
+    </a>
   </div>
 </section>
 
 <section id="work">
-  <div class="section-header fade-up">
-    <div class="section-num">02</div>
-    <h2>SELECTED<br>WORK</h2>
-  </div>
-  <div class="projects-filter">
+  <div class="projects-filter fade-up">
+    <span class="projects-label">Projects</span>
     <button class="filter-btn active" data-filter="all">All</button>
     <button class="filter-btn" data-filter="disguise">Disguise</button>
     <button class="filter-btn" data-filter="vj">VJ</button>
@@ -692,6 +722,24 @@
   </div>
 
   <div class="projects-grid fade-up">
+
+    <a href="https://hellocharlie.com/project/the-joy-awards-2026/" target="_blank" class="project-card tall" data-category="disguise">
+      <img class="project-img" src="images/JA_26.png" alt="Joy Awards 2026">
+      <div class="project-overlay">
+        <div class="project-title">Joy Awards 2026</div>
+        <div class="project-meta">Riyadh, Saudi Arabia · 2026</div>
+        <div class="project-role">Disguise Engineer · PRG</div>
+      </div>
+    </a>
+
+    <a href="https://www.silasveta.com/projects/rave-rebels-2025-the-ship" target="_blank" class="project-card" data-category="vj">
+      <img class="project-img" src="images/RR_Nov25.png" alt="Rave Rebels | The Ship">
+      <div class="project-overlay">
+        <div class="project-title">Rave Rebels | The Ship</div>
+        <div class="project-meta">2025</div>
+        <div class="project-role">VJ · Sila Sveta</div>
+      </div>
+    </a>
 
     <a href="https://www.youtube.com/watch?v=uQtXQmlZ1A0" target="_blank" class="project-card wide" data-category="disguise">
       <img class="project-img" src="images/gotf.png" alt="GOTF Opening Ceremony">
@@ -702,341 +750,381 @@
       </div>
     </a>
 
-    <div class="project-card no-image" data-category="disguise">
+    <a href="https://www.linkedin.com/posts/done-dusted_presidentscup-doneanddusted-uae2025-ugcPost-7337907230450601984-DQIK/?utm_source=share&utm_medium=member_desktop&rcm=ACoAAAlTO5UBD-j7drvCRrCIG6DWEdS04Zefigs" target="_blank" class="project-card" data-category="disguise">
+      <img class="project-img" src="images/pres_cup.png" alt="President's Cup">
       <div class="project-overlay">
         <div class="project-title">President's Cup</div>
         <div class="project-meta">Abu Dhabi, UAE · 2025</div>
         <div class="project-role">Disguise Engineer · PRG</div>
       </div>
-    </div>
+    </a>
 
-    <div class="project-card no-image" data-category="disguise">
+    <a href="oops.html" class="project-card" data-category="disguise">
+      <img class="project-img" src="images/ewc25.png" alt="EWC 25 Opening Ceremony">
       <div class="project-overlay">
         <div class="project-title">EWC 25 Opening Ceremony</div>
         <div class="project-meta">Riyadh, Saudi Arabia · 2025</div>
         <div class="project-role">Disguise Engineer · PRG</div>
       </div>
-    </div>
+    </a>
 
-    <div class="project-card no-image" data-category="disguise">
+    <a href="oops.html" class="project-card" data-category="disguise">
+      <img class="project-img" src="images/tlc.png" alt="The Last Crescendo">
       <div class="project-overlay">
         <div class="project-title">The Last Crescendo</div>
         <div class="project-meta">Riyadh, Saudi Arabia · 2025</div>
         <div class="project-role">Disguise Engineer · PRG</div>
       </div>
-    </div>
+    </a>
 
-    <div class="project-card no-image" data-category="disguise">
+    <a href="https://hellocharlie.com/project/joy-awards-2025/" target="_blank" class="project-card" data-category="disguise">
+      <img class="project-img" src="images/joy_25.png" alt="Joy Awards 25">
       <div class="project-overlay">
         <div class="project-title">Joy Awards 25</div>
         <div class="project-meta">Riyadh, Saudi Arabia · 2025</div>
         <div class="project-role">Disguise Engineer · PRG</div>
       </div>
-    </div>
+    </a>
 
-    <div class="project-card no-image" data-category="disguise">
+    <a href="oops.html" class="project-card" data-category="disguise">
+      <img class="project-img" src="images/f1_conc_25.png" alt="F1 Concerts 2025">
       <div class="project-overlay">
         <div class="project-title">F1 Concerts 2025</div>
         <div class="project-meta">Abu Dhabi, UAE · 2025</div>
         <div class="project-role">Disguise Engineer · PRG</div>
       </div>
-    </div>
+    </a>
 
-    <div class="project-card no-image" data-category="vj">
+    <a href="https://www.silasveta.com/projects/rave-rabels-2025-belgium" target="_blank" class="project-card" data-category="vj">
+      <img class="project-img" src="images/RR_apr25.png" alt="Rave Rebels Deus | Ex Machina">
       <div class="project-overlay">
-        <div class="project-title">Rave Rebels</div>
+        <div class="project-title">Rave Rebels Deus | Ex Machina</div>
         <div class="project-meta">Brussels, Belgium · 2025</div>
         <div class="project-role">VJ · Sila Sveta</div>
       </div>
-    </div>
+    </a>
 
-    <div class="project-card no-image" data-category="integration">
+    <a href="https://rodinadubai.com/" target="_blank" class="project-card tall" data-category="integration">
+      <img class="project-img" src="images/rodina.png" alt="Rodina Restaurant">
       <div class="project-overlay">
         <div class="project-title">Rodina Restaurant</div>
         <div class="project-meta">Dubai, UAE · 2025</div>
         <div class="project-role">Video Systems Engineer · Vivid Studios</div>
       </div>
-    </div>
+    </a>
 
-    <div class="project-card no-image" data-category="integration">
+    <a href="https://blumedubai.com/blume-dubai-mall/" target="_blank" class="project-card" data-category="integration">
+      <img class="project-img" src="images/blume.png" alt="Blume Restaurant">
       <div class="project-overlay">
         <div class="project-title">Blume Restaurant</div>
         <div class="project-meta">Dubai, UAE · 2025</div>
         <div class="project-role">Video Systems Engineer · Vivid Studios</div>
       </div>
-    </div>
+    </a>
 
-    <div class="project-card no-image" data-category="integration">
+    <a href="https://stageprecision.com/blogs/showcase/woohoo-restaurant?srsltid=AfmBOopunXeSZrgFTrnsFqXcLTvAMPr-V9hrYCz2fydyssA9VfDXy5Qy" target="_blank" class="project-card" data-category="integration">
+      <img class="project-img" src="images/woohoo.png" alt="Woohoo Restaurant">
       <div class="project-overlay">
         <div class="project-title">Woohoo Restaurant</div>
         <div class="project-meta">Dubai, UAE · 2025</div>
         <div class="project-role">Video Systems Engineer · Vivid Studios</div>
       </div>
-    </div>
+    </a>
 
-    <div class="project-card no-image" data-category="disguise">
+    <a href="oops.html" class="project-card" data-category="disguise">
+      <img class="project-img" src="images/latino.png" alt="Latino Night">
       <div class="project-overlay">
         <div class="project-title">Latino Night</div>
         <div class="project-meta">Riyadh, Saudi Arabia · 2024</div>
         <div class="project-role">Disguise Engineer · PRG</div>
       </div>
-    </div>
+    </a>
 
-    <div class="project-card no-image" data-category="disguise">
+    <a href="oops.html" class="project-card" data-category="disguise">
+      <img class="project-img" src="images/f1_conc_24.png" alt="F1 Concerts 2024">
       <div class="project-overlay">
         <div class="project-title">F1 Concerts 2024</div>
         <div class="project-meta">Abu Dhabi, UAE · 2024</div>
         <div class="project-role">Disguise Engineer · PRG</div>
       </div>
-    </div>
+    </a>
 
-    <div class="project-card no-image" data-category="disguise">
+    <a href="oops.html" class="project-card" data-category="disguise">
+      <img class="project-img" src="images/usyk2.png" alt="Usyk vs Fury 2">
       <div class="project-overlay">
         <div class="project-title">Usyk vs Fury 2</div>
         <div class="project-meta">Riyadh, Saudi Arabia · 2024</div>
         <div class="project-role">Disguise Engineer · PRG</div>
       </div>
-    </div>
+    </a>
 
-    <div class="project-card no-image" data-category="disguise">
+    <a href="oops.html" class="project-card" data-category="disguise">
+      <img class="project-img" src="images/sks.png" alt="Six Kings Slam">
       <div class="project-overlay">
         <div class="project-title">Six Kings Slam</div>
         <div class="project-meta">Riyadh, Saudi Arabia · 2024</div>
         <div class="project-role">Disguise Engineer · PRG</div>
       </div>
-    </div>
+    </a>
 
-    <div class="project-card no-image" data-category="disguise">
+    <a href="https://www.facebook.com/100089378779878/videos/1446005386117333/" target="_blank" class="project-card tall" data-category="disguise">
+      <img class="project-img" src="images/ambani.png" alt="Ambani's Wedding">
       <div class="project-overlay">
         <div class="project-title">Ambani's Wedding</div>
         <div class="project-meta">Mumbai, India · 2024</div>
         <div class="project-role">Disguise Engineer · Blue I</div>
       </div>
-    </div>
+    </a>
 
-    <div class="project-card no-image" data-category="integration">
+    <a href="oops.html" class="project-card" data-category="integration">
+      <img class="project-img" src="images/luxuria.png" alt="Luxuria Karaoke Club">
       <div class="project-overlay">
         <div class="project-title">Luxuria Karaoke Club</div>
         <div class="project-meta">Dubai, UAE · 2024</div>
         <div class="project-role">Video Systems Engineer · Vivid Studios</div>
       </div>
-    </div>
+    </a>
 
-    <div class="project-card wide no-image" data-category="disguise">
+    <a href="https://gem.eg/en/whats-on/temporary-exhibitions/the-immersive-exhibition/" target="_blank" class="project-card wide" data-category="disguise">
+      <img class="project-img" src="images/tut.png" alt="Tutankhamun — The Immersive Experience">
       <div class="project-overlay">
         <div class="project-title">Tutankhamun — The Immersive Experience</div>
         <div class="project-meta">Cairo, Egypt · 2023</div>
         <div class="project-role">Projection Engineer · Sila Sveta</div>
       </div>
-    </div>
+    </a>
 
-    <div class="project-card no-image" data-category="integration">
+    <a href="https://www.onezaabeel.com/the-link/" target="_blank" class="project-card tall" data-category="integration">
+      <img class="project-img" src="images/bol.png" alt="Bridge of Love — The Link">
       <div class="project-overlay">
         <div class="project-title">Bridge of Love — The Link</div>
         <div class="project-meta">Dubai, UAE · 2023</div>
         <div class="project-role">Disguise Engineer · Vivid Studios</div>
       </div>
-    </div>
+    </a>
 
-    <div class="project-card no-image" data-category="disguise">
+    <a href="oops.html" class="project-card" data-category="disguise">
+      <img class="project-img" src="images/qeo.png" alt="Qatar Expo 2023 Opening Ceremony">
       <div class="project-overlay">
         <div class="project-title">Qatar Expo 2023 Opening Ceremony</div>
         <div class="project-meta">Doha, Qatar · 2023</div>
         <div class="project-role">Disguise Engineer · Andrey Fomin Production</div>
       </div>
-    </div>
+    </a>
 
-    <div class="project-card no-image" data-category="disguise">
+    <a href="oops.html" class="project-card" data-category="disguise">
+      <img class="project-img" src="images/flagday.png" alt="Flag Day 2023">
       <div class="project-overlay">
         <div class="project-title">Flag Day 2023</div>
         <div class="project-meta">Riyadh, Saudi Arabia · 2023</div>
         <div class="project-role">Disguise Engineer · PRG</div>
       </div>
-    </div>
+    </a>
 
-    <div class="project-card no-image" data-category="disguise">
+    <a href="oops.html" class="project-card" data-category="disguise">
+      <img class="project-img" src="images/gamers8.png" alt="Gamers 8">
       <div class="project-overlay">
         <div class="project-title">Gamers 8</div>
         <div class="project-meta">Riyadh, Saudi Arabia · 2023</div>
         <div class="project-role">Video Systems Engineer · PRG</div>
       </div>
-    </div>
+    </a>
 
-    <div class="project-card no-image" data-category="integration">
+    <a href="https://www.delivered.global/projects/the-weaving" target="_blank" class="project-card" data-category="integration">
+      <img class="project-img" src="images/weaving.png" alt="The Weaving">
       <div class="project-overlay">
         <div class="project-title">The Weaving</div>
         <div class="project-meta">Dubai, UAE · 2023</div>
         <div class="project-role">Disguise Engineer</div>
       </div>
-    </div>
+    </a>
 
-    <div class="project-card no-image" data-category="integration">
+    <a href="https://zenonrestaurant.com/" target="_blank" class="project-card" data-category="integration">
+      <img class="project-img" src="images/zenon.png" alt="Zenon Restaurant">
       <div class="project-overlay">
         <div class="project-title">Zenon Restaurant</div>
         <div class="project-meta">Dubai, UAE · 2023</div>
         <div class="project-role">Resolume Engineer · Vivid Studios</div>
       </div>
-    </div>
+    </a>
 
-    <div class="project-card no-image" data-category="disguise">
+    <a href="oops.html" class="project-card" data-category="disguise">
+      <img class="project-img" src="images/fifa22.png" alt="FIFA Fan Festival 2022">
       <div class="project-overlay">
         <div class="project-title">FIFA Fan Festival 2022</div>
         <div class="project-meta">Doha, Qatar · 2022</div>
         <div class="project-role">Disguise Engineer · PRG</div>
       </div>
-    </div>
+    </a>
 
-    <div class="project-card no-image" data-category="disguise">
+    <a href="oops.html" class="project-card" data-category="disguise">
+      <img class="project-img" src="images/adipec22.png" alt="ADIPEC 2022">
       <div class="project-overlay">
         <div class="project-title">ADIPEC 2022</div>
         <div class="project-meta">Abu Dhabi, UAE · 2022</div>
         <div class="project-role">Disguise Engineer · PRG</div>
       </div>
-    </div>
+    </a>
 
-    <div class="project-card no-image" data-category="disguise">
+    <a href="oops.html" class="project-card" data-category="disguise">
+      <img class="project-img" src="images/alula.png" alt="Banyan Tree Hotel Opening">
       <div class="project-overlay">
         <div class="project-title">Banyan Tree Hotel Opening</div>
         <div class="project-meta">Al Ula, Saudi Arabia · 2022</div>
         <div class="project-role">Disguise Engineer · PRG</div>
       </div>
-    </div>
+    </a>
 
-    <div class="project-card no-image" data-category="disguise">
+    <a href="https://www.prg.com/en-gb/news/2022/q3/kpop" target="_blank" class="project-card" data-category="disguise">
+      <img class="project-img" src="images/kpop.png" alt="KPOP Festival — Saranghae KSA">
       <div class="project-overlay">
         <div class="project-title">KPOP Festival — Saranghae KSA</div>
         <div class="project-meta">Jeddah, Saudi Arabia · 2022</div>
         <div class="project-role">Disguise Engineer · PRG</div>
       </div>
-    </div>
+    </a>
 
-    <div class="project-card no-image" data-category="disguise">
+    <a href="oops.html" class="project-card" data-category="disguise">
+      <img class="project-img" src="images/RRS.png" alt="Rage on the Red Sea">
       <div class="project-overlay">
         <div class="project-title">Rage on the Red Sea</div>
         <div class="project-meta">Jeddah, Saudi Arabia · 2022</div>
         <div class="project-role">Video Systems Engineer · PRG</div>
       </div>
-    </div>
+    </a>
 
-    <div class="project-card no-image" data-category="disguise">
+    <a href="https://www.silasveta.com/projects/in-to-polyelab" target="_blank" class="project-card" data-category="disguise">
+      <img class="project-img" src="images/pole.png" alt="IN TO POLELAB">
       <div class="project-overlay">
         <div class="project-title">IN TO POLELAB</div>
         <div class="project-meta">Moscow, Russia · 2022</div>
         <div class="project-role">Disguise Engineer · Sila Sveta</div>
       </div>
-    </div>
+    </a>
 
-    <div class="project-card no-image" data-category="disguise">
+    <a href="https://www.silasveta.com/projects/beyond-lexus-lx" target="_blank" class="project-card" data-category="disguise">
+      <img class="project-img" src="images/lexus.png" alt="Beyond — Lexus LX Launch">
       <div class="project-overlay">
         <div class="project-title">Beyond — Lexus LX Launch</div>
         <div class="project-meta">Riyadh, Saudi Arabia · 2021</div>
         <div class="project-role">Disguise Engineer · Sila Sveta</div>
       </div>
-    </div>
+    </a>
 
-    <div class="project-card no-image" data-category="disguise">
+    <a href="https://www.silasveta.com/projects/first-man-in-space" target="_blank" class="project-card tall" data-category="disguise">
+      <img class="project-img" src="images/baikonur.png" alt="First Man In Space">
       <div class="project-overlay">
         <div class="project-title">First Man In Space</div>
         <div class="project-meta">Baikonur, Kazakhstan · 2021</div>
         <div class="project-role">Disguise Engineer · Sila Sveta</div>
       </div>
-    </div>
+    </a>
 
-    <div class="project-card no-image" data-category="vj">
+    <a href="https://www.silasveta.com/projects/in-to-tseh" target="_blank" class="project-card" data-category="vj">
+      <img class="project-img" src="images/tseh.png" alt="IN TO TSEH">
       <div class="project-overlay">
         <div class="project-title">IN TO TSEH</div>
         <div class="project-meta">Nikola-Lenivets, Russia · 2021</div>
         <div class="project-role">Resolume Engineer · Sila Sveta</div>
       </div>
-    </div>
+    </a>
 
-    <div class="project-card no-image" data-category="vj">
+    <a href="https://www.silasveta.com/projects/nechto" target="_blank" class="project-card tall" data-category="vj">
+      <img class="project-img" src="images/nechto.png" alt="NECHTO">
       <div class="project-overlay">
         <div class="project-title">NECHTO</div>
         <div class="project-meta">Kyiv, Ukraine · 2021</div>
         <div class="project-role">VJ · Sila Sveta</div>
       </div>
-    </div>
+    </a>
 
-    <div class="project-card no-image" data-category="vj">
+    <a href="https://www.silasveta.com/projects/space-ark" target="_blank" class="project-card" data-category="vj">
+      <img class="project-img" src="images/spaceark.png" alt="Space Ark">
       <div class="project-overlay">
         <div class="project-title">Space Ark</div>
         <div class="project-meta">Yerevan, Armenia · 2021</div>
         <div class="project-role">VJ · Sila Sveta</div>
       </div>
-    </div>
+    </a>
 
-    <div class="project-card no-image" data-category="disguise">
+    <a href="https://www.silasveta.com/projects/sila-sveta-in-tretyakov-gallery" target="_blank" class="project-card" data-category="disguise">
+      <img class="project-img" src="images/tretyakovka.png" alt="Sila Sveta in Tretyakov Gallery">
       <div class="project-overlay">
         <div class="project-title">Sila Sveta in Tretyakov Gallery</div>
         <div class="project-meta">Moscow, Russia · 2020</div>
         <div class="project-role">Disguise Engineer · Sila Sveta</div>
       </div>
-    </div>
+    </a>
 
-    <div class="project-card no-image" data-category="disguise">
+    <a href="https://www.silasveta.com/projects/levitation-2" target="_blank" class="project-card" data-category="disguise">
+      <img class="project-img" src="images/levitation.png" alt="Levitation 2">
       <div class="project-overlay">
         <div class="project-title">Levitation 2</div>
         <div class="project-meta">Moscow, Russia · 2020</div>
         <div class="project-role">Disguise Engineer · Sila Sveta</div>
       </div>
-    </div>
+    </a>
 
-    <div class="project-card no-image" data-category="disguise">
+    <a href="https://www.silasveta.com/projects/in-to" target="_blank" class="project-card" data-category="disguise">
+      <img class="project-img" src="images/into.png" alt="IN TO">
       <div class="project-overlay">
         <div class="project-title">IN TO</div>
         <div class="project-meta">Perm, Russia · 2020</div>
         <div class="project-role">Disguise Engineer · Sila Sveta</div>
       </div>
-    </div>
+    </a>
 
-    <div class="project-card no-image" data-category="integration">
+    <a href="https://www.silasveta.com/projects/the-american-university-in-cairo" target="_blank" class="project-card" data-category="integration">
+      <img class="project-img" src="images/auc.png" alt="American University in Cairo">
       <div class="project-overlay">
         <div class="project-title">American University in Cairo</div>
         <div class="project-meta">Cairo, Egypt · 2020</div>
         <div class="project-role">Resolume Engineer · Sila Sveta</div>
       </div>
-    </div>
+    </a>
 
-    <div class="project-card no-image" data-category="vj">
+    <a href="https://www.silasveta.com/projects/arma-xll" target="_blank" class="project-card" data-category="vj">
+      <img class="project-img" src="images/arma.png" alt="Arma XII">
       <div class="project-overlay">
         <div class="project-title">Arma XII</div>
         <div class="project-meta">Moscow, Russia · 2020</div>
         <div class="project-role">VJ · Sila Sveta</div>
       </div>
-    </div>
+    </a>
 
-    <div class="project-card no-image" data-category="integration">
+    <a href="https://www.silasveta.com/projects/trans-studio" target="_blank" class="project-card" data-category="integration">
+      <img class="project-img" src="images/transstudio.png" alt="Trans Studio Theme Park">
       <div class="project-overlay">
         <div class="project-title">Trans Studio Theme Park</div>
         <div class="project-meta">Jakarta, Indonesia · 2019</div>
         <div class="project-role">Disguise Engineer · Sila Sveta</div>
       </div>
-    </div>
+    </a>
 
-    <div class="project-card no-image" data-category="disguise">
+    <a href="https://www.silasveta.com/projects/lamborghini-huracan" target="_blank" class="project-card" data-category="disguise">
+      <img class="project-img" src="images/huracan.png" alt="Lamborghini Huracán Launch">
       <div class="project-overlay">
         <div class="project-title">Lamborghini Huracán Launch</div>
         <div class="project-meta">Berlin &amp; Milan · 2019</div>
         <div class="project-role">Disguise Engineer · Sila Sveta</div>
       </div>
-    </div>
+    </a>
 
-    <div class="project-card no-image" data-category="disguise">
+    <a href="https://www.silasveta.com/projects/mercedes-eqc" target="_blank" class="project-card" data-category="disguise">
+      <img class="project-img" src="images/eqc.png" alt="Mercedes EQC Launch">
       <div class="project-overlay">
         <div class="project-title">Mercedes EQC Launch</div>
         <div class="project-meta">Beijing, China · 2019</div>
         <div class="project-role">Disguise Engineer · Sila Sveta</div>
       </div>
-    </div>
+    </a>
 
   </div>
 </section>
 
 <section id="experience">
-  <div class="section-header fade-up">
-    <div class="section-num">03</div>
-    <h2>WORK<br>EXPERIENCE</h2>
+  <div class="exp-section-header fade-up">
+    <span class="exp-section-label">Work Experience</span>
   </div>
   <div class="exp-list">
     <div class="exp-item fade-up">
@@ -1133,7 +1221,7 @@
 </section>
 
 <footer>
-  <div class="footer-copy">© 2025 Yuri Stranyov · Dubai, UAE</div>
+  <div class="footer-copy">© 2026 Yuri Stranyov · Dubai, UAE</div>
   <img src="images/str_white.png" alt="STRANYOV" style="height:40px;width:auto;">
 </footer>
 
@@ -1169,14 +1257,22 @@
   document.querySelectorAll('.fade-up').forEach(el => obs.observe(el));
 
   // Project filter
+  const grid = document.querySelector('.projects-grid');
+
   document.querySelectorAll('.filter-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       const filter = btn.dataset.filter;
-      document.querySelectorAll('.project-card').forEach(card => {
-        card.hidden = filter !== 'all' && card.dataset.category !== filter;
-      });
+      if (filter === 'all') {
+        grid.classList.remove('category-view');
+        grid.querySelectorAll('.project-card').forEach(c => { c.hidden = false; });
+      } else {
+        grid.classList.add('category-view');
+        grid.querySelectorAll('.project-card').forEach(c => {
+          c.hidden = c.dataset.category !== filter;
+        });
+      }
     });
   });
 

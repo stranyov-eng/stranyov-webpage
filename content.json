@@ -20,9 +20,9 @@
   },
 
   "about": {
-    "paragraph1": "I'm Yuri Stranyov — Freelance Video Engineer and VJ based in Dubai. Over 10 years I've designed, built, and operated real-time video systems for some of the world's most demanding live productions — from F1 concerts and world championship ceremonies to immersive installations seen by millions.",
-    "paragraph2": "My core tool is disguise (d3). I work across the full production cycle: system architecture, multi-server pipelines with full redundancy, projection calculations, content mapping, and on-site technical leadership under live conditions. disguise Certified Trainer.",
-    "paragraph3": "Available for freelance engagements worldwide — live events, touring, XR stages, immersive environments, and permanent installations. Currently based in Dubai, open to travel."
+    "paragraph1": "I'm Yuri Stranyov — Freelance Video Engineer and VJ. 10+ years building real-time video systems for live events that can't fail — F1 concerts, world championship ceremonies, immersive installations.",
+    "paragraph2": "disguise (d3) specialist and certified trainer. I work the full cycle: system architecture, multi-server pipelines, projection mapping, on-site leadership.",
+    "paragraph3": "Based in Dubai, available anywhere the show is."
   },
 
   "contact": {
@@ -38,6 +38,6 @@
   },
 
   "footer": {
-    "copy": "© 2025 Yuri Stranyov · Dubai, UAE"
+    "copy": "© 2026 Yuri Stranyov · Dubai, UAE"
   }
 }

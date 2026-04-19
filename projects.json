@@ -1,5 +1,23 @@
 [
   {
+    "title": "Joy Awards 2026",
+    "meta": "Riyadh, Saudi Arabia · 2026",
+    "role": "Disguise Engineer · PRG",
+    "category": "disguise",
+    "image": "JA_26.png",
+    "link": "https://hellocharlie.com/project/the-joy-awards-2026/",
+    "wide": false
+  },
+  {
+    "title": "Rave Rebels | The Ship",
+    "meta": "2025",
+    "role": "VJ · Sila Sveta",
+    "category": "vj",
+    "image": "RR_nov25.png",
+    "link": "https://www.silasveta.com/projects/rave-rebels-2025-the-ship",
+    "wide": false
+  },
+  {
     "title": "GOTF Opening Ceremony",
     "meta": "Abu Dhabi, UAE · 2025",
     "role": "Disguise Engineer",
@@ -13,8 +31,8 @@
     "meta": "Abu Dhabi, UAE · 2025",
     "role": "Disguise Engineer · PRG",
     "category": "disguise",
-    "image": "",
-    "link": "",
+    "image": "pres_cup.png",
+    "link": "https://www.linkedin.com/posts/done-dusted_presidentscup-doneanddusted-uae2025-ugcPost-7337907230450601984-DQIK/?utm_source=share&utm_medium=member_desktop&rcm=ACoAAAlTO5UBD-j7drvCRrCIG6DWEdS04Zefigs",
     "wide": false
   },
   {
@@ -22,7 +40,7 @@
     "meta": "Riyadh, Saudi Arabia · 2025",
     "role": "Disguise Engineer · PRG",
     "category": "disguise",
-    "image": "",
+    "image": "ewc25.png",
     "link": "",
     "wide": false
   },
@@ -31,7 +49,7 @@
     "meta": "Riyadh, Saudi Arabia · 2025",
     "role": "Disguise Engineer · PRG",
     "category": "disguise",
-    "image": "",
+    "image": "tlc.png",
     "link": "",
     "wide": false
   },
@@ -40,8 +58,8 @@
     "meta": "Riyadh, Saudi Arabia · 2025",
     "role": "Disguise Engineer · PRG",
     "category": "disguise",
-    "image": "",
-    "link": "",
+    "image": "joy_25.png",
+    "link": "https://hellocharlie.com/project/joy-awards-2025/",
     "wide": false
   },
   {
@@ -49,17 +67,17 @@
     "meta": "Abu Dhabi, UAE · 2025",
     "role": "Disguise Engineer · PRG",
     "category": "disguise",
-    "image": "",
+    "image": "f1_conc_25.png",
     "link": "",
     "wide": false
   },
   {
-    "title": "Rave Rebels",
+    "title": "Rave Rebels Deus | Ex Machina",
     "meta": "Brussels, Belgium · 2025",
     "role": "VJ · Sila Sveta",
     "category": "vj",
-    "image": "",
-    "link": "",
+    "image": "RR_apr25.png",
+    "link": "https://www.silasveta.com/projects/rave-rabels-2025-belgium",
     "wide": false
   },
   {
@@ -67,8 +85,8 @@
     "meta": "Dubai, UAE · 2025",
     "role": "Video Systems Engineer · Vivid Studios",
     "category": "integration",
-    "image": "",
-    "link": "",
+    "image": "rodina.png",
+    "link": "https://rodinadubai.com/",
     "wide": false
   },
   {
@@ -76,8 +94,8 @@
     "meta": "Dubai, UAE · 2025",
     "role": "Video Systems Engineer · Vivid Studios",
     "category": "integration",
-    "image": "",
-    "link": "",
+    "image": "blume.png",
+    "link": "https://blumedubai.com/blume-dubai-mall/",
     "wide": false
   },
   {
@@ -85,8 +103,8 @@
     "meta": "Dubai, UAE · 2025",
     "role": "Video Systems Engineer · Vivid Studios",
     "category": "integration",
-    "image": "",
-    "link": "",
+    "image": "woohoo.png",
+    "link": "https://stageprecision.com/blogs/showcase/woohoo-restaurant?srsltid=AfmBOopunXeSZrgFTrnsFqXcLTvAMPr-V9hrYCz2fydyssA9VfDXy5Qy",
     "wide": false
   },
   {
@@ -94,7 +112,7 @@
     "meta": "Riyadh, Saudi Arabia · 2024",
     "role": "Disguise Engineer · PRG",
     "category": "disguise",
-    "image": "",
+    "image": "latino.png",
     "link": "",
     "wide": false
   },
@@ -103,7 +121,7 @@
     "meta": "Abu Dhabi, UAE · 2024",
     "role": "Disguise Engineer · PRG",
     "category": "disguise",
-    "image": "",
+    "image": "f1_conc_24.png",
     "link": "",
     "wide": false
   },
@@ -112,7 +130,7 @@
     "meta": "Riyadh, Saudi Arabia · 2024",
     "role": "Disguise Engineer · PRG",
     "category": "disguise",
-    "image": "",
+    "image": "usyk2.png",
     "link": "",
     "wide": false
   },
@@ -121,7 +139,7 @@
     "meta": "Riyadh, Saudi Arabia · 2024",
     "role": "Disguise Engineer · PRG",
     "category": "disguise",
-    "image": "",
+    "image": "sks.png",
     "link": "",
     "wide": false
   },
@@ -130,8 +148,8 @@
     "meta": "Mumbai, India · 2024",
     "role": "Disguise Engineer · Blue I",
     "category": "disguise",
-    "image": "",
-    "link": "",
+    "image": "ambani.png",
+    "link": "https://www.facebook.com/100089378779878/videos/1446005386117333/",
     "wide": false
   },
   {
@@ -139,7 +157,7 @@
     "meta": "Dubai, UAE · 2024",
     "role": "Video Systems Engineer · Vivid Studios",
     "category": "integration",
-    "image": "",
+    "image": "luxuria.png",
     "link": "",
     "wide": false
   },
@@ -148,8 +166,8 @@
     "meta": "Cairo, Egypt · 2023",
     "role": "Projection Engineer · Sila Sveta",
     "category": "disguise",
-    "image": "",
-    "link": "",
+    "image": "tut.png",
+    "link": "https://gem.eg/en/whats-on/temporary-exhibitions/the-immersive-exhibition/",
     "wide": true
   },
   {
@@ -157,8 +175,8 @@
     "meta": "Dubai, UAE · 2023",
     "role": "Disguise Engineer · Vivid Studios",
     "category": "integration",
-    "image": "",
-    "link": "",
+    "image": "bol.png",
+    "link": "https://www.onezaabeel.com/the-link/",
     "wide": false
   },
   {
@@ -166,7 +184,7 @@
     "meta": "Doha, Qatar · 2023",
     "role": "Disguise Engineer · Andrey Fomin Production",
     "category": "disguise",
-    "image": "",
+    "image": "qeo.png",
     "link": "",
     "wide": false
   },
@@ -175,7 +193,7 @@
     "meta": "Riyadh, Saudi Arabia · 2023",
     "role": "Disguise Engineer · PRG",
     "category": "disguise",
-    "image": "",
+    "image": "flagday.png",
     "link": "",
     "wide": false
   },
@@ -184,7 +202,7 @@
     "meta": "Riyadh, Saudi Arabia · 2023",
     "role": "Video Systems Engineer · PRG",
     "category": "disguise",
-    "image": "",
+    "image": "gamers8.png",
     "link": "",
     "wide": false
   },
@@ -193,8 +211,8 @@
     "meta": "Dubai, UAE · 2023",
     "role": "Disguise Engineer",
     "category": "integration",
-    "image": "",
-    "link": "",
+    "image": "weaving.png",
+    "link": "https://www.delivered.global/projects/the-weaving",
     "wide": false
   },
   {
@@ -202,8 +220,8 @@
     "meta": "Dubai, UAE · 2023",
     "role": "Resolume Engineer · Vivid Studios",
     "category": "integration",
-    "image": "",
-    "link": "",
+    "image": "zenon.png",
+    "link": "https://zenonrestaurant.com/",
     "wide": false
   },
   {
@@ -211,7 +229,7 @@
     "meta": "Doha, Qatar · 2022",
     "role": "Disguise Engineer · PRG",
     "category": "disguise",
-    "image": "",
+    "image": "fifa22.png",
     "link": "",
     "wide": false
   },
@@ -220,7 +238,7 @@
     "meta": "Abu Dhabi, UAE · 2022",
     "role": "Disguise Engineer · PRG",
     "category": "disguise",
-    "image": "",
+    "image": "adipec22.png",
     "link": "",
     "wide": false
   },
@@ -229,7 +247,7 @@
     "meta": "Al Ula, Saudi Arabia · 2022",
     "role": "Disguise Engineer · PRG",
     "category": "disguise",
-    "image": "",
+    "image": "alula.png",
     "link": "",
     "wide": false
   },
@@ -238,8 +256,8 @@
     "meta": "Jeddah, Saudi Arabia · 2022",
     "role": "Disguise Engineer · PRG",
     "category": "disguise",
-    "image": "",
-    "link": "",
+    "image": "kpop.png",
+    "link": "https://www.prg.com/en-gb/news/2022/q3/kpop",
     "wide": false
   },
   {
@@ -247,7 +265,7 @@
     "meta": "Jeddah, Saudi Arabia · 2022",
     "role": "Video Systems Engineer · PRG",
     "category": "disguise",
-    "image": "",
+    "image": "RRS.png",
     "link": "",
     "wide": false
   },
@@ -256,8 +274,8 @@
     "meta": "Moscow, Russia · 2022",
     "role": "Disguise Engineer · Sila Sveta",
     "category": "disguise",
-    "image": "",
-    "link": "",
+    "image": "pole.png",
+    "link": "https://www.silasveta.com/projects/in-to-polyelab",
     "wide": false
   },
   {
@@ -265,8 +283,8 @@
     "meta": "Riyadh, Saudi Arabia · 2021",
     "role": "Disguise Engineer · Sila Sveta",
     "category": "disguise",
-    "image": "",
-    "link": "",
+    "image": "lexus.png",
+    "link": "https://www.silasveta.com/projects/beyond-lexus-lx",
     "wide": false
   },
   {
@@ -274,8 +292,8 @@
     "meta": "Baikonur, Kazakhstan · 2021",
     "role": "Disguise Engineer · Sila Sveta",
     "category": "disguise",
-    "image": "",
-    "link": "",
+    "image": "baikonur.png",
+    "link": "https://www.silasveta.com/projects/first-man-in-space",
     "wide": false
   },
   {
@@ -283,8 +301,8 @@
     "meta": "Nikola-Lenivets, Russia · 2021",
     "role": "Resolume Engineer · Sila Sveta",
     "category": "vj",
-    "image": "",
-    "link": "",
+    "image": "tseh.png",
+    "link": "https://www.silasveta.com/projects/in-to-tseh",
     "wide": false
   },
   {
@@ -292,8 +310,8 @@
     "meta": "Kyiv, Ukraine · 2021",
     "role": "VJ · Sila Sveta",
     "category": "vj",
-    "image": "",
-    "link": "",
+    "image": "nechto.png",
+    "link": "https://www.silasveta.com/projects/nechto",
     "wide": false
   },
   {
@@ -301,8 +319,8 @@
     "meta": "Yerevan, Armenia · 2021",
     "role": "VJ · Sila Sveta",
     "category": "vj",
-    "image": "",
-    "link": "",
+    "image": "spaceark.png",
+    "link": "https://www.silasveta.com/projects/space-ark",
     "wide": false
   },
   {
@@ -310,8 +328,8 @@
     "meta": "Moscow, Russia · 2020",
     "role": "Disguise Engineer · Sila Sveta",
     "category": "disguise",
-    "image": "",
-    "link": "",
+    "image": "tretyakovka.png",
+    "link": "https://www.silasveta.com/projects/sila-sveta-in-tretyakov-gallery",
     "wide": false
   },
   {
@@ -319,8 +337,8 @@
     "meta": "Moscow, Russia · 2020",
     "role": "Disguise Engineer · Sila Sveta",
     "category": "disguise",
-    "image": "",
-    "link": "",
+    "image": "levitation.png",
+    "link": "https://www.silasveta.com/projects/levitation-2",
     "wide": false
   },
   {
@@ -328,8 +346,8 @@
     "meta": "Perm, Russia · 2020",
     "role": "Disguise Engineer · Sila Sveta",
     "category": "disguise",
-    "image": "",
-    "link": "",
+    "image": "into.png",
+    "link": "https://www.silasveta.com/projects/in-to",
     "wide": false
   },
   {
@@ -337,8 +355,8 @@
     "meta": "Cairo, Egypt · 2020",
     "role": "Resolume Engineer · Sila Sveta",
     "category": "integration",
-    "image": "",
-    "link": "",
+    "image": "auc.png",
+    "link": "https://www.silasveta.com/projects/the-american-university-in-cairo",
     "wide": false
   },
   {
@@ -346,8 +364,8 @@
     "meta": "Moscow, Russia · 2020",
     "role": "VJ · Sila Sveta",
     "category": "vj",
-    "image": "",
-    "link": "",
+    "image": "arma.png",
+    "link": "https://www.silasveta.com/projects/arma-xll",
     "wide": false
   },
   {
@@ -355,8 +373,8 @@
     "meta": "Jakarta, Indonesia · 2019",
     "role": "Disguise Engineer · Sila Sveta",
     "category": "integration",
-    "image": "",
-    "link": "",
+    "image": "transstudio.png",
+    "link": "https://www.silasveta.com/projects/trans-studio",
     "wide": false
   },
   {
@@ -364,8 +382,8 @@
     "meta": "Berlin & Milan · 2019",
     "role": "Disguise Engineer · Sila Sveta",
     "category": "disguise",
-    "image": "",
-    "link": "",
+    "image": "huracan.png",
+    "link": "https://www.silasveta.com/projects/lamborghini-huracan",
     "wide": false
   },
   {
@@ -373,8 +391,8 @@
     "meta": "Beijing, China · 2019",
     "role": "Disguise Engineer · Sila Sveta",
     "category": "disguise",
-    "image": "",
-    "link": "",
+    "image": "eqc.png",
+    "link": "https://www.silasveta.com/projects/mercedes-eqc",
     "wide": false
   }
 ]

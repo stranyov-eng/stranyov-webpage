@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Case Study Not Found — STRANYOV</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  body {
+    background: #0a0a0a;
+    color: #f0ede8;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    overflow-x: hidden;
+    padding: 48px 32px;
+    gap: 64px;
+  }
+
+  .glitch-bg {
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(240,237,232,0.015) 2px,
+      rgba(240,237,232,0.015) 4px
+    );
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .noise {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.03;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    background-size: 128px;
+  }
+
+  .content {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    max-width: 600px;
+  }
+
+  .label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    color: rgba(240,237,232,0.35);
+    margin-bottom: 48px;
+    text-transform: uppercase;
+  }
+
+  .headline {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(72px, 12vw, 120px);
+    line-height: 0.9;
+    letter-spacing: 0.02em;
+    margin-bottom: 40px;
+    -webkit-text-stroke: 1px rgba(240,237,232,0.15);
+    color: transparent;
+  }
+
+  .headline span {
+    display: block;
+    color: #f0ede8;
+    -webkit-text-stroke: 0;
+  }
+
+  .message {
+    font-size: 14px;
+    line-height: 1.7;
+    color: rgba(240,237,232,0.5);
+    margin-bottom: 56px;
+    font-style: italic;
+  }
+
+  .back {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: rgba(240,237,232,0.6);
+    text-decoration: none;
+    text-transform: uppercase;
+    border-bottom: 1px solid rgba(240,237,232,0.2);
+    padding-bottom: 4px;
+    transition: color 0.2s, border-color 0.2s;
+  }
+
+  .back:hover {
+    color: #f0ede8;
+    border-color: rgba(240,237,232,0.6);
+  }
+
+  /* GAME */
+  .game {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+  }
+
+  .game-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    color: rgba(240,237,232,0.2);
+    text-transform: uppercase;
+  }
+
+  .game-status {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    color: rgba(240,237,232,0.45);
+    text-transform: uppercase;
+    min-height: 16px;
+    transition: opacity 0.3s;
+  }
+
+  .board {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: rgba(240,237,232,0.08);
+    border: 1px solid rgba(240,237,232,0.08);
+  }
+
+  .cell {
+    width: 80px;
+    height: 80px;
+    background: #0a0a0a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 36px;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+    color: transparent;
+    user-select: none;
+  }
+
+  .cell:hover:not(.taken) {
+    background: rgba(240,237,232,0.04);
+  }
+
+  .cell.x { color: #f0ede8; }
+  .cell.o { color: rgba(240,237,232,0.35); }
+
+  .cell.win {
+    background: rgba(240,237,232,0.07);
+    color: #f0ede8 !important;
+  }
+
+  .game-reset {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: rgba(240,237,232,0.3);
+    text-transform: uppercase;
+    background: none;
+    border: none;
+    border-bottom: 1px solid rgba(240,237,232,0.1);
+    padding-bottom: 3px;
+    cursor: pointer;
+    transition: color 0.2s, border-color 0.2s;
+  }
+
+  .game-reset:hover {
+    color: rgba(240,237,232,0.7);
+    border-color: rgba(240,237,232,0.4);
+  }
+
+  .score {
+    display: flex;
+    gap: 32px;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: rgba(240,237,232,0.25);
+    text-transform: uppercase;
+  }
+
+  .score span { color: rgba(240,237,232,0.55); }
+</style>
+</head>
+<body>
+  <div class="noise"></div>
+  <div class="glitch-bg"></div>
+
+  <div class="content">
+    <div class="label">Case Study · Not Found</div>
+    <div class="headline">
+      LOST<br>
+      <span>SOMEWHERE</span>
+    </div>
+    <p class="message">
+      "This one's somewhere between a post-show debrief,<br>
+      a hard drive that didn't survive the tour,<br>
+      and a producer who said it's all NDA."
+    </p>
+    <a href="index.html#work" class="back">← Back to projects</a>
+  </div>
+
+  <div class="game">
+    <div class="game-label">Kill time · X vs O</div>
+    <div class="game-status" id="status">Your turn — X</div>
+    <div class="board" id="board">
+      <div class="cell" data-i="0"></div>
+      <div class="cell" data-i="1"></div>
+      <div class="cell" data-i="2"></div>
+      <div class="cell" data-i="3"></div>
+      <div class="cell" data-i="4"></div>
+      <div class="cell" data-i="5"></div>
+      <div class="cell" data-i="6"></div>
+      <div class="cell" data-i="7"></div>
+      <div class="cell" data-i="8"></div>
+    </div>
+    <div class="score">
+      You <span id="score-x">0</span> &nbsp;·&nbsp; CPU <span id="score-o">0</span> &nbsp;·&nbsp; Draw <span id="score-d">0</span>
+    </div>
+    <button class="game-reset" id="reset">New game</button>
+  </div>
+
+<script>
+  const WINS = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+  let board, locked, scores = {x:0, o:0, d:0};
+
+  const cells   = document.querySelectorAll('.cell');
+  const status  = document.getElementById('status');
+  const scoreX  = document.getElementById('score-x');
+  const scoreO  = document.getElementById('score-o');
+  const scoreD  = document.getElementById('score-d');
+
+  function init() {
+    board = Array(9).fill('');
+    locked = false;
+    cells.forEach(c => {
+      c.textContent = '';
+      c.className = 'cell';
+    });
+    status.textContent = 'Your turn — X';
+  }
+
+  function checkWinner(b) {
+    for (const [a, c, d] of WINS) {
+      if (b[a] && b[a] === b[c] && b[a] === b[d]) return { winner: b[a], line: [a, c, d] };
+    }
+    if (b.every(v => v)) return { winner: 'draw' };
+    return null;
+  }
+
+  function minimax(b, isMax) {
+    const res = checkWinner(b);
+    if (res) return res.winner === 'o' ? 1 : res.winner === 'x' ? -1 : 0;
+    let best = isMax ? -Infinity : Infinity;
+    for (let i = 0; i < 9; i++) {
+      if (!b[i]) {
+        b[i] = isMax ? 'o' : 'x';
+        const score = minimax(b, !isMax);
+        b[i] = '';
+        best = isMax ? Math.max(best, score) : Math.min(best, score);
+      }
+    }
+    return best;
+  }
+
+  function cpuMove() {
+    let best = -Infinity, move = -1;
+    for (let i = 0; i < 9; i++) {
+      if (!board[i]) {
+        board[i] = 'o';
+        const s = minimax(board, false);
+        board[i] = '';
+        if (s > best) { best = s; move = i; }
+      }
+    }
+    if (move === -1) return;
+    board[move] = 'o';
+    cells[move].textContent = 'O';
+    cells[move].classList.add('o', 'taken');
+    resolve();
+  }
+
+  function resolve() {
+    const res = checkWinner(board);
+    if (res) {
+      if (res.winner === 'draw') {
+        status.textContent = 'Draw — not bad';
+        scores.d++;
+        scoreD.textContent = scores.d;
+      } else {
+        const isPlayer = res.winner === 'x';
+        status.textContent = isPlayer ? 'You win — respect' : 'CPU wins — try again';
+        res.line.forEach(i => cells[i].classList.add('win'));
+        if (isPlayer) { scores.x++; scoreX.textContent = scores.x; }
+        else           { scores.o++; scoreO.textContent = scores.o; }
+      }
+      locked = true;
+      return;
+    }
+    status.textContent = 'Your turn — X';
+  }
+
+  cells.forEach(cell => {
+    cell.addEventListener('click', () => {
+      const i = +cell.dataset.i;
+      if (locked || board[i]) return;
+      board[i] = 'x';
+      cell.textContent = 'X';
+      cell.classList.add('x', 'taken');
+      const res = checkWinner(board);
+      if (res) { resolve(); return; }
+      status.textContent = 'CPU thinking...';
+      locked = true;
+      setTimeout(() => { locked = false; cpuMove(); }, 300);
+    });
+  });
+
+  document.getElementById('reset').addEventListener('click', init);
+  init();
+</script>
+</body>
+</html>
