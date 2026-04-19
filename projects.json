@@ -1,10 +1,22 @@
-[
+{
+  "featured": [
+    "joy_26.avif",
+    "rr_nov25.png",
+    "gotf.png",
+    "rr_apr25.png",
+    "woohoo.png",
+    "lexus.png",
+    "huracan.png",
+    "joy_25.png"
+  ],
+
+  "projects": [
   {
     "title": "Joy Awards 2026",
     "meta": "Riyadh, Saudi Arabia · 2026",
     "role": "Disguise Engineer · PRG",
     "category": "disguise",
-    "image": "JA_26.png",
+    "image": "joy_26.avif",
     "link": "https://hellocharlie.com/project/the-joy-awards-2026/",
     "wide": false
   },
@@ -395,4 +407,5 @@
     "link": "https://www.silasveta.com/projects/mercedes-eqc",
     "wide": false
   }
-]
+  ]
+}

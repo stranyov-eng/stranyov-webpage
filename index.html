@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>STRANYOV — Video Engineer / VJ</title>
-<link rel="icon" type="image/png" href="images/str_black.png">
+<link rel="icon" type="image/svg+xml" href="images/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -446,33 +446,38 @@
   }
   .project-overlay {
     position: absolute; inset: 0;
-    background: linear-gradient(to top, rgba(10,10,10,0.9) 0%, rgba(10,10,10,0.1) 60%, transparent 100%);
-    opacity: 0;
-    transition: opacity 0.4s;
+    background: linear-gradient(to top, rgba(10,10,10,0.82) 0%, rgba(10,10,10,0.18) 55%, transparent 100%);
+    opacity: 1;
     display: flex; flex-direction: column; justify-content: flex-end;
     padding: 24px;
   }
-  .project-card:hover .project-overlay { opacity: 1; }
   .project-title {
     font-family: 'Bebas Neue', sans-serif;
-    font-size: 22px;
+    font-size: 20px;
     letter-spacing: 0.05em;
     line-height: 1.1;
     margin-bottom: 6px;
+    color: rgba(240,237,232,0.55);
+    transition: color 0.3s;
   }
   .project-meta {
     font-family: 'DM Mono', monospace;
     font-size: 10px;
-    color: rgba(240,237,232,0.5);
+    color: rgba(240,237,232,0.3);
     letter-spacing: 0.1em;
     text-transform: uppercase;
+    transition: color 0.3s;
   }
   .project-role {
     font-size: 11px;
-    color: rgba(240,237,232,0.4);
+    color: rgba(240,237,232,0.25);
     margin-top: 4px;
     font-family: 'DM Mono', monospace;
+    transition: color 0.3s;
   }
+  .project-card:hover .project-title { color: rgba(240,237,232,0.95); }
+  .project-card:hover .project-meta  { color: rgba(240,237,232,0.6); }
+  .project-card:hover .project-role  { color: rgba(240,237,232,0.5); }
 
   /* always visible project info for featured */
   .project-info-visible {
@@ -689,13 +694,10 @@
       grid-row: span 1 !important;
     }
 
-    /* Project overlay — always visible on touch */
-    .project-overlay {
-      opacity: 1;
-      background: linear-gradient(to top, rgba(10,10,10,0.88) 0%, rgba(10,10,10,0.08) 55%, transparent 100%);
-    }
-    .project-title { font-size: 16px; }
-    .project-meta, .project-role { font-size: 9px; }
+    /* Project overlay — mobile text sizes */
+    .project-title { font-size: 15px; color: rgba(240,237,232,0.75); }
+    .project-meta  { font-size: 9px;  color: rgba(240,237,232,0.45); }
+    .project-role  { font-size: 9px;  color: rgba(240,237,232,0.38); }
 
     /* Contact */
     .contact-inner { flex-direction: column; gap: 32px; }
@@ -836,6 +838,11 @@
 </section>
 
 <section id="work">
+  <!-- ↓ Featured projects — edit image filenames here (up to 10) -->
+  <script type="application/json" id="featured-config">
+  ["joy_26.avif", "rr_nov25.png", "gotf.png", "rr_apr25.png", "woohoo.png", "lexus.png", "huracan.png", "joy_25.png"]
+  </script>
+
   <div class="projects-filter fade-up">
     <span class="projects-label">Projects</span>
     <button class="filter-btn active" data-filter="all">All</button>
@@ -847,7 +854,7 @@
   <div class="projects-grid fade-up">
 
     <a href="https://hellocharlie.com/project/the-joy-awards-2026/" target="_blank" class="project-card tall" data-category="disguise">
-      <img class="project-img" src="images/JA_26.png" alt="Joy Awards 2026">
+      <img class="project-img" src="images/joy_26.avif" alt="Joy Awards 2026">
       <div class="project-overlay">
         <div class="project-title">Joy Awards 2026</div>
         <div class="project-meta">Riyadh, Saudi Arabia · 2026</div>
@@ -1400,22 +1407,35 @@
   // Project filter
   const grid = document.querySelector('.projects-grid');
 
+  function applyFilter(filter) {
+    if (filter === 'all') {
+      grid.classList.remove('category-view');
+      grid.querySelectorAll('.project-card').forEach(c => { c.hidden = false; });
+    } else {
+      grid.classList.add('category-view');
+      grid.querySelectorAll('.project-card').forEach(c => {
+        c.hidden = c.dataset.category !== filter;
+      });
+    }
+  }
+
   document.querySelectorAll('.filter-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
-      const filter = btn.dataset.filter;
-      if (filter === 'all') {
-        grid.classList.remove('category-view');
-        grid.querySelectorAll('.project-card').forEach(c => { c.hidden = false; });
-      } else {
-        grid.classList.add('category-view');
-        grid.querySelectorAll('.project-card').forEach(c => {
-          c.hidden = c.dataset.category !== filter;
-        });
-      }
+      applyFilter(btn.dataset.filter);
     });
   });
+
+  // Reorder grid: featured cards first
+  const featuredCfg = document.getElementById('featured-config');
+  const featured = featuredCfg ? JSON.parse(featuredCfg.textContent).slice(0, 10) : [];
+  const allCards = [...grid.querySelectorAll('.project-card')];
+  const featuredCards = featured
+    .map(img => allCards.find(c => (c.querySelector('img')?.getAttribute('src') || '').endsWith(img)))
+    .filter(Boolean);
+  const restCards = allCards.filter(c => !featuredCards.includes(c));
+  [...featuredCards, ...restCards].forEach(c => grid.appendChild(c));
 
   // Stagger exp items
   const expObs = new IntersectionObserver(entries => {
