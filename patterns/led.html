@@ -13,6 +13,7 @@
 html,body { height:100%; overflow:hidden; }
 body { background:var(--black); color:var(--white); font-family:'DM Sans',sans-serif; font-weight:300; display:flex; flex-direction:column; }
 
+/* ── TOPBAR ── */
 .topbar { display:flex; align-items:center; padding:0 24px; height:52px; border-bottom:1px solid var(--line); flex-shrink:0; }
 .topbar-left { display:flex; align-items:center; gap:20px; flex-shrink:0; }
 .back-link { font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.2em; color:rgba(240,237,232,0.35); text-decoration:none; text-transform:uppercase; transition:color 0.2s; }
@@ -27,115 +28,90 @@ body { background:var(--black); color:var(--white); font-family:'DM Sans',sans-s
 .res-display { font-family:'DM Mono',monospace; font-size:11px; letter-spacing:0.08em; color:rgba(240,237,232,0.4); flex-shrink:0; }
 .res-display b { color:var(--white); font-weight:400; }
 
-.main { display:flex; flex:1; overflow:hidden; }
-
-.sidebar { width:272px; flex-shrink:0; border-right:1px solid var(--line); overflow-y:auto; display:flex; flex-direction:column; }
-.sidebar::-webkit-scrollbar { width:4px; }
-.sidebar::-webkit-scrollbar-thumb { background:rgba(240,237,232,0.08); }
-
-.sub-tabs { display:flex; flex-shrink:0; border-bottom:1px solid var(--line); }
-.sub-tab { flex:1; font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.2em; text-transform:uppercase; padding:11px 8px; background:none; border:none; border-bottom:2px solid transparent; color:rgba(240,237,232,0.3); cursor:pointer; transition:color 0.2s,border-color 0.2s; }
-.sub-tab:hover { color:rgba(240,237,232,0.7); }
-.sub-tab.active { color:var(--white); border-bottom-color:var(--white); }
-
-.sb { padding:18px; display:flex; flex-direction:column; gap:18px; }
-.sb-hidden { display:none; }
-
-.sec-label { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.25em; color:rgba(240,237,232,0.25); text-transform:uppercase; margin-bottom:10px; }
-.divider { height:1px; background:var(--line); margin:0 -18px; }
-
-.field { display:flex; flex-direction:column; gap:4px; }
-.field label { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.12em; color:rgba(240,237,232,0.35); }
-.field input[type="number"],.field input[type="text"] { background:var(--input-bg); border:1px solid rgba(240,237,232,0.1); color:var(--white); font-family:'DM Mono',monospace; font-size:14px; padding:8px 10px; width:100%; outline:none; transition:border-color 0.2s; -moz-appearance:textfield; }
-.field input[type="number"]::-webkit-inner-spin-button { -webkit-appearance:none; }
-.field input:focus { border-color:rgba(240,237,232,0.4); }
-
-.row-2 { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
-
-/* color picker */
-.color-row { display:flex; align-items:center; gap:10px; }
-.color-swatch { width:32px; height:32px; border:1px solid rgba(240,237,232,0.2); cursor:pointer; flex-shrink:0; padding:0; background:none; overflow:hidden; position:relative; }
-.color-swatch input[type="color"] { position:absolute; inset:-4px; width:calc(100% + 8px); height:calc(100% + 8px); opacity:0; cursor:pointer; }
-.color-preview { width:100%; height:100%; pointer-events:none; }
-.color-hex { font-family:'DM Mono',monospace; font-size:12px; letter-spacing:0.1em; color:var(--white); background:var(--input-bg); border:1px solid rgba(240,237,232,0.1); padding:7px 10px; flex:1; outline:none; }
-
-/* slider with value */
-.slider-row { display:flex; justify-content:space-between; align-items:center; margin-bottom:5px; }
-.slider-val { font-family:'DM Mono',monospace; font-size:12px; color:var(--white); }
-input[type="range"] { -webkit-appearance:none; width:100%; height:2px; background:rgba(240,237,232,0.15); outline:none; border-radius:0; }
-input[type="range"]::-webkit-slider-thumb { -webkit-appearance:none; width:14px; height:14px; background:var(--white); border-radius:50%; cursor:pointer; }
-
-/* toggles */
-.toggle-row { display:flex; align-items:center; justify-content:space-between; }
-.toggle-label { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.12em; color:rgba(240,237,232,0.35); text-transform:uppercase; }
-.toggle { position:relative; width:32px; height:18px; display:inline-block; }
-.toggle input { opacity:0; width:0; height:0; }
-.toggle-slider { position:absolute; inset:0; background:rgba(240,237,232,0.1); border-radius:9px; cursor:pointer; transition:background 0.2s; }
-.toggle-slider::before { content:''; position:absolute; left:3px; top:3px; width:12px; height:12px; background:rgba(240,237,232,0.5); border-radius:50%; transition:transform 0.2s,background 0.2s; }
-.toggle input:checked + .toggle-slider { background:rgba(240,237,232,0.25); }
-.toggle input:checked + .toggle-slider::before { transform:translateX(14px); background:var(--white); }
-.toggles { display:flex; flex-direction:column; gap:10px; }
-
-/* buttons */
-.btn-primary { width:100%; background:var(--white); color:var(--black); border:none; font-family:'DM Mono',monospace; font-size:11px; letter-spacing:0.2em; text-transform:uppercase; padding:12px; cursor:pointer; transition:opacity 0.2s; }
-.btn-primary:hover { opacity:0.85; }
-.btn-secondary { width:100%; background:transparent; color:rgba(240,237,232,0.4); border:1px solid rgba(240,237,232,0.15); font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.15em; text-transform:uppercase; padding:9px; cursor:pointer; transition:border-color 0.2s,color 0.2s; }
-.btn-secondary:hover { border-color:rgba(240,237,232,0.4); color:var(--white); }
-.btn-dashed { width:100%; background:transparent; color:rgba(240,237,232,0.4); border:1px dashed rgba(240,237,232,0.18); font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.12em; text-transform:uppercase; padding:9px; cursor:pointer; transition:border-color 0.2s,color 0.2s; }
-.btn-dashed:hover { border-color:rgba(240,237,232,0.5); color:var(--white); }
-
-/* formula box */
-.formula-box { background:var(--input-bg); border:1px solid rgba(240,237,232,0.08); padding:12px; display:flex; flex-direction:column; gap:9px; }
-.f-row { display:flex; justify-content:space-between; align-items:center; }
-.f-label { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.12em; color:rgba(240,237,232,0.3); text-transform:uppercase; }
-.f-val { font-family:'DM Mono',monospace; font-size:13px; color:var(--white); }
-.f-val.big { font-size:15px; }
-.f-divider { height:1px; background:rgba(240,237,232,0.06); }
-.f-input { font-family:'DM Mono',monospace; font-size:15px; color:var(--white); background:transparent; border:none; border-bottom:1px solid rgba(240,237,232,0.2); outline:none; width:120px; padding:2px 0; -moz-appearance:textfield; }
-.f-input::-webkit-inner-spin-button { -webkit-appearance:none; }
-.f-input:focus { border-bottom-color:rgba(240,237,232,0.6); }
-
-.color-sub-label { font-family:'DM Mono',monospace; font-size:8px; letter-spacing:0.1em; color:rgba(240,237,232,0.28); text-transform:uppercase; margin-bottom:5px; }
-
-/* dome presets */
-.preset-grid { display:grid; grid-template-columns:1fr 1fr; gap:5px; }
-.preset-btn { background:var(--input-bg); border:1px solid rgba(240,237,232,0.08); color:rgba(240,237,232,0.4); font-family:'DM Mono',monospace; font-size:11px; text-transform:uppercase; padding:11px 8px; text-align:center; cursor:pointer; transition:border-color 0.15s,color 0.15s,background 0.15s; }
-.preset-btn:hover { border-color:rgba(240,237,232,0.3); color:var(--white); }
-.preset-btn.active { border-color:var(--white); color:var(--white); background:rgba(240,237,232,0.06); }
-.preset-sub { display:block; font-size:8px; color:rgba(240,237,232,0.3); margin-top:3px; }
-
-/* pat buttons */
-.pat-grid { display:grid; grid-template-columns:1fr 1fr; gap:5px; }
-.pat-btn { background:var(--input-bg); border:1px solid rgba(240,237,232,0.08); color:rgba(240,237,232,0.4); font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.05em; text-transform:uppercase; padding:9px 6px; text-align:center; cursor:pointer; transition:border-color 0.15s,color 0.15s,background 0.15s; }
-.pat-btn:hover { border-color:rgba(240,237,232,0.3); color:var(--white); }
-.pat-btn.active { border-color:var(--white); color:var(--white); background:rgba(240,237,232,0.06); }
-
-/* screen items */
-.screen-list { display:flex; flex-direction:column; gap:8px; }
-.screen-item { background:var(--input-bg); border:1px solid rgba(240,237,232,0.08); padding:10px; }
-.screen-item-head { display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; }
-.screen-name { font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.1em; color:rgba(240,237,232,0.55); }
-.screen-remove { background:none; border:none; color:rgba(240,237,232,0.2); font-size:16px; line-height:1; cursor:pointer; padding:0 2px; transition:color 0.15s; }
-.screen-remove:hover { color:rgba(240,237,232,0.7); }
-.screen-fields { display:grid; grid-template-columns:1fr 1fr; gap:5px; }
-.sf { display:flex; flex-direction:column; gap:3px; }
-.sf label { font-family:'DM Mono',monospace; font-size:8px; letter-spacing:0.08em; color:rgba(240,237,232,0.25); }
-.sf input { background:rgba(255,255,255,0.04); border:1px solid rgba(240,237,232,0.08); color:var(--white); font-family:'DM Mono',monospace; font-size:12px; padding:5px 7px; width:100%; outline:none; transition:border-color 0.2s; -moz-appearance:textfield; }
-.sf input::-webkit-inner-spin-button { -webkit-appearance:none; }
-.sf input:focus { border-color:rgba(240,237,232,0.35); }
-
-/* logo */
-.logo-upload { display:flex; gap:8px; align-items:center; }
-.logo-thumb { width:56px; height:28px; background:rgba(255,255,255,0.04); border:1px solid rgba(240,237,232,0.1); flex-shrink:0; display:flex; align-items:center; justify-content:center; overflow:hidden; }
-.logo-thumb img { width:100%; height:100%; object-fit:contain; }
-.logo-thumb-default { font-family:'Bebas Neue',sans-serif; font-size:8px; letter-spacing:0.1em; color:rgba(240,237,232,0.35); text-align:center; }
-.logo-controls { display:flex; flex-direction:column; gap:5px; flex:1; }
-
-/* canvas area */
-.canvas-area { flex:1; display:flex; align-items:center; justify-content:center; background:#050505; overflow:hidden; position:relative; }
+/* ── LAYOUT ── */
+.main { display:flex; flex-direction:column; flex:1; overflow:hidden; }
+.canvas-area { flex:1; display:flex; align-items:center; justify-content:center; background:#050505; overflow:hidden; position:relative; min-height:0; }
 .canvas-wrap { position:relative; box-shadow:0 0 0 1px rgba(240,237,232,0.08); }
 canvas { display:block; image-rendering:pixelated; }
 .canvas-info { position:absolute; bottom:14px; right:16px; font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.15em; color:rgba(240,237,232,0.18); text-transform:uppercase; }
+
+/* ── BOTTOM PANEL ── */
+.bottom-panel { display:flex; flex-direction:row; height:215px; flex-shrink:0; border-top:1px solid var(--line); overflow-x:auto; overflow-y:hidden; }
+.bottom-panel::-webkit-scrollbar { height:4px; }
+.bottom-panel::-webkit-scrollbar-thumb { background:rgba(240,237,232,0.08); }
+.bp-mode { display:flex; flex-direction:row; flex-shrink:0; align-items:stretch; }
+.bp-mode.sb-hidden { display:none; }
+
+.bgroup { display:flex; flex-direction:column; padding:14px 16px; flex-shrink:0; }
+.bvdiv { width:1px; background:var(--line); flex-shrink:0; margin:10px 0; }
+.bgroup-title { font-family:'DM Mono',monospace; font-size:8px; letter-spacing:0.25em; color:rgba(240,237,232,0.2); text-transform:uppercase; margin-bottom:9px; flex-shrink:0; }
+
+/* compact inputs */
+.bg-inp { background:var(--input-bg); border:1px solid rgba(240,237,232,0.1); color:var(--white); font-family:'DM Mono',monospace; font-size:12px; padding:5px 7px; width:62px; outline:none; -moz-appearance:textfield; transition:border-color 0.2s; }
+.bg-inp::-webkit-inner-spin-button { -webkit-appearance:none; }
+.bg-inp:focus { border-color:rgba(240,237,232,0.4); }
+.bg-inp.bg-wide { width:100%; display:block; }
+.bg-inp.bg-med { width:88px; }
+.bg-inp[type="text"] { width:100%; display:block; font-size:12px; }
+
+.bg-row { display:flex; align-items:center; gap:5px; margin-bottom:5px; }
+.bg-lbl { font-family:'DM Mono',monospace; font-size:8px; letter-spacing:0.1em; color:rgba(240,237,232,0.3); text-transform:uppercase; flex-shrink:0; }
+
+/* compact color swatch */
+.cp-swatch { width:22px; height:22px; border:1px solid rgba(240,237,232,0.2); cursor:pointer; flex-shrink:0; padding:0; background:none; overflow:hidden; position:relative; display:inline-flex; }
+.cp-preview { width:100%; height:100%; pointer-events:none; }
+.cp-swatch input[type="color"] { position:absolute; inset:-4px; width:calc(100% + 8px); height:calc(100% + 8px); opacity:0; cursor:pointer; }
+.cp-hex { font-family:'DM Mono',monospace; font-size:11px; color:var(--white); background:var(--input-bg); border:1px solid rgba(240,237,232,0.1); padding:4px 6px; width:78px; outline:none; letter-spacing:0.04em; transition:border-color 0.2s; }
+.cp-hex:focus { border-color:rgba(240,237,232,0.4); }
+
+/* compact sliders */
+.sl-row { display:flex; justify-content:space-between; align-items:center; margin-bottom:3px; }
+.sl-val { font-family:'DM Mono',monospace; font-size:11px; color:var(--white); }
+.sl-range { width:100%; margin-bottom:8px; }
+input[type="range"] { -webkit-appearance:none; width:100%; height:2px; background:rgba(240,237,232,0.15); outline:none; border-radius:0; }
+input[type="range"]::-webkit-slider-thumb { -webkit-appearance:none; width:13px; height:13px; background:var(--white); border-radius:50%; cursor:pointer; }
+
+/* compact toggles */
+.tog-grid { display:grid; grid-template-columns:1fr 1fr; gap:5px 12px; }
+.tog-row { display:flex; align-items:center; gap:6px; }
+.tog-lbl { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.06em; color:rgba(240,237,232,0.4); text-transform:uppercase; }
+.toggle { position:relative; width:28px; height:16px; display:inline-block; flex-shrink:0; }
+.toggle input { opacity:0; width:0; height:0; }
+.toggle-slider { position:absolute; inset:0; background:rgba(240,237,232,0.1); border-radius:8px; cursor:pointer; transition:background 0.2s; }
+.toggle-slider::before { content:''; position:absolute; left:2px; top:2px; width:12px; height:12px; background:rgba(240,237,232,0.5); border-radius:50%; transition:transform 0.2s,background 0.2s; }
+.toggle input:checked + .toggle-slider { background:rgba(240,237,232,0.25); }
+.toggle input:checked + .toggle-slider::before { transform:translateX(12px); background:var(--white); }
+
+/* logo thumb */
+.logo-thumb { background:rgba(255,255,255,0.04); border:1px solid rgba(240,237,232,0.1); display:flex; align-items:center; justify-content:center; overflow:hidden; flex-shrink:0; }
+.logo-thumb img { width:100%; height:100%; object-fit:contain; }
+
+/* buttons */
+.btn-primary { width:100%; background:var(--white); color:var(--black); border:none; font-family:'DM Mono',monospace; font-size:11px; letter-spacing:0.2em; text-transform:uppercase; padding:10px; cursor:pointer; transition:opacity 0.2s; }
+.btn-primary:hover { opacity:0.85; }
+.btn-secondary { width:100%; background:transparent; color:rgba(240,237,232,0.4); border:1px solid rgba(240,237,232,0.15); font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.12em; text-transform:uppercase; padding:6px; cursor:pointer; transition:border-color 0.2s,color 0.2s; }
+.btn-secondary:hover { border-color:rgba(240,237,232,0.4); color:var(--white); }
+
+/* preset buttons (dome) */
+.preset-btn { background:var(--input-bg); border:1px solid rgba(240,237,232,0.08); color:rgba(240,237,232,0.4); font-family:'DM Mono',monospace; font-size:10px; text-transform:uppercase; padding:7px 5px; text-align:center; cursor:pointer; transition:border-color 0.15s,color 0.15s,background 0.15s; }
+.preset-btn:hover { border-color:rgba(240,237,232,0.3); color:var(--white); }
+.preset-btn.active { border-color:var(--white); color:var(--white); background:rgba(240,237,232,0.06); }
+.preset-sub { display:block; font-size:7px; color:rgba(240,237,232,0.3); margin-top:2px; }
+
+/* pat buttons */
+.pat-btn { background:var(--input-bg); border:1px solid rgba(240,237,232,0.08); color:rgba(240,237,232,0.4); font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.05em; text-transform:uppercase; padding:8px 6px; text-align:center; cursor:pointer; transition:border-color 0.15s,color 0.15s,background 0.15s; }
+.pat-btn:hover { border-color:rgba(240,237,232,0.3); color:var(--white); }
+.pat-btn.active { border-color:var(--white); color:var(--white); background:rgba(240,237,232,0.06); }
+
+/* f-val for output display */
+.f-val { font-family:'DM Mono',monospace; font-size:12px; color:var(--white); }
+.f-input { font-family:'DM Mono',monospace; font-size:13px; color:var(--white); background:transparent; border:none; border-bottom:1px solid rgba(240,237,232,0.2); outline:none; width:105px; padding:2px 0; -moz-appearance:textfield; }
+.f-input::-webkit-inner-spin-button { -webkit-appearance:none; }
+.f-input:focus { border-bottom-color:rgba(240,237,232,0.6); }
+.f-divider { height:1px; background:rgba(240,237,232,0.06); margin:5px 0; }
+
+/* LED screen items (hidden, kept for JS compat) */
+.screen-item,.screen-item-head,.screen-fields,.sf { display:none; }
 </style>
 </head>
 <body>
@@ -154,308 +130,253 @@ canvas { display:block; image-rendering:pixelated; }
 </div>
 
 <div class="main">
-<div class="sidebar">
-
-<!-- ══ LED ══ -->
-<div id="sb-led" class="sb-hidden">
-  <div class="sub-tabs">
-    <button class="sub-tab active" data-sub="screen">Screen</button>
-    <button class="sub-tab" data-sub="canvas">Canvas</button>
-  </div>
-  <!-- LED SCREEN -->
-  <div id="sub-screen" class="sb">
-    <div>
-      <div class="sec-label">Module Resolution (px)</div>
-      <div class="row-2">
-        <div class="field"><label>Width</label><input type="number" id="s-modW" value="96" min="1" max="2048"></div>
-        <div class="field"><label>Height</label><input type="number" id="s-modH" value="96" min="1" max="2048"></div>
-      </div>
-    </div>
-    <div>
-      <div class="sec-label">Module Count</div>
-      <div class="row-2">
-        <div class="field"><label>Columns</label><input type="number" id="s-cols" value="6" min="1" max="128"></div>
-        <div class="field"><label>Rows</label><input type="number" id="s-rows" value="4" min="1" max="128"></div>
-      </div>
-    </div>
-    <div>
-      <div class="sec-label">Pixel Pitch</div>
-      <div class="field"><label>Pitch (mm)</label><input type="number" id="s-pitch" value="3.9" min="0.1" max="50" step="0.1"></div>
-    </div>
-    <div class="divider"></div>
-    <div><div class="sec-label">Pattern</div><div class="pat-grid" id="pat-screen"></div></div>
-    <div class="divider"></div>
-    <div>
-      <div class="sec-label">Brightness</div>
-      <div class="slider-row"><span class="sec-label" style="margin:0">Level</span><span class="slider-val"><span id="s-brVal">100</span>%</span></div>
-      <input type="range" id="s-br" min="0" max="100" value="100">
-    </div>
-    <div class="divider"></div>
-    <div style="display:flex;flex-direction:column;gap:6px;">
-      <button class="btn-primary" id="s-dl">↓ Download PNG</button>
-      <button class="btn-secondary" id="s-fs">⤢ Fullscreen</button>
-    </div>
-  </div>
-  <!-- LED CANVAS -->
-  <div id="sub-canvas" class="sb sb-hidden">
-    <div>
-      <div class="sec-label">Screens</div>
-      <div class="screen-list" id="screenList"></div>
-      <button class="btn-dashed" id="addScreen" style="margin-top:8px;">+ Add Screen</button>
-    </div>
-    <div class="divider"></div>
-    <div><div class="sec-label">Pattern</div><div class="pat-grid" id="pat-canvas"></div></div>
-    <div class="divider"></div>
-    <div>
-      <div class="sec-label">Brightness</div>
-      <div class="slider-row"><span class="sec-label" style="margin:0">Level</span><span class="slider-val"><span id="c-brVal">100</span>%</span></div>
-      <input type="range" id="c-br" min="0" max="100" value="100">
-    </div>
-    <div class="divider"></div>
-    <div style="display:flex;flex-direction:column;gap:6px;">
-      <button class="btn-primary" id="c-dl">↓ Download PNG</button>
-      <button class="btn-secondary" id="c-fs">⤢ Fullscreen</button>
-    </div>
-  </div>
-</div>
-
-<!-- ══ PROJECTION ══ -->
-<div id="sb-projection" class="sb">
-
-  <div>
-    <div class="sec-label">Name</div>
-    <div class="field"><input type="text" id="p-name" placeholder="Name your test pattern" style="font-size:12px;"></div>
-  </div>
-  <div class="divider"></div>
-
-  <div>
-    <div class="sec-label">Single Projector</div>
-    <div class="row-2">
-      <div class="field"><label>Width (px)</label><input type="number" id="p-projW" value="1920" min="1" max="8192"></div>
-      <div class="field"><label>Height (px)</label><input type="number" id="p-projH" value="1080" min="1" max="8192"></div>
-    </div>
-  </div>
-  <div>
-    <div class="sec-label">Projector Grid</div>
-    <div class="row-2">
-      <div class="field"><label>Columns</label><input type="number" id="p-cols" value="3" min="1" max="16"></div>
-      <div class="field"><label>Rows</label><input type="number" id="p-rows" value="1" min="1" max="16"></div>
-    </div>
-  </div>
-  <div>
-    <div class="sec-label">Blend (% of projector)</div>
-    <div class="row-2">
-      <div class="field"><label>Horizontal %</label><input type="number" id="p-blendH" value="20" min="0" max="49" step="0.5"></div>
-      <div class="field"><label>Vertical %</label><input type="number" id="p-blendV" value="20" min="0" max="49" step="0.5"></div>
-    </div>
-  </div>
-  <div>
-    <div class="sec-label">Output</div>
-    <div class="formula-box">
-      <div class="f-row"><span class="f-label">Blend H</span><span class="f-val" id="p-bHpx">—</span></div>
-      <div class="f-row"><span class="f-label">Blend V</span><span class="f-val" id="p-bVpx">—</span></div>
-      <div class="f-divider"></div>
-      <div class="f-row"><span class="f-label">Total W</span><input type="number" class="f-input" id="p-totWIn" value="4992" min="1" max="65536"></div>
-      <div class="f-row"><span class="f-label">Total H</span><input type="number" class="f-input" id="p-totHIn" value="1080" min="1" max="65536"></div>
-    </div>
-  </div>
-  <div class="divider"></div>
-
-  <div>
-    <div class="sec-label">Colors</div>
-    <div style="display:flex;flex-direction:column;gap:12px;">
-      <div>
-        <div class="color-sub-label">Grid</div>
-        <div class="color-row">
-          <label class="color-swatch"><div class="color-preview" id="p-colorPreview" style="background:#ff3333;"></div><input type="color" id="p-color" value="#ff3333"></label>
-          <input type="text" class="color-hex" id="p-colorHex" value="#ff3333" maxlength="7">
-        </div>
-      </div>
-      <div>
-        <div class="color-sub-label">Text</div>
-        <div class="color-row">
-          <label class="color-swatch"><div class="color-preview" id="p-textColorPreview" style="background:#ffffff;"></div><input type="color" id="p-textColor" value="#ffffff"></label>
-          <input type="text" class="color-hex" id="p-textColorHex" value="#ffffff" maxlength="7">
-        </div>
-      </div>
-      <div>
-        <div class="color-sub-label">Border</div>
-        <div class="color-row">
-          <label class="color-swatch"><div class="color-preview" id="p-borderColorPreview" style="background:#00dc3c;"></div><input type="color" id="p-borderColor" value="#00dc3c"></label>
-          <input type="text" class="color-hex" id="p-borderColorHex" value="#00dc3c" maxlength="7">
-        </div>
-      </div>
-      <div>
-        <div class="color-sub-label">Circles</div>
-        <div class="color-row">
-          <label class="color-swatch"><div class="color-preview" id="p-circleColorPreview" style="background:#ffffff;"></div><input type="color" id="p-circleColor" value="#ffffff"></label>
-          <input type="text" class="color-hex" id="p-circleColorHex" value="#ffffff" maxlength="7">
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div>
-    <div class="sec-label">Line Thickness</div>
-    <div class="slider-row"><span class="sec-label" style="margin:0">Multiplier</span><span class="slider-val"><span id="p-lwVal">1.0</span>×</span></div>
-    <input type="range" id="p-lw" min="0.3" max="5" value="1" step="0.1">
-  </div>
-
-  <div>
-    <div class="sec-label">Text Size</div>
-    <div class="slider-row"><span class="sec-label" style="margin:0">Multiplier</span><span class="slider-val"><span id="p-tsVal">1.0</span>×</span></div>
-    <input type="range" id="p-ts" min="0.3" max="3" value="1" step="0.1">
-  </div>
-
-  <div>
-    <div class="sec-label">Grid Density</div>
-    <div class="slider-row"><span class="sec-label" style="margin:0">Columns</span><span class="slider-val"><span id="p-gridColsVal">12</span></span></div>
-    <input type="range" id="p-gridCols" min="2" max="64" value="12" step="1">
-  </div>
-  <div class="divider"></div>
-
-  <div>
-    <div class="sec-label">Elements</div>
-    <div class="toggles">
-      <div class="toggle-row"><span class="toggle-label">Grid</span><label class="toggle"><input type="checkbox" id="p-grid" checked><span class="toggle-slider"></span></label></div>
-      <div class="toggle-row"><span class="toggle-label">Circles (per projector)</span><label class="toggle"><input type="checkbox" id="p-circles" checked><span class="toggle-slider"></span></label></div>
-      <div class="toggle-row"><span class="toggle-label">Coordinates</span><label class="toggle"><input type="checkbox" id="p-coords" checked><span class="toggle-slider"></span></label></div>
-      <div class="toggle-row"><span class="toggle-label">Row Labels</span><label class="toggle"><input type="checkbox" id="p-rowlabels" checked><span class="toggle-slider"></span></label></div>
-      <div class="toggle-row"><span class="toggle-label">Cell IDs (A1, B3…)</span><label class="toggle"><input type="checkbox" id="p-cellids"><span class="toggle-slider"></span></label></div>
-      <div class="toggle-row"><span class="toggle-label">Projector IDs</span><label class="toggle"><input type="checkbox" id="p-projids" checked><span class="toggle-slider"></span></label></div>
-      <div class="toggle-row"><span class="toggle-label">Info Text</span><label class="toggle"><input type="checkbox" id="p-info" checked><span class="toggle-slider"></span></label></div>
-      <div class="toggle-row"><span class="toggle-label">Blend Zones</span><label class="toggle"><input type="checkbox" id="p-overlay" checked><span class="toggle-slider"></span></label></div>
-    </div>
-  </div>
-  <div class="divider"></div>
-
-  <div>
-    <div class="sec-label">Logo</div>
-    <div class="logo-upload">
-      <div class="logo-thumb" id="p-logoThumb">
-        <img id="p-logoDefault" src="../images/str_white.png" style="width:100%;height:100%;object-fit:contain;">
-      </div>
-      <div class="logo-controls">
-        <button class="btn-secondary" id="p-logoUpload" style="padding:7px;">↑ Upload custom</button>
-        <button class="btn-secondary" id="p-logoReset" style="padding:7px;">Reset default</button>
-      </div>
-    </div>
-    <input type="file" id="p-logoFile" accept="image/*" style="display:none;">
-    <div style="margin-top:10px;">
-      <div class="slider-row"><span class="sec-label" style="margin:0">Scale</span><span class="slider-val"><span id="p-logoScaleVal">100</span>%</span></div>
-      <input type="range" id="p-logoScale" min="20" max="300" value="100" step="5">
-    </div>
-  </div>
-  <div class="divider"></div>
-
-  <div style="display:flex;flex-direction:column;gap:6px;">
-    <button class="btn-primary" id="p-dl">↓ Download PNG</button>
-    <button class="btn-secondary" id="p-fs">⤢ Fullscreen</button>
-  </div>
-</div>
-
-<!-- ══ DOME ══ -->
-<div id="sb-dome" class="sb sb-hidden">
-
-  <div>
-    <div class="sec-label">Name</div>
-    <div class="field"><input type="text" id="d-name" placeholder="Name your test pattern" style="font-size:12px;"></div>
-  </div>
-  <div class="divider"></div>
-
-  <div>
-    <div class="sec-label">Resolution Preset</div>
-    <div class="preset-grid">
-      <button class="preset-btn" data-dome="1920">1080p<span class="preset-sub">1920 × 1920</span></button>
-      <button class="preset-btn active" data-dome="2048">2K<span class="preset-sub">2048 × 2048</span></button>
-      <button class="preset-btn" data-dome="4096">4K<span class="preset-sub">4096 × 4096</span></button>
-      <button class="preset-btn" data-dome="8192">8K<span class="preset-sub">8192 × 8192</span></button>
-    </div>
-  </div>
-  <div>
-    <div class="sec-label">Custom Resolution</div>
-    <div class="field"><label>Size (px, square)</label><input type="number" id="d-size" value="2048" min="256" max="8192"></div>
-  </div>
-  <div class="divider"></div>
-
-  <div>
-    <div class="sec-label">Pattern Type</div>
-    <div class="pat-grid">
-      <button class="pat-btn active" data-dpat="standard">Standard</button>
-      <button class="pat-btn" data-dpat="zones">Zones</button>
-    </div>
-  </div>
-
-  <div>
-    <div class="sec-label">Color</div>
-    <div class="color-row">
-      <label class="color-swatch">
-        <div class="color-preview" id="d-colorPreview" style="background:#ffffff;"></div>
-        <input type="color" id="d-color" value="#ffffff">
-      </label>
-      <input type="text" class="color-hex" id="d-colorHex" value="#ffffff" maxlength="7">
-    </div>
-  </div>
-
-  <div>
-    <div class="sec-label">Line Thickness</div>
-    <div class="slider-row"><span class="sec-label" style="margin:0">Multiplier</span><span class="slider-val"><span id="d-lwVal">1.0</span>×</span></div>
-    <input type="range" id="d-lw" min="0.3" max="5" value="1" step="0.1">
-  </div>
-
-  <div>
-    <div class="sec-label">Text Size</div>
-    <div class="slider-row"><span class="sec-label" style="margin:0">Multiplier</span><span class="slider-val"><span id="d-tsVal">1.0</span>×</span></div>
-    <input type="range" id="d-ts" min="0.3" max="3" value="1" step="0.1">
-  </div>
-  <div class="divider"></div>
-
-  <div>
-    <div class="sec-label">Elements</div>
-    <div class="toggles">
-      <div class="toggle-row"><span class="toggle-label">Circles</span><label class="toggle"><input type="checkbox" id="d-circles" checked><span class="toggle-slider"></span></label></div>
-      <div class="toggle-row"><span class="toggle-label">Grid</span><label class="toggle"><input type="checkbox" id="d-grid" checked><span class="toggle-slider"></span></label></div>
-      <div class="toggle-row"><span class="toggle-label">Crosshair</span><label class="toggle"><input type="checkbox" id="d-cross" checked><span class="toggle-slider"></span></label></div>
-      <div class="toggle-row"><span class="toggle-label">Radial Lines</span><label class="toggle"><input type="checkbox" id="d-radial" checked><span class="toggle-slider"></span></label></div>
-      <div class="toggle-row"><span class="toggle-label">Labels</span><label class="toggle"><input type="checkbox" id="d-labels" checked><span class="toggle-slider"></span></label></div>
-      <div class="toggle-row"><span class="toggle-label">Corner Marks</span><label class="toggle"><input type="checkbox" id="d-corners" checked><span class="toggle-slider"></span></label></div>
-    </div>
-  </div>
-
-  <div>
-    <div class="sec-label">Logo</div>
-    <div class="logo-upload">
-      <div class="logo-thumb" id="d-logoThumb">
-        <img id="d-logoDefault" src="../images/str_white.png" style="width:100%;height:100%;object-fit:contain;">
-      </div>
-      <div class="logo-controls">
-        <button class="btn-secondary" id="d-logoUpload" style="padding:7px;">↑ Upload custom</button>
-        <button class="btn-secondary" id="d-logoReset" style="padding:7px;">Reset default</button>
-      </div>
-    </div>
-    <input type="file" id="d-logoFile" accept="image/*" style="display:none;">
-  </div>
-  <div class="divider"></div>
-
-  <div>
-    <div class="sec-label">Brightness</div>
-    <div class="slider-row"><span class="sec-label" style="margin:0">Level</span><span class="slider-val"><span id="d-brVal">100</span>%</span></div>
-    <input type="range" id="d-br" min="0" max="100" value="100">
-  </div>
-  <div class="divider"></div>
-  <div style="display:flex;flex-direction:column;gap:6px;">
-    <button class="btn-primary" id="d-dl">↓ Download PNG</button>
-    <button class="btn-secondary" id="d-fs">⤢ Fullscreen</button>
-  </div>
-</div>
-
-</div><!-- /sidebar -->
 
 <div class="canvas-area" id="canvasArea">
   <div class="canvas-wrap"><canvas id="canvas"></canvas></div>
   <div class="canvas-info" id="canvasInfo"></div>
 </div>
+
+<div class="bottom-panel">
+
+<!-- ══ LED (hidden, DOM elements kept for JS) ══ -->
+<div id="sb-led" class="bp-mode sb-hidden">
+  <div style="display:none">
+    <input id="s-modW" type="number" value="96">
+    <input id="s-modH" type="number" value="96">
+    <input id="s-cols" type="number" value="6">
+    <input id="s-rows" type="number" value="4">
+    <input id="s-pitch" type="number" value="3.9">
+    <input id="s-br" type="range" min="0" max="100" value="100">
+    <span id="s-brVal">100</span>
+    <div id="pat-screen"></div>
+    <button id="s-dl"></button>
+    <button id="s-fs"></button>
+    <div id="sub-screen"></div>
+    <div id="sub-canvas"></div>
+    <div id="screenList"></div>
+    <button id="addScreen"></button>
+    <input id="c-br" type="range" min="0" max="100" value="100">
+    <span id="c-brVal">100</span>
+    <div id="pat-canvas"></div>
+    <button id="c-dl"></button>
+    <button id="c-fs"></button>
+  </div>
 </div>
+
+<!-- ══ PROJECTION ══ -->
+<div id="sb-projection" class="bp-mode">
+
+  <!-- Setup -->
+  <div class="bgroup" style="width:210px">
+    <div class="bgroup-title">Setup</div>
+    <input type="text" class="bg-inp" id="p-name" placeholder="Pattern name" style="margin-bottom:7px">
+    <div class="bg-row">
+      <span class="bg-lbl" style="width:32px">PROJ</span>
+      <input type="number" class="bg-inp" id="p-projW" value="1920" min="1" max="8192">
+      <input type="number" class="bg-inp" id="p-projH" value="1080" min="1" max="8192">
+    </div>
+    <div class="bg-row">
+      <span class="bg-lbl" style="width:32px">GRID</span>
+      <input type="number" class="bg-inp" id="p-cols" value="3" min="1" max="16">
+      <input type="number" class="bg-inp" id="p-rows" value="1" min="1" max="16">
+    </div>
+    <div class="bg-row">
+      <span class="bg-lbl" style="width:32px">BLND</span>
+      <input type="number" class="bg-inp" id="p-blendH" value="20" min="0" max="49" step="0.5">
+      <input type="number" class="bg-inp" id="p-blendV" value="20" min="0" max="49" step="0.5">
+    </div>
+  </div>
+  <div class="bvdiv"></div>
+
+  <!-- Output -->
+  <div class="bgroup" style="width:175px">
+    <div class="bgroup-title">Output</div>
+    <div class="bg-row"><span class="bg-lbl" style="width:52px">Blend H</span><span class="f-val" id="p-bHpx">—</span></div>
+    <div class="bg-row"><span class="bg-lbl" style="width:52px">Blend V</span><span class="f-val" id="p-bVpx">—</span></div>
+    <div class="f-divider"></div>
+    <div class="bg-row" style="margin-bottom:6px"><span class="bg-lbl" style="width:52px">Total W</span><input type="number" class="f-input" id="p-totWIn" value="4992" min="1" max="65536"></div>
+    <div class="bg-row"><span class="bg-lbl" style="width:52px">Total H</span><input type="number" class="f-input" id="p-totHIn" value="1080" min="1" max="65536"></div>
+  </div>
+  <div class="bvdiv"></div>
+
+  <!-- Colors -->
+  <div class="bgroup" style="width:148px">
+    <div class="bgroup-title">Colors</div>
+    <div class="bg-row">
+      <span class="bg-lbl" style="width:12px">G</span>
+      <label class="cp-swatch"><div class="cp-preview" id="p-colorPreview" style="background:#ff3333"></div><input type="color" id="p-color" value="#ff3333"></label>
+      <input class="cp-hex" id="p-colorHex" value="#ff3333" maxlength="7">
+    </div>
+    <div class="bg-row">
+      <span class="bg-lbl" style="width:12px">T</span>
+      <label class="cp-swatch"><div class="cp-preview" id="p-textColorPreview" style="background:#ffffff"></div><input type="color" id="p-textColor" value="#ffffff"></label>
+      <input class="cp-hex" id="p-textColorHex" value="#ffffff" maxlength="7">
+    </div>
+    <div class="bg-row">
+      <span class="bg-lbl" style="width:12px">B</span>
+      <label class="cp-swatch"><div class="cp-preview" id="p-borderColorPreview" style="background:#00dc3c"></div><input type="color" id="p-borderColor" value="#00dc3c"></label>
+      <input class="cp-hex" id="p-borderColorHex" value="#00dc3c" maxlength="7">
+    </div>
+    <div class="bg-row">
+      <span class="bg-lbl" style="width:12px">C</span>
+      <label class="cp-swatch"><div class="cp-preview" id="p-circleColorPreview" style="background:#ffffff"></div><input type="color" id="p-circleColor" value="#ffffff"></label>
+      <input class="cp-hex" id="p-circleColorHex" value="#ffffff" maxlength="7">
+    </div>
+  </div>
+  <div class="bvdiv"></div>
+
+  <!-- Sliders -->
+  <div class="bgroup" style="width:185px">
+    <div class="bgroup-title">Sliders</div>
+    <div class="sl-row"><span class="bg-lbl">Line Thickness</span><span class="sl-val"><span id="p-lwVal">1.0</span>×</span></div>
+    <input type="range" id="p-lw" class="sl-range" min="0.3" max="5" value="1" step="0.1">
+    <div class="sl-row"><span class="bg-lbl">Text Size</span><span class="sl-val"><span id="p-tsVal">1.0</span>×</span></div>
+    <input type="range" id="p-ts" class="sl-range" min="0.3" max="3" value="1" step="0.1">
+    <div class="sl-row"><span class="bg-lbl">Grid Density</span><span class="sl-val"><span id="p-gridColsVal">12</span></span></div>
+    <input type="range" id="p-gridCols" class="sl-range" min="2" max="64" value="12" step="1">
+  </div>
+  <div class="bvdiv"></div>
+
+  <!-- Elements -->
+  <div class="bgroup" style="width:242px">
+    <div class="bgroup-title">Elements</div>
+    <div class="tog-grid">
+      <div class="tog-row"><label class="toggle"><input type="checkbox" id="p-grid" checked><span class="toggle-slider"></span></label><span class="tog-lbl">Grid</span></div>
+      <div class="tog-row"><label class="toggle"><input type="checkbox" id="p-circles" checked><span class="toggle-slider"></span></label><span class="tog-lbl">Circles</span></div>
+      <div class="tog-row"><label class="toggle"><input type="checkbox" id="p-coords" checked><span class="toggle-slider"></span></label><span class="tog-lbl">Coords</span></div>
+      <div class="tog-row"><label class="toggle"><input type="checkbox" id="p-rowlabels" checked><span class="toggle-slider"></span></label><span class="tog-lbl">Row Labels</span></div>
+      <div class="tog-row"><label class="toggle"><input type="checkbox" id="p-cellids"><span class="toggle-slider"></span></label><span class="tog-lbl">Cell IDs</span></div>
+      <div class="tog-row"><label class="toggle"><input type="checkbox" id="p-projids" checked><span class="toggle-slider"></span></label><span class="tog-lbl">Proj IDs</span></div>
+      <div class="tog-row"><label class="toggle"><input type="checkbox" id="p-info" checked><span class="toggle-slider"></span></label><span class="tog-lbl">Info Text</span></div>
+      <div class="tog-row"><label class="toggle"><input type="checkbox" id="p-overlay" checked><span class="toggle-slider"></span></label><span class="tog-lbl">Blend Zones</span></div>
+    </div>
+  </div>
+  <div class="bvdiv"></div>
+
+  <!-- Logo -->
+  <div class="bgroup" style="width:188px">
+    <div class="bgroup-title">Logo</div>
+    <div style="display:flex;gap:8px;align-items:flex-start;margin-bottom:8px">
+      <div class="logo-thumb" id="p-logoThumb" style="width:52px;height:26px">
+        <img src="../images/str_white.png" style="width:100%;height:100%;object-fit:contain;">
+      </div>
+      <div style="display:flex;flex-direction:column;gap:4px;flex:1">
+        <button class="btn-secondary" id="p-logoUpload">↑ Upload</button>
+        <button class="btn-secondary" id="p-logoReset">Reset</button>
+      </div>
+    </div>
+    <div class="sl-row"><span class="bg-lbl">Scale</span><span class="sl-val"><span id="p-logoScaleVal">100</span>%</span></div>
+    <input type="range" id="p-logoScale" class="sl-range" min="20" max="300" value="100" step="5">
+    <input type="file" id="p-logoFile" accept="image/*" style="display:none;">
+  </div>
+  <div class="bvdiv"></div>
+
+  <!-- Actions -->
+  <div class="bgroup" style="width:118px;justify-content:flex-end">
+    <div style="display:flex;flex-direction:column;gap:6px">
+      <button class="btn-primary" id="p-dl">↓ Download</button>
+      <button class="btn-secondary" id="p-fs">⤢ Fullscreen</button>
+    </div>
+  </div>
+
+</div><!-- /projection -->
+
+<!-- ══ DOME ══ -->
+<div id="sb-dome" class="bp-mode sb-hidden">
+
+  <!-- Setup -->
+  <div class="bgroup" style="width:210px">
+    <div class="bgroup-title">Setup</div>
+    <input type="text" class="bg-inp" id="d-name" placeholder="Pattern name" style="margin-bottom:7px">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-bottom:6px">
+      <button class="preset-btn" data-dome="1920">1080p<span class="preset-sub">1920²</span></button>
+      <button class="preset-btn active" data-dome="2048">2K<span class="preset-sub">2048²</span></button>
+      <button class="preset-btn" data-dome="4096">4K<span class="preset-sub">4096²</span></button>
+      <button class="preset-btn" data-dome="8192">8K<span class="preset-sub">8192²</span></button>
+    </div>
+    <div class="bg-row">
+      <span class="bg-lbl">Custom</span>
+      <input type="number" class="bg-inp bg-med" id="d-size" value="2048" min="256" max="8192">
+    </div>
+  </div>
+  <div class="bvdiv"></div>
+
+  <!-- Pattern -->
+  <div class="bgroup" style="width:110px">
+    <div class="bgroup-title">Pattern</div>
+    <div style="display:flex;flex-direction:column;gap:5px">
+      <button class="pat-btn active" data-dpat="standard">Standard</button>
+      <button class="pat-btn" data-dpat="zones">Zones</button>
+    </div>
+  </div>
+  <div class="bvdiv"></div>
+
+  <!-- Color -->
+  <div class="bgroup" style="width:135px">
+    <div class="bgroup-title">Color</div>
+    <div class="bg-row">
+      <label class="cp-swatch"><div class="cp-preview" id="d-colorPreview" style="background:#ffffff"></div><input type="color" id="d-color" value="#ffffff"></label>
+      <input class="cp-hex" id="d-colorHex" value="#ffffff" maxlength="7">
+    </div>
+  </div>
+  <div class="bvdiv"></div>
+
+  <!-- Sliders -->
+  <div class="bgroup" style="width:185px">
+    <div class="bgroup-title">Sliders</div>
+    <div class="sl-row"><span class="bg-lbl">Line Thickness</span><span class="sl-val"><span id="d-lwVal">1.0</span>×</span></div>
+    <input type="range" id="d-lw" class="sl-range" min="0.3" max="5" value="1" step="0.1">
+    <div class="sl-row"><span class="bg-lbl">Text Size</span><span class="sl-val"><span id="d-tsVal">1.0</span>×</span></div>
+    <input type="range" id="d-ts" class="sl-range" min="0.3" max="3" value="1" step="0.1">
+    <div class="sl-row"><span class="bg-lbl">Brightness</span><span class="sl-val"><span id="d-brVal">100</span>%</span></div>
+    <input type="range" id="d-br" class="sl-range" min="0" max="100" value="100">
+  </div>
+  <div class="bvdiv"></div>
+
+  <!-- Elements -->
+  <div class="bgroup" style="width:222px">
+    <div class="bgroup-title">Elements</div>
+    <div class="tog-grid">
+      <div class="tog-row"><label class="toggle"><input type="checkbox" id="d-circles" checked><span class="toggle-slider"></span></label><span class="tog-lbl">Circles</span></div>
+      <div class="tog-row"><label class="toggle"><input type="checkbox" id="d-grid" checked><span class="toggle-slider"></span></label><span class="tog-lbl">Grid</span></div>
+      <div class="tog-row"><label class="toggle"><input type="checkbox" id="d-cross" checked><span class="toggle-slider"></span></label><span class="tog-lbl">Crosshair</span></div>
+      <div class="tog-row"><label class="toggle"><input type="checkbox" id="d-radial" checked><span class="toggle-slider"></span></label><span class="tog-lbl">Radial</span></div>
+      <div class="tog-row"><label class="toggle"><input type="checkbox" id="d-labels" checked><span class="toggle-slider"></span></label><span class="tog-lbl">Labels</span></div>
+      <div class="tog-row"><label class="toggle"><input type="checkbox" id="d-corners" checked><span class="toggle-slider"></span></label><span class="tog-lbl">Corners</span></div>
+    </div>
+  </div>
+  <div class="bvdiv"></div>
+
+  <!-- Logo -->
+  <div class="bgroup" style="width:188px">
+    <div class="bgroup-title">Logo</div>
+    <div style="display:flex;gap:8px;align-items:flex-start;margin-bottom:8px">
+      <div class="logo-thumb" id="d-logoThumb" style="width:52px;height:26px">
+        <img src="../images/str_white.png" style="width:100%;height:100%;object-fit:contain;">
+      </div>
+      <div style="display:flex;flex-direction:column;gap:4px;flex:1">
+        <button class="btn-secondary" id="d-logoUpload">↑ Upload</button>
+        <button class="btn-secondary" id="d-logoReset">Reset</button>
+      </div>
+    </div>
+    <div class="sl-row"><span class="bg-lbl">Scale</span><span class="sl-val"><span id="d-logoScaleVal">100</span>%</span></div>
+    <input type="range" id="d-logoScale" class="sl-range" min="20" max="300" value="100" step="5">
+    <input type="file" id="d-logoFile" accept="image/*" style="display:none;">
+  </div>
+  <div class="bvdiv"></div>
+
+  <!-- Actions -->
+  <div class="bgroup" style="width:118px;justify-content:flex-end">
+    <div style="display:flex;flex-direction:column;gap:6px">
+      <button class="btn-primary" id="d-dl">↓ Download</button>
+      <button class="btn-secondary" id="d-fs">⤢ Fullscreen</button>
+    </div>
+  </div>
+
+</div><!-- /dome -->
+
+</div><!-- /bottom-panel -->
+</div><!-- /main -->
 
 <script>
 // ── STATE ──
@@ -894,7 +815,7 @@ function drawDome() {
   }
 
   // logo
-  drawLogo(ctx,size,size,dLogoCustom);
+  drawLogo(ctx,size,size,dLogoCustom,num('d-logoScale',100)/100);
 
   resDisplay.innerHTML=`<b>${size} × ${size}</b> px`;
   canvasInfo.textContent=`${size}×${size}px · dome · ${domePat}`;
@@ -917,24 +838,9 @@ function draw() {
   else                         drawDome();
 }
 
-// ── SCREEN LIST ──
+// ── SCREEN LIST (LED, kept for JS compat) ──
 function renderScreenList() {
-  const list=v('screenList'); list.innerHTML='';
-  screenItems.forEach((s,i)=>{
-    const col=COLORS[i%COLORS.length];
-    const item=document.createElement('div');
-    item.className='screen-item'; item.style.borderLeft=`3px solid ${col}`;
-    item.innerHTML=`<div class="screen-item-head"><span class="screen-name" style="color:${col}">${s.name}</span><button class="screen-remove" data-id="${s.id}">×</button></div>
-      <div class="screen-fields">
-        <div class="sf"><label>W px</label><input type="number" data-id="${s.id}" data-field="w" value="${s.w}" min="1" max="16384"></div>
-        <div class="sf"><label>H px</label><input type="number" data-id="${s.id}" data-field="h" value="${s.h}" min="1" max="16384"></div>
-        <div class="sf"><label>X off</label><input type="number" data-id="${s.id}" data-field="x" value="${s.x}" min="-16384" max="16384"></div>
-        <div class="sf"><label>Y off</label><input type="number" data-id="${s.id}" data-field="y" value="${s.y}" min="-16384" max="16384"></div>
-      </div>`;
-    list.appendChild(item);
-  });
-  list.querySelectorAll('.screen-remove').forEach(btn=>btn.addEventListener('click',()=>{ screenItems=screenItems.filter(s=>s.id!==+btn.dataset.id); renderScreenList(); draw(); }));
-  list.querySelectorAll('input[data-field]').forEach(inp=>inp.addEventListener('input',()=>{ const s=screenItems.find(x=>x.id===+inp.dataset.id); if(s) s[inp.dataset.field]=parseInt(inp.value)||0; draw(); }));
+  const list=v('screenList'); if(!list) return; list.innerHTML='';
 }
 
 // ── COLOR WIRING ──
@@ -995,23 +901,14 @@ document.querySelectorAll('.mode-tab:not(.disabled)').forEach(btn=>btn.addEventL
   setMode(btn.dataset.mode);
 }));
 
-document.querySelectorAll('.sub-tab').forEach(btn=>btn.addEventListener('click',()=>{
-  ledSub=btn.dataset.sub;
-  document.querySelectorAll('.sub-tab').forEach(b=>b.classList.remove('active')); btn.classList.add('active');
-  v('sub-screen').classList.toggle('sb-hidden',ledSub!=='screen');
-  v('sub-canvas').classList.toggle('sb-hidden',ledSub!=='canvas');
-  draw();
-}));
-
-['s-modW','s-modH','s-cols','s-rows','s-pitch'].forEach(id=>v(id).addEventListener('input',draw));
-v('s-br').addEventListener('input',e=>{ br.screen=e.target.value/100; v('s-brVal').textContent=e.target.value; draw(); });
-
-v('addScreen').addEventListener('click',()=>{
+['s-modW','s-modH','s-cols','s-rows','s-pitch'].forEach(id=>{ const el=v(id); if(el) el.addEventListener('input',draw); });
+const sbr=v('s-br'); if(sbr) sbr.addEventListener('input',e=>{ br.screen=e.target.value/100; v('s-brVal').textContent=e.target.value; draw(); });
+const abtn=v('addScreen'); if(abtn) abtn.addEventListener('click',()=>{
   const last=screenItems[screenItems.length-1];
   screenItems.push({id:nextId++,name:`SCR ${screenItems.length+1}`,w:1920,h:1080,x:last?last.x+last.w:0,y:0});
   renderScreenList(); draw();
 });
-v('c-br').addEventListener('input',e=>{ br.canvas=e.target.value/100; v('c-brVal').textContent=e.target.value; draw(); });
+const cbr=v('c-br'); if(cbr) cbr.addEventListener('input',e=>{ br.canvas=e.target.value/100; v('c-brVal').textContent=e.target.value; draw(); });
 
 // When total canvas OR projector res changes: recalc cols + blend to keep canvas fixed
 function recalcFromTotalAndProj() {
@@ -1040,8 +937,6 @@ function recalcFromTotalAndProj() {
   draw();
 }
 ['p-totWIn','p-totHIn','p-projW','p-projH'].forEach(id=>v(id).addEventListener('input',recalcFromTotalAndProj));
-
-// Cols/rows/blend/name tweaks just redraw (total updates in projCalc display)
 ['p-cols','p-rows','p-blendH','p-blendV','p-name'].forEach(id=>v(id).addEventListener('input',draw));
 ['p-grid','p-circles','p-coords','p-rowlabels','p-cellids','p-projids','p-info','p-overlay'].forEach(id=>v(id).addEventListener('change',draw));
 wireSlider('p-lw','p-lwVal',draw);
@@ -1070,16 +965,17 @@ v('d-name').addEventListener('input',draw);
 v('d-br').addEventListener('input',e=>{ br.dome=e.target.value/100; v('d-brVal').textContent=e.target.value; draw(); });
 wireSlider('d-lw','d-lwVal',draw);
 wireSlider('d-ts','d-tsVal',draw);
+wireSlider('d-logoScale','d-logoScaleVal',draw);
 wireColor('d-color','d-colorPreview','d-colorHex',draw);
 wireLogoUpload('d-logoUpload','d-logoReset','d-logoFile','d-logoThumb',img=>dLogoCustom=img,draw);
 
 function dlCanvas(fn) { const a=document.createElement('a'); a.download=fn; a.href=canvas.toDataURL('image/png'); a.click(); }
-v('s-dl').addEventListener('click',()=>dlCanvas(`LED_${canvas.width}x${canvas.height}.png`));
-v('c-dl').addEventListener('click',()=>dlCanvas(`LEDCanvas_${canvas.width}x${canvas.height}.png`));
+const sdl=v('s-dl'); if(sdl) sdl.addEventListener('click',()=>dlCanvas(`LED_${canvas.width}x${canvas.height}.png`));
+const cdl=v('c-dl'); if(cdl) cdl.addEventListener('click',()=>dlCanvas(`LEDCanvas_${canvas.width}x${canvas.height}.png`));
 v('p-dl').addEventListener('click',()=>dlCanvas(`Proj_${canvas.width}x${canvas.height}.png`));
 v('d-dl').addEventListener('click',()=>dlCanvas(`Dome_${canvas.width}x${canvas.height}.png`));
-v('s-fs').addEventListener('click',()=>canvasArea.requestFullscreen?.());
-v('c-fs').addEventListener('click',()=>canvasArea.requestFullscreen?.());
+const sfs=v('s-fs'); if(sfs) sfs.addEventListener('click',()=>canvasArea.requestFullscreen?.());
+const cfs=v('c-fs'); if(cfs) cfs.addEventListener('click',()=>canvasArea.requestFullscreen?.());
 v('p-fs').addEventListener('click',()=>canvasArea.requestFullscreen?.());
 v('d-fs').addEventListener('click',()=>canvasArea.requestFullscreen?.());
 
