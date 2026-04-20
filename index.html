@@ -729,6 +729,7 @@
     <li><a href="#work">Projects</a></li>
     <li><a href="#experience">Experience</a></li>
     <li><a href="#contact">Contact</a></li>
+    <li><a href="patterns/led.html" style="color:rgba(240,237,232,0.2);font-size:10px;letter-spacing:0.15em;">Tools ↗</a></li>
   </ul>
   <button class="burger" id="burger" aria-label="Menu">
     <span></span><span></span><span></span>
@@ -741,6 +742,7 @@
     <li><a href="#work" class="mob-link">Projects</a></li>
     <li><a href="#experience" class="mob-link">Experience</a></li>
     <li><a href="#contact" class="mob-link">Contact</a></li>
+    <li><a href="patterns/led.html" class="mob-link">Tools</a></li>
   </ul>
 </div>
 
@@ -852,6 +854,7 @@
 <section id="work">
   <div class="projects-filter fade-up">
     <span class="projects-label">Projects</span>
+    <button class="filter-btn" data-filter="featured">Featured</button>
     <button class="filter-btn active" data-filter="all">All</button>
     <button class="filter-btn" data-filter="disguise">Disguise</button>
     <button class="filter-btn" data-filter="vj">VJ</button>
@@ -859,7 +862,7 @@
   </div>
 
   <div class="projects-grid fade-up" id="projectsGrid">
-    <div class="project-card tall" data-category="disguise" data-title="Joy Awards 2026" data-meta="Riyadh, Saudi Arabia · 2026" data-role="Disguise Engineer · PRG" data-link="https://hellocharlie.com/project/the-joy-awards-2026/" data-img="images/joy_26.avif">
+    <div class="project-card tall" data-featured="true" data-category="disguise" data-title="Joy Awards 2026" data-meta="Riyadh, Saudi Arabia · 2026" data-role="Disguise Engineer · PRG" data-link="https://hellocharlie.com/project/the-joy-awards-2026/" data-img="images/joy_26.avif">
       <img class="project-img" src="images/joy_26.avif" alt="Joy Awards 2026">
       <div class="project-overlay">
         <div class="project-title">Joy Awards 2026</div>
@@ -867,7 +870,7 @@
         <div class="project-role">Disguise Engineer · PRG</div>
       </div>
     </div>
-    <div class="project-card" data-category="vj" data-title="Rave Rebels | The Ship" data-meta="Brussels, Belgium · 2025" data-role="VJ · Sila Sveta" data-link="https://www.silasveta.com/projects/rave-rebels-2025-the-ship" data-img="images/rr_nov25.png">
+    <div class="project-card" data-featured="true" data-category="vj" data-title="Rave Rebels | The Ship" data-meta="Brussels, Belgium · 2025" data-role="VJ · Sila Sveta" data-link="https://www.silasveta.com/projects/rave-rebels-2025-the-ship" data-img="images/rr_nov25.png">
       <img class="project-img" src="images/rr_nov25.png" alt="Rave Rebels | The Ship">
       <div class="project-overlay">
         <div class="project-title">Rave Rebels | The Ship</div>
@@ -875,7 +878,7 @@
         <div class="project-role">VJ · Sila Sveta</div>
       </div>
     </div>
-    <div class="project-card wide" data-category="disguise" data-title="GOTF Opening Ceremony" data-meta="Abu Dhabi, UAE · 2025" data-role="Disguise Engineer" data-link="https://www.youtube.com/watch?v=uQtXQmlZ1A0" data-img="images/gotf.png">
+    <div class="project-card wide" data-featured="true" data-category="disguise" data-title="GOTF Opening Ceremony" data-meta="Abu Dhabi, UAE · 2025" data-role="Disguise Engineer" data-link="https://www.youtube.com/watch?v=uQtXQmlZ1A0" data-img="images/gotf.png">
       <img class="project-img" src="images/gotf.png" alt="GOTF Opening Ceremony">
       <div class="project-overlay">
         <div class="project-title">GOTF Opening Ceremony</div>
@@ -907,7 +910,7 @@
         <div class="project-role">Disguise Engineer · PRG</div>
       </div>
     </div>
-    <div class="project-card" data-category="disguise" data-title="Joy Awards 25" data-meta="Riyadh, Saudi Arabia · 2025" data-role="Disguise Engineer · PRG" data-link="https://hellocharlie.com/project/joy-awards-2025/" data-img="images/joy_25.png">
+    <div class="project-card" data-featured="true" data-category="disguise" data-title="Joy Awards 25" data-meta="Riyadh, Saudi Arabia · 2025" data-role="Disguise Engineer · PRG" data-link="https://hellocharlie.com/project/joy-awards-2025/" data-img="images/joy_25.png">
       <img class="project-img" src="images/joy_25.png" alt="Joy Awards 25">
       <div class="project-overlay">
         <div class="project-title">Joy Awards 25</div>
@@ -923,7 +926,7 @@
         <div class="project-role">Disguise Engineer · PRG</div>
       </div>
     </div>
-    <div class="project-card" data-category="vj" data-title="Rave Rebels Deus | Ex Machina" data-meta="Brussels, Belgium · 2025" data-role="VJ · Sila Sveta" data-link="https://www.silasveta.com/projects/rave-rabels-2025-belgium" data-img="images/rr_apr25.png">
+    <div class="project-card" data-featured="true" data-category="vj" data-title="Rave Rebels Deus | Ex Machina" data-meta="Brussels, Belgium · 2025" data-role="VJ · Sila Sveta" data-link="https://www.silasveta.com/projects/rave-rabels-2025-belgium" data-img="images/rr_apr25.png">
       <img class="project-img" src="images/rr_apr25.png" alt="Rave Rebels Deus | Ex Machina">
       <div class="project-overlay">
         <div class="project-title">Rave Rebels Deus | Ex Machina</div>
@@ -947,7 +950,7 @@
         <div class="project-role">Video Systems Engineer · Vivid Studios</div>
       </div>
     </div>
-    <div class="project-card" data-category="integration" data-title="Woohoo Restaurant" data-meta="Dubai, UAE · 2025" data-role="Video Systems Engineer · Vivid Studios" data-link="https://stageprecision.com/blogs/showcase/woohoo-restaurant" data-img="images/woohoo.png">
+    <div class="project-card" data-featured="true" data-category="integration" data-title="Woohoo Restaurant" data-meta="Dubai, UAE · 2025" data-role="Video Systems Engineer · Vivid Studios" data-link="https://stageprecision.com/blogs/showcase/woohoo-restaurant" data-img="images/woohoo.png">
       <img class="project-img" src="images/woohoo.png" alt="Woohoo Restaurant">
       <div class="project-overlay">
         <div class="project-title">Woohoo Restaurant</div>
@@ -1059,7 +1062,15 @@
         <div class="project-role">Resolume Engineer · Vivid Studios</div>
       </div>
     </div>
-    <div class="project-card" data-category="disguise" data-title="FIFA Fan Festival 2022" data-meta="Doha, Qatar · 2022" data-role="Disguise Engineer · PRG" data-link="https://qatar.fischerappelt.com/cases/fff" data-img="images/adipec22.png">
+    <div class="project-card" data-category="disguise" data-title="FIFA Fan Festival 2022" data-meta="Doha, Qatar · 2022" data-role="Disguise Engineer · PRG" data-link="" data-img="images/fifa22.png">
+      <img class="project-img" src="images/fifa22.png" alt="FIFA Fan Festival 2022">
+      <div class="project-overlay">
+        <div class="project-title">FIFA Fan Festival 2022</div>
+        <div class="project-meta">Doha, Qatar · 2022</div>
+        <div class="project-role">Disguise Engineer · PRG</div>
+      </div>
+    </div>
+    <div class="project-card" data-category="disguise" data-title="ADIPEC 2022" data-meta="Abu Dhabi, UAE · 2022" data-role="Disguise Engineer · PRG" data-link="" data-img="images/adipec22.png">
       <img class="project-img" src="images/adipec22.png" alt="ADIPEC 2022">
       <div class="project-overlay">
         <div class="project-title">ADIPEC 2022</div>
@@ -1099,7 +1110,7 @@
         <div class="project-role">Disguise Engineer · Sila Sveta</div>
       </div>
     </div>
-    <div class="project-card" data-category="disguise" data-title="Beyond — Lexus LX Launch" data-meta="Riyadh, Saudi Arabia · 2021" data-role="Disguise Engineer · Sila Sveta" data-link="https://www.silasveta.com/projects/beyond-lexus-lx" data-img="images/lexus.png">
+    <div class="project-card" data-featured="true" data-category="disguise" data-title="Beyond — Lexus LX Launch" data-meta="Riyadh, Saudi Arabia · 2021" data-role="Disguise Engineer · Sila Sveta" data-link="https://www.silasveta.com/projects/beyond-lexus-lx" data-img="images/lexus.png">
       <img class="project-img" src="images/lexus.png" alt="Beyond — Lexus LX Launch">
       <div class="project-overlay">
         <div class="project-title">Beyond — Lexus LX Launch</div>
@@ -1115,7 +1126,7 @@
         <div class="project-role">Disguise Engineer · Sila Sveta</div>
       </div>
     </div>
-    <div class="project-card" data-category="vj" data-title="IN TO TSEH" data-meta="Nizhny Novgorod, Russia · 2021" data-role="Resolume Engineer · Sila Sveta" data-link="https://www.silasveta.com/projects/in-to-tseh" data-img="images/tseh.png">
+    <div class="project-card" data-category="vj" data-title="IN TO TSEH" data-meta="Nikola-Lenivets, Russia · 2021" data-role="Resolume Engineer · Sila Sveta" data-link="https://www.silasveta.com/projects/in-to-tseh" data-img="images/tseh.png">
       <img class="project-img" src="images/tseh.png" alt="IN TO TSEH">
       <div class="project-overlay">
         <div class="project-title">IN TO TSEH</div>
@@ -1163,7 +1174,7 @@
         <div class="project-role">Disguise Engineer · Sila Sveta</div>
       </div>
     </div>
-    <div class="project-card" data-category="vj" data-title="American University in Cairo" data-meta="Cairo, Egypt · 2020" data-role="Resolume Engineer · Sila Sveta" data-link="https://www.silasveta.com/projects/the-american-university-in-cairo" data-img="images/auc.png">
+    <div class="project-card" data-category="integration" data-title="American University in Cairo" data-meta="Cairo, Egypt · 2020" data-role="Resolume Engineer · Sila Sveta" data-link="https://www.silasveta.com/projects/the-american-university-in-cairo" data-img="images/auc.png">
       <img class="project-img" src="images/auc.png" alt="American University in Cairo">
       <div class="project-overlay">
         <div class="project-title">American University in Cairo</div>
@@ -1187,7 +1198,7 @@
         <div class="project-role">Disguise Engineer · Sila Sveta</div>
       </div>
     </div>
-    <div class="project-card" data-category="disguise" data-title="Lamborghini Huracán Launch" data-meta="Berlin &amp; Milan · 2019" data-role="Disguise Engineer · Sila Sveta" data-link="https://www.silasveta.com/projects/lamborghini-huracan" data-img="images/huracan.png">
+    <div class="project-card" data-featured="true" data-category="disguise" data-title="Lamborghini Huracán Launch" data-meta="Berlin &amp; Milan · 2019" data-role="Disguise Engineer · Sila Sveta" data-link="https://www.silasveta.com/projects/lamborghini-huracan" data-img="images/huracan.png">
       <img class="project-img" src="images/huracan.png" alt="Lamborghini Huracán Launch">
       <div class="project-overlay">
         <div class="project-title">Lamborghini Huracán Launch</div>
@@ -1430,6 +1441,12 @@ function applyFilter(filter) {
   if (filter === 'all') {
     grid.classList.remove('category-view');
     grid.querySelectorAll('.project-card').forEach(c => c.removeAttribute('hidden'));
+  } else if (filter === 'featured') {
+    grid.classList.remove('category-view');
+    grid.querySelectorAll('.project-card').forEach(c => {
+      if (c.dataset.featured === 'true') c.removeAttribute('hidden');
+      else c.setAttribute('hidden', '');
+    });
   } else {
     grid.classList.add('category-view');
     grid.querySelectorAll('.project-card').forEach(c => {
