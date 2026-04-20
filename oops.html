@@ -387,7 +387,7 @@
   }
 
   // error rates: easy=75% random, medium=50%, hard=25%
-  const ERROR_RATE = { easy: 0.75, medium: 0.50, hard: 0.25 };
+  const ERROR_RATE = { easy: 0.50, medium: 0.30, hard: 0.10 };
 
   function cpuMove() {
     const move = Math.random() < ERROR_RATE[difficulty] ? randomMove() : bestMove();
