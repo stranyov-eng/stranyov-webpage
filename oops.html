@@ -300,25 +300,30 @@
   </div>
 
 <script>
-  const WINS = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
-  const LB_KEY = 'ttt_leaderboard';
+  // ── FIREBASE CONFIG ────────────────────────────────────────
+  // Setup: console.firebase.google.com → New project → Realtime Database
+  // → Create database → Start in test mode → copy URL below
+  const FB_URL = 'https://test123-8f255-default-rtdb.europe-west1.firebasedatabase.app/ttt_lb';
+  const USE_FB = !FB_URL.includes('YOUR_PROJECT');
 
+  // ── GAME STATE ─────────────────────────────────────────────
+  const WINS = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
   let board, locked, difficulty = 'medium';
   let scores = {x:0, o:0, d:0};
-  let lastResult = null;
 
-  const cells      = document.querySelectorAll('.cell');
-  const status     = document.getElementById('status');
-  const scoreX     = document.getElementById('score-x');
-  const scoreO     = document.getElementById('score-o');
-  const scoreD     = document.getElementById('score-d');
-  const boardEnd   = document.getElementById('boardEnd');
-  const boardEndMsg= document.getElementById('boardEndMsg');
-  const lbSaveWrap = document.getElementById('lbSaveWrap');
-  const lbNameInp  = document.getElementById('lbNameInp');
-  const lbSaveBtn  = document.getElementById('lbSaveBtn');
+  const cells       = document.querySelectorAll('.cell');
+  const status      = document.getElementById('status');
+  const scoreX      = document.getElementById('score-x');
+  const scoreO      = document.getElementById('score-o');
+  const scoreD      = document.getElementById('score-d');
+  const boardEnd    = document.getElementById('boardEnd');
+  const boardEndMsg = document.getElementById('boardEndMsg');
+  const lbSaveWrap  = document.getElementById('lbSaveWrap');
+  const lbNameInp   = document.getElementById('lbNameInp');
+  const lbSaveBtn   = document.getElementById('lbSaveBtn');
+  const lbList      = document.getElementById('lbList');
 
-  // ── DIFFICULTY ──
+  // ── DIFFICULTY ─────────────────────────────────────────────
   document.querySelectorAll('.diff-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       document.querySelectorAll('.diff-btn').forEach(b => b.classList.remove('active'));
@@ -328,11 +333,10 @@
     });
   });
 
-  // ── BOARD ──
+  // ── BOARD ──────────────────────────────────────────────────
   function init() {
     board = Array(9).fill('');
     locked = false;
-    lastResult = null;
     cells.forEach(c => { c.textContent = ''; c.className = 'cell'; });
     boardEnd.classList.remove('visible');
     lbSaveWrap.style.display = 'none';
@@ -348,7 +352,7 @@
     return null;
   }
 
-  // ── AI ──
+  // ── AI ─────────────────────────────────────────────────────
   function minimax(b, isMax) {
     const res = checkWinner(b);
     if (res) return res.winner === 'o' ? 1 : res.winner === 'x' ? -1 : 0;
@@ -383,16 +387,10 @@
   }
 
   function cpuMove() {
-    let move;
-    if (difficulty === 'easy') {
-      move = randomMove();
-    } else if (difficulty === 'medium') {
-      // 55% optimal, 45% random
-      move = Math.random() < 0.55 ? bestMove() : randomMove();
-    } else {
-      move = bestMove();
-    }
-    if (move === -1 || move === null) return;
+    const move = difficulty === 'easy' ? randomMove()
+               : difficulty === 'medium' ? (Math.random() < 0.55 ? bestMove() : randomMove())
+               : bestMove();
+    if (move == null || move === -1) return;
     board[move] = 'o';
     cells[move].textContent = 'O';
     cells[move].classList.add('o', 'taken');
@@ -402,22 +400,17 @@
   function resolve() {
     const res = checkWinner(board);
     if (res) {
-      lastResult = res.winner;
       if (res.winner === 'draw') {
         status.textContent = 'Draw — not bad';
         boardEndMsg.textContent = 'Draw';
         scores.d++; scoreD.textContent = scores.d;
       } else {
-        const isPlayer = res.winner === 'x';
-        status.textContent = isPlayer ? 'You win — respect' : 'CPU wins — try again';
-        boardEndMsg.textContent = isPlayer ? 'You win' : 'CPU wins';
+        const win = res.winner === 'x';
+        status.textContent = win ? 'You win — respect' : 'CPU wins — try again';
+        boardEndMsg.textContent = win ? 'You win' : 'CPU wins';
         res.line.forEach(i => cells[i].classList.add('win'));
-        if (isPlayer) {
-          scores.x++; scoreX.textContent = scores.x;
-          lbSaveWrap.style.display = 'flex';
-        } else {
-          scores.o++; scoreO.textContent = scores.o;
-        }
+        if (win) { scores.x++; scoreX.textContent = scores.x; lbSaveWrap.style.display = 'flex'; }
+        else      { scores.o++; scoreO.textContent = scores.o; }
       }
       locked = true;
       setTimeout(() => boardEnd.classList.add('visible'), 400);
@@ -433,8 +426,7 @@
       board[i] = 'x';
       cell.textContent = 'X';
       cell.classList.add('x', 'taken');
-      const res = checkWinner(board);
-      if (res) { resolve(); return; }
+      if (checkWinner(board)) { resolve(); return; }
       status.textContent = 'CPU thinking...';
       locked = true;
       setTimeout(() => { locked = false; cpuMove(); }, 300);
@@ -443,53 +435,97 @@
 
   document.getElementById('reset').addEventListener('click', init);
 
-  // ── LEADERBOARD ──
-  function loadLB() {
-    try { return JSON.parse(localStorage.getItem(LB_KEY)) || []; }
+  // ── LEADERBOARD · FIREBASE + localStorage fallback ─────────
+  function fbKey(name) {
+    return name.toLowerCase().replace(/[^a-z0-9]/g, '_').slice(0, 40);
+  }
+
+  async function lbLoad() {
+    if (USE_FB) {
+      try {
+        const res = await fetch(FB_URL + '.json');
+        const obj = await res.json();
+        if (!obj) return [];
+        return Object.values(obj).sort((a,b) => b.wins - a.wins);
+      } catch { /* fall through */ }
+    }
+    try { return JSON.parse(localStorage.getItem('ttt_lb')) || []; }
     catch { return []; }
   }
-  function saveLB(data) {
-    localStorage.setItem(LB_KEY, JSON.stringify(data));
+
+  async function lbSaveEntry(name, diff) {
+    const key = fbKey(name);
+    if (USE_FB) {
+      try {
+        const res = await fetch(`${FB_URL}/${key}.json`);
+        const existing = await res.json();
+        const entry = existing
+          ? { ...existing, wins: existing.wins + 1, diff }
+          : { name, wins: 1, diff };
+        await fetch(`${FB_URL}/${key}.json`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(entry)
+        });
+        return;
+      } catch { /* fall through to localStorage */ }
+    }
+    // localStorage fallback
+    const data = JSON.parse(localStorage.getItem('ttt_lb') || '[]');
+    const ex = data.find(e => fbKey(e.name) === key);
+    if (ex) { ex.wins++; ex.diff = diff; }
+    else data.push({ name, wins: 1, diff });
+    data.sort((a,b) => b.wins - a.wins);
+    localStorage.setItem('ttt_lb', JSON.stringify(data));
   }
-  function renderLB() {
-    const data = loadLB();
-    const list = document.getElementById('lbList');
+
+  async function lbClearAll() {
+    if (USE_FB) {
+      try { await fetch(FB_URL + '.json', { method: 'DELETE' }); }
+      catch { /* ignore */ }
+    }
+    localStorage.removeItem('ttt_lb');
+  }
+
+  function renderLBData(data) {
     if (!data.length) {
-      list.innerHTML = '<div class="lb-empty">No records yet</div>';
+      lbList.innerHTML = '<div class="lb-empty">No records yet</div>';
       return;
     }
-    const rankClass = ['gold','silver','bronze'];
-    list.innerHTML = data.slice(0, 10).map((e, i) => `
+    const medal = ['gold','silver','bronze'];
+    lbList.innerHTML = data.slice(0, 10).map((e, i) => `
       <div class="lb-row">
-        <div class="lb-rank ${rankClass[i]||''}">${i+1}</div>
+        <div class="lb-rank ${medal[i]||''}">${i+1}</div>
         <div class="lb-player">${e.name}</div>
         <div class="lb-diff-tag">${e.diff}</div>
         <div class="lb-wins">${e.wins}W</div>
       </div>`).join('');
   }
 
-  lbSaveBtn.addEventListener('click', () => {
+  async function renderLB() {
+    lbList.innerHTML = '<div class="lb-empty">Loading…</div>';
+    renderLBData(await lbLoad());
+  }
+
+  lbSaveBtn.addEventListener('click', async () => {
     const name = lbNameInp.value.trim();
     if (!name) return;
-    const data = loadLB();
-    const existing = data.find(e => e.name.toLowerCase() === name.toLowerCase());
-    if (existing) {
-      existing.wins++;
-      if (difficulty !== existing.diff) existing.diff = difficulty;
-    } else {
-      data.push({ name, wins: 1, diff: difficulty });
-    }
-    data.sort((a,b) => b.wins - a.wins);
-    saveLB(data);
-    renderLB();
+    lbSaveBtn.textContent = '...';
+    lbSaveBtn.disabled = true;
+    await lbSaveEntry(name, difficulty);
     lbSaveWrap.style.display = 'none';
     lbNameInp.value = '';
+    lbSaveBtn.textContent = 'Save';
+    lbSaveBtn.disabled = false;
+    renderLB();
   });
 
   lbNameInp.addEventListener('keydown', e => { if (e.key === 'Enter') lbSaveBtn.click(); });
 
-  document.getElementById('lbClear').addEventListener('click', () => {
-    if (confirm('Clear leaderboard?')) { saveLB([]); renderLB(); }
+  document.getElementById('lbClear').addEventListener('click', async () => {
+    if (!confirm('Clear leaderboard?')) return;
+    await lbClearAll();
+    renderLB();
   });
 
   renderLB();
