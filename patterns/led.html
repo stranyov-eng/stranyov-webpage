@@ -19,7 +19,7 @@
   --line2: rgba(240,237,232,0.13);
   --input-bg: #1c1c1c;
   --accent: #f0ede8;
-  --panel-h: 210px;
+  --panel-h: 240px;
 }
 *,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
 html,body { height:100%; overflow:hidden; }
@@ -504,14 +504,20 @@ input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.3); }
 <div id="sb-projection" class="bp-mode">
 
   <!-- Setup -->
-  <div class="bgroup">
+  <div class="bgroup" style="min-width:200px">
     <div class="bgroup-title">Setup</div>
     <input type="text" class="bg-inp bg-wide" id="p-name" placeholder="Pattern name" style="margin-bottom:7px">
-    <div class="bg-row">
-      <span class="bg-lbl" style="width:52px">Projector</span>
-      <input type="number" class="bg-inp" id="p-projW" value="1920" min="1" max="8192">
-      <input type="number" class="bg-inp" id="p-projH" value="1080" min="1" max="8192">
+    <div class="bg-lbl" style="margin-bottom:4px">Projector</div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:3px;margin-bottom:7px">
+      <button class="preset-btn active" data-projw="1920" data-projh="1080">FHD<span class="preset-sub">1920×1080</span></button>
+      <button class="preset-btn" data-projw="1920" data-projh="1200">WUXGA<span class="preset-sub">1920×1200</span></button>
+      <button class="preset-btn" data-projw="1400" data-projh="1050">XGA+<span class="preset-sub">1400×1050</span></button>
+      <button class="preset-btn" data-projw="3840" data-projh="2160">4K UHD<span class="preset-sub">3840×2160</span></button>
+      <button class="preset-btn" data-projw="3840" data-projh="2400">WQUXGA<span class="preset-sub">3840×2400</span></button>
+      <button class="preset-btn" data-projw="2048" data-projh="1536">QXGA<span class="preset-sub">2048×1536</span></button>
     </div>
+    <input type="hidden" id="p-projW" value="1920">
+    <input type="hidden" id="p-projH" value="1080">
     <div class="bg-row">
       <span class="bg-lbl" style="width:52px">Cols×Rows</span>
       <input type="number" class="bg-inp" id="p-cols" value="3" min="1" max="16">
@@ -721,6 +727,7 @@ let nextId = 3;
 let pLogoCustom = null, dLogoCustom = null;
 let pLogoPos = 'br'; // tr, tl, br, bl
 let currentScale = 1;
+let totWCustom = null, totHCustom = null;
 
 const defaultLogoImg = new Image();
 defaultLogoImg.onload = () => draw();
@@ -806,7 +813,9 @@ function projCalc() {
   const cols2=num('p-cols',3), rows2=num('p-rows',1);
   const blendH=num('p-blendH',0), blendV=num('p-blendV',0);
   const bHpx=Math.floor(projW*blendH/100), bVpx=Math.floor(projH*blendV/100);
-  const totW=projW*cols2-bHpx*(cols2-1), totH=projH*rows2-bVpx*(rows2-1);
+  const formulaTotW=projW*cols2-bHpx*(cols2-1), formulaTotH=projH*rows2-bVpx*(rows2-1);
+  const totW = totWCustom !== null ? totWCustom : formulaTotW;
+  const totH = totHCustom !== null ? totHCustom : formulaTotH;
   v('p-bHpx').textContent=`${bHpx} px`; v('p-bVpx').textContent=`${bVpx} px`;
   if(document.activeElement!==v('p-totWIn')) v('p-totWIn').value=totW;
   if(document.activeElement!==v('p-totHIn')) v('p-totHIn').value=totH;
@@ -904,9 +913,10 @@ function drawProjection() {
   if (showCircles) {
     ctx.strokeStyle=`rgba(${ccr},${ccg},${ccb},0.7)`;
     ctx.lineWidth=baseLw*1.5;
+    const cellH = totH / rows2;
     for (let r=0;r<rows2;r++) for (let c=0;c<cols2;c++) {
-      const cx2=c*noW+projW/2, cy2=r*noH+projH/2;
-      const R=Math.min(projW,projH)/2*0.998;
+      const cx2=c*noW+projW/2, cy2=r*cellH+cellH/2;
+      const R=Math.min(projW,cellH)/2*0.998;
       ctx.beginPath(); ctx.arc(cx2,cy2,R,0,Math.PI*2); ctx.stroke();
     }
   }
@@ -917,7 +927,7 @@ function drawProjection() {
     ctx.textAlign='center'; ctx.textBaseline='middle';
     ctx.fillStyle=`rgba(${tcr},${tcg},${tcb},0.08)`;
     for (let r=0;r<rows2;r++) for (let c=0;c<cols2;c++)
-      ctx.fillText(`P${r*cols2+c+1}`, c*noW+projW/2, r*noH+projH*0.82);
+      ctx.fillText(`P${r*cols2+c+1}`, c*noW+projW/2, r*noH+projH*0.5);
   }
 
   if (showInfo || name) {
@@ -1198,17 +1208,29 @@ window.addEventListener('hashchange', () => {
 document.querySelectorAll('.mode-tab:not(.disabled)').forEach(btn=>btn.addEventListener('click',()=>setMode(btn.dataset.mode)));
 
 // ── PROJECTION EVENTS ──
-function recalcFromTotalAndProj() {
-  const totW=parseInt(v('p-totWIn').value)||1, totH=parseInt(v('p-totHIn').value)||1;
+document.querySelectorAll('.preset-btn[data-projw]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.preset-btn[data-projw]').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    v('p-projW').value = btn.dataset.projw;
+    v('p-projH').value = btn.dataset.projh;
+    resetCustomTotals(); draw();
+  });
+});
+function recalcBlendFromTotal() {
   const projW=num('p-projW',1920), projH=num('p-projH',1080);
-  const cols=Math.max(1,Math.round(totW/projW)), rows=Math.max(1,Math.round(totH/projH));
-  v('p-cols').value=cols; v('p-rows').value=rows;
-  if(cols>1){const bH=Math.max(0,Math.min(49,(projW*cols-totW)/(cols-1)/projW*100));v('p-blendH').value=bH.toFixed(2);}else{v('p-blendH').value=0;}
-  if(rows>1){const bV=Math.max(0,Math.min(49,(projH*rows-totH)/(rows-1)/projH*100));v('p-blendV').value=bV.toFixed(2);}else{v('p-blendV').value=0;}
+  const cols=num('p-cols',1), rows=num('p-rows',1);
+  const totW=parseInt(v('p-totWIn').value)||projW;
+  const totH=parseInt(v('p-totHIn').value)||projH;
+  totWCustom = totW; totHCustom = totH;
+  if(cols>1){ const bH=Math.max(0,Math.min(49,(projW*cols-totW)/(cols-1)/projW*100)); v('p-blendH').value=bH.toFixed(1); }
+  if(rows>1){ const bV=Math.max(0,Math.min(49,(projH*rows-totH)/(rows-1)/projH*100)); v('p-blendV').value=bV.toFixed(1); }
   draw();
 }
-['p-totWIn','p-totHIn','p-projW','p-projH'].forEach(id=>v(id).addEventListener('input',recalcFromTotalAndProj));
-['p-cols','p-rows','p-blendH','p-blendV','p-name'].forEach(id=>v(id).addEventListener('input',draw));
+function resetCustomTotals() { totWCustom = null; totHCustom = null; }
+['p-totWIn','p-totHIn'].forEach(id=>v(id).addEventListener('input',recalcBlendFromTotal));
+['p-blendH','p-blendV','p-name'].forEach(id=>v(id).addEventListener('input',draw));
+['p-cols','p-rows'].forEach(id=>v(id).addEventListener('input',()=>{ resetCustomTotals(); draw(); }));
 ['p-grid','p-circles','p-coords','p-rowlabels','p-cellids','p-projids','p-info','p-overlay','p-safearea','p-smpte'].forEach(id=>v(id).addEventListener('change',draw));
 wireSlider('p-lw','p-lwVal',draw);
 wireSlider('p-ts','p-tsVal',draw);
@@ -1223,6 +1245,7 @@ v('p-dl').addEventListener('click',()=>dlCanvas(`Projection_${canvas.width}x${ca
 v('p-fs').addEventListener('click',()=>{ if(!document.fullscreenElement) canvasArea.requestFullscreen(); else document.exitFullscreen(); });
 v('p-reset').addEventListener('click', () => {
   v('p-projW').value=1920; v('p-projH').value=1080;
+  document.querySelectorAll('.preset-btn[data-projw]').forEach(b=>b.classList.toggle('active',b.dataset.projw==='1920'&&b.dataset.projh==='1080'));
   v('p-cols').value=3; v('p-rows').value=1;
   v('p-blendH').value=20; v('p-blendV').value=20;
   v('p-lw').value=1; v('p-lwVal').textContent='1.0';
@@ -1234,7 +1257,7 @@ v('p-reset').addEventListener('click', () => {
   v('p-circleColor').value='#ffffff'; v('p-circleColorPreview').style.background='#ffffff'; v('p-circleColorHex').value='#ffffff';
   ['p-grid','p-circles','p-coords','p-rowlabels','p-projids','p-info','p-overlay'].forEach(id=>v(id).checked=true);
   ['p-cellids','p-safearea','p-smpte'].forEach(id=>v(id).checked=false);
-  v('p-name').value=''; pLogoCustom=null; pLogoPos='br';
+  v('p-name').value=''; pLogoCustom=null; pLogoPos='br'; resetCustomTotals();
   v('p-logoThumb').innerHTML='<img src="../images/str_white.png" style="width:100%;height:100%;object-fit:contain;">';
   document.querySelectorAll('.logo-pos-btn').forEach(b=>b.classList.toggle('active',b.dataset.pos==='br'));
   notify('Reset to defaults'); draw();
