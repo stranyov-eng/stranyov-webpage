@@ -603,10 +603,10 @@ input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.3); }
     <input type="range" id="p-logoScale" class="sl-range" min="20" max="300" value="100" step="5">
     <div class="bg-lbl" style="margin-top:6px;margin-bottom:5px">Position</div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:3px;width:80px">
-      <button class="logo-pos-btn active" data-pos="tr" title="Top Right">↗</button>
       <button class="logo-pos-btn" data-pos="tl" title="Top Left">↖</button>
-      <button class="logo-pos-btn" data-pos="br" title="Bottom Right">↘</button>
+      <button class="logo-pos-btn active" data-pos="tr" title="Top Right">↗</button>
       <button class="logo-pos-btn" data-pos="bl" title="Bottom Left">↙</button>
+      <button class="logo-pos-btn" data-pos="br" title="Bottom Right">↘</button>
     </div>
     <input type="file" id="p-logoFile" accept="image/*" style="display:none;">
   </div>
@@ -723,7 +723,6 @@ let pLogoPos = 'br'; // tr, tl, br, bl
 let currentScale = 1;
 
 const defaultLogoImg = new Image();
-defaultLogoImg.crossOrigin = 'anonymous';
 defaultLogoImg.onload = () => draw();
 defaultLogoImg.src = '../images/str_white.png';
 
