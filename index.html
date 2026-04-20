@@ -854,7 +854,6 @@
 <section id="work">
   <div class="projects-filter fade-up">
     <span class="projects-label">Projects</span>
-    <button class="filter-btn" data-filter="featured">Featured</button>
     <button class="filter-btn active" data-filter="all">All</button>
     <button class="filter-btn" data-filter="disguise">Disguise</button>
     <button class="filter-btn" data-filter="vj">VJ</button>
@@ -1437,16 +1436,19 @@ if (expList) expObs.observe(expList);
 
 // ── PROJECT FILTER ───────────────────────────────────────────
 const grid = document.getElementById('projectsGrid');
+// Move featured cards to top of grid (source of truth: projects.json featured array)
+function sortFeaturedFirst() {
+  const cards = Array.from(grid.querySelectorAll('.project-card'));
+  const featured = cards.filter(c => c.dataset.featured === 'true');
+  const rest = cards.filter(c => c.dataset.featured !== 'true');
+  [...featured, ...rest].forEach(c => grid.appendChild(c));
+}
+sortFeaturedFirst();
+
 function applyFilter(filter) {
   if (filter === 'all') {
     grid.classList.remove('category-view');
     grid.querySelectorAll('.project-card').forEach(c => c.removeAttribute('hidden'));
-  } else if (filter === 'featured') {
-    grid.classList.remove('category-view');
-    grid.querySelectorAll('.project-card').forEach(c => {
-      if (c.dataset.featured === 'true') c.removeAttribute('hidden');
-      else c.setAttribute('hidden', '');
-    });
   } else {
     grid.classList.add('category-view');
     grid.querySelectorAll('.project-card').forEach(c => {
