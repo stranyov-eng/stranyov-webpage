@@ -6,121 +6,449 @@
 <title>Test Pattern Generator — STRANYOV</title>
 <link rel="icon" type="image/svg+xml" href="../images/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-:root { --black:#0a0a0a; --white:#f0ede8; --line:rgba(240,237,232,0.1); --input-bg:#1a1a1a; }
+:root {
+  --black: #0a0a0a;
+  --surface: #111;
+  --surface2: #161616;
+  --white: #f0ede8;
+  --dim: rgba(240,237,232,0.35);
+  --dimmer: rgba(240,237,232,0.18);
+  --line: rgba(240,237,232,0.08);
+  --line2: rgba(240,237,232,0.13);
+  --input-bg: #1c1c1c;
+  --accent: #f0ede8;
+  --panel-h: 210px;
+}
 *,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
 html,body { height:100%; overflow:hidden; }
-body { background:var(--black); color:var(--white); font-family:'DM Sans',sans-serif; font-weight:300; display:flex; flex-direction:column; }
+body {
+  background: var(--black);
+  color: var(--white);
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300;
+  display: flex;
+  flex-direction: column;
+  cursor: none;
+}
+
+/* ── CURSOR ── */
+.cursor { position:fixed; width:5px; height:5px; background:var(--white); border-radius:50%; pointer-events:none; z-index:9999; transform:translate(-50%,-50%); transition:opacity 0.2s; }
+.cursor-ring { position:fixed; width:28px; height:28px; border:1px solid rgba(240,237,232,0.3); border-radius:50%; pointer-events:none; z-index:9998; transform:translate(-50%,-50%); transition:transform 0.4s cubic-bezier(.23,1,.32,1),width 0.3s,height 0.3s,border-color 0.3s; }
+.cursor-ring.expand { width:52px; height:52px; border-color:rgba(240,237,232,0.12); }
 
 /* ── TOPBAR ── */
-.topbar { display:flex; align-items:center; padding:0 24px; height:52px; border-bottom:1px solid var(--line); flex-shrink:0; }
-.topbar-left { display:flex; align-items:center; gap:20px; flex-shrink:0; }
-.back-link { font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.2em; color:rgba(240,237,232,0.35); text-decoration:none; text-transform:uppercase; transition:color 0.2s; }
-.back-link:hover { color:var(--white); }
-.topbar-title { font-family:'Bebas Neue',sans-serif; font-size:20px; letter-spacing:0.1em; }
-.mode-tabs { display:flex; gap:2px; margin:0 auto; }
-.mode-tab { font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.18em; text-transform:uppercase; padding:7px 22px; background:none; border:1px solid transparent; color:rgba(240,237,232,0.3); cursor:pointer; transition:color 0.2s,border-color 0.2s,background 0.2s; }
-.mode-tab:hover { color:rgba(240,237,232,0.7); border-color:rgba(240,237,232,0.12); }
-.mode-tab.active { color:var(--white); border-color:rgba(240,237,232,0.35); background:rgba(240,237,232,0.05); }
-.mode-tab.disabled { opacity:0.22; cursor:not-allowed; pointer-events:none; }
-.beta-badge { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.15em; background:rgba(240,237,232,0.08); border:1px solid rgba(240,237,232,0.18); padding:2px 7px; vertical-align:middle; color:rgba(240,237,232,0.4); margin-left:10px; }
-.res-display { font-family:'DM Mono',monospace; font-size:11px; letter-spacing:0.08em; color:rgba(240,237,232,0.4); flex-shrink:0; }
-.res-display b { color:var(--white); font-weight:400; }
+.topbar {
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  height: 50px;
+  border-bottom: 1px solid var(--line);
+  flex-shrink: 0;
+  gap: 16px;
+  background: rgba(10,10,10,0.95);
+  backdrop-filter: blur(10px);
+}
+.topbar-left { display:flex; align-items:center; gap:14px; flex-shrink:0; }
+.back-link {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px; letter-spacing: 0.2em;
+  color: var(--dimmer); text-decoration:none;
+  text-transform: uppercase;
+  transition: color 0.2s;
+  display: flex; align-items: center; gap: 6px;
+}
+.back-link:hover { color: var(--white); }
+.topbar-sep { width:1px; height:20px; background:var(--line2); flex-shrink:0; }
+.topbar-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 18px; letter-spacing: 0.12em;
+  color: var(--white);
+}
+.topbar-badge {
+  font-family: 'DM Mono', monospace;
+  font-size: 8px; letter-spacing: 0.18em;
+  background: rgba(240,237,232,0.07);
+  border: 1px solid var(--line2);
+  padding: 2px 6px;
+  color: var(--dimmer);
+  text-transform: uppercase;
+}
 
-/* ── LAYOUT ── */
+/* MODE TABS */
+.mode-tabs {
+  display: flex;
+  gap: 2px;
+  margin: 0 auto;
+  background: rgba(240,237,232,0.04);
+  border: 1px solid var(--line);
+  padding: 3px;
+}
+.mode-tab {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px; letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding: 6px 20px;
+  background: none; border: none;
+  color: var(--dimmer); cursor: none;
+  transition: color 0.2s, background 0.2s;
+  white-space: nowrap;
+}
+.mode-tab:hover:not(.disabled) { color: rgba(240,237,232,0.7); background: rgba(240,237,232,0.04); }
+.mode-tab.active { color: var(--white); background: rgba(240,237,232,0.1); }
+.mode-tab.disabled { opacity:0.2; cursor:not-allowed; pointer-events:none; }
+
+.res-display {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px; letter-spacing: 0.08em;
+  color: var(--dimmer); flex-shrink:0;
+}
+.res-display b { color: var(--white); font-weight:400; }
+
+
+
+/* ── MAIN LAYOUT ── */
 .main { display:flex; flex-direction:column; flex:1; overflow:hidden; }
-.canvas-area { flex:1; display:flex; align-items:center; justify-content:center; background:#050505; overflow:hidden; position:relative; min-height:0; }
-.canvas-wrap { position:relative; box-shadow:0 0 0 1px rgba(240,237,232,0.08); }
+.canvas-area {
+  flex: 1;
+  display: flex; align-items: center; justify-content: center;
+  background: #050505;
+  overflow: hidden;
+  position: relative;
+  min-height: 0;
+}
+.canvas-area-grid {
+  position: absolute; inset:0;
+  background-image:
+    linear-gradient(rgba(240,237,232,0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(240,237,232,0.02) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+}
+.canvas-wrap {
+  position: relative;
+  box-shadow: 0 0 0 1px rgba(240,237,232,0.1), 0 8px 48px rgba(0,0,0,0.8);
+}
 canvas { display:block; image-rendering:pixelated; }
-.canvas-info { position:absolute; bottom:14px; right:16px; font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.15em; color:rgba(240,237,232,0.18); text-transform:uppercase; }
+.canvas-meta {
+  position: absolute;
+  bottom: 12px; left: 50%; transform: translateX(-50%);
+  display: flex; gap: 12px; align-items: center;
+}
+.canvas-pill {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px; letter-spacing: 0.14em;
+  color: rgba(240,237,232,0.25);
+  text-transform: uppercase;
+  background: rgba(10,10,10,0.7);
+  border: 1px solid var(--line);
+  padding: 3px 10px;
+  white-space: nowrap;
+  backdrop-filter: blur(4px);
+}
+.canvas-zoom {
+  position: absolute;
+  top: 12px; right: 14px;
+  font-family: 'DM Mono', monospace;
+  font-size: 9px; letter-spacing: 0.1em;
+  color: rgba(240,237,232,0.2);
+  background: rgba(10,10,10,0.6);
+  border: 1px solid var(--line);
+  padding: 3px 8px;
+  backdrop-filter: blur(4px);
+}
+.canvas-coords {
+  position: absolute;
+  top: 12px; left: 14px;
+  font-family: 'DM Mono', monospace;
+  font-size: 9px; letter-spacing: 0.1em;
+  color: rgba(240,237,232,0.2);
+  background: rgba(10,10,10,0.6);
+  border: 1px solid var(--line);
+  padding: 3px 8px;
+  backdrop-filter: blur(4px);
+  display: none;
+}
 
 /* ── BOTTOM PANEL ── */
-.bottom-panel { display:flex; flex-direction:row; height:215px; flex-shrink:0; border-top:1px solid var(--line); overflow-x:auto; overflow-y:hidden; }
-.bottom-panel::-webkit-scrollbar { height:4px; }
-.bottom-panel::-webkit-scrollbar-thumb { background:rgba(240,237,232,0.08); }
+.bottom-panel {
+  height: var(--panel-h);
+  flex-shrink: 0;
+  border-top: 1px solid var(--line);
+  display: flex;
+  flex-direction: row;
+  overflow-x: auto;
+  overflow-y: hidden;
+  background: var(--surface);
+  scrollbar-width: thin;
+  scrollbar-color: rgba(240,237,232,0.08) transparent;
+}
+.bottom-panel::-webkit-scrollbar { height: 3px; }
+.bottom-panel::-webkit-scrollbar-thumb { background: rgba(240,237,232,0.07); }
+
 .bp-mode { display:flex; flex-direction:row; flex:1; align-items:stretch; }
 .bp-mode.sb-hidden { display:none; }
 
-.bgroup { display:flex; flex-direction:column; padding:14px 16px; flex:1; min-width:140px; }
-.bgroup-actions { flex:0 0 120px; min-width:120px; }
-.bvdiv { width:1px; background:var(--line); flex-shrink:0; margin:10px 0; }
-.bgroup-title { font-family:'DM Mono',monospace; font-size:8px; letter-spacing:0.25em; color:rgba(240,237,232,0.2); text-transform:uppercase; margin-bottom:9px; flex-shrink:0; }
+/* groups */
+.bgroup {
+  display: flex; flex-direction: column;
+  padding: 12px 16px;
+  flex: 1;
+  min-width: 0;
+  position: relative;
+}
+.bgroup + .bgroup::before {
+  content: '';
+  position: absolute; left: 0; top: 12px; bottom: 12px;
+  width: 1px; background: var(--line);
+}
+.bgroup-title {
+  font-family: 'DM Mono', monospace;
+  font-size: 8px; letter-spacing: 0.28em;
+  color: rgba(240,237,232,0.18);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  flex-shrink: 0;
+}
 
-/* compact inputs */
-.bg-inp { background:var(--input-bg); border:1px solid rgba(240,237,232,0.1); color:var(--white); font-family:'DM Mono',monospace; font-size:12px; padding:5px 7px; width:62px; outline:none; -moz-appearance:textfield; transition:border-color 0.2s; }
+/* inputs */
+.bg-inp {
+  background: var(--input-bg);
+  border: 1px solid rgba(240,237,232,0.08);
+  color: var(--white);
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  padding: 5px 7px;
+  width: 64px;
+  outline: none;
+  -moz-appearance: textfield;
+  transition: border-color 0.2s;
+}
 .bg-inp::-webkit-inner-spin-button { -webkit-appearance:none; }
-.bg-inp:focus { border-color:rgba(240,237,232,0.4); }
+.bg-inp:focus { border-color: rgba(240,237,232,0.35); }
 .bg-inp.bg-wide { width:100%; display:block; }
-.bg-inp.bg-med { width:88px; }
+.bg-inp.bg-med { width:90px; }
 .bg-inp[type="text"] { width:100%; display:block; font-size:12px; }
 
 .bg-row { display:flex; align-items:center; gap:5px; margin-bottom:5px; }
-.bg-lbl { font-family:'DM Mono',monospace; font-size:8px; letter-spacing:0.1em; color:rgba(240,237,232,0.3); text-transform:uppercase; flex-shrink:0; }
+.bg-lbl {
+  font-family: 'DM Mono', monospace;
+  font-size: 8px; letter-spacing: 0.1em;
+  color: rgba(240,237,232,0.28);
+  text-transform: uppercase; flex-shrink:0;
+}
 
-/* compact color swatch */
-.cp-swatch { width:22px; height:22px; border:1px solid rgba(240,237,232,0.2); cursor:pointer; flex-shrink:0; padding:0; background:none; overflow:hidden; position:relative; display:inline-flex; }
+/* color pickers */
+.cp-swatch {
+  width: 22px; height: 22px;
+  border: 1px solid rgba(240,237,232,0.15);
+  cursor: none; flex-shrink:0; padding:0;
+  background:none; overflow:hidden;
+  position:relative; display:inline-flex;
+  transition: border-color 0.2s;
+}
+.cp-swatch:hover { border-color: rgba(240,237,232,0.4); }
 .cp-preview { width:100%; height:100%; pointer-events:none; }
 .cp-swatch input[type="color"] { position:absolute; inset:-4px; width:calc(100% + 8px); height:calc(100% + 8px); opacity:0; cursor:pointer; }
-.cp-hex { font-family:'DM Mono',monospace; font-size:11px; color:var(--white); background:var(--input-bg); border:1px solid rgba(240,237,232,0.1); padding:4px 6px; width:78px; outline:none; letter-spacing:0.04em; transition:border-color 0.2s; }
-.cp-hex:focus { border-color:rgba(240,237,232,0.4); }
+.cp-hex {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px; color:var(--white);
+  background: var(--input-bg);
+  border: 1px solid rgba(240,237,232,0.08);
+  padding: 4px 6px; width: 78px; outline:none;
+  letter-spacing: 0.04em;
+  transition: border-color 0.2s;
+}
+.cp-hex:focus { border-color: rgba(240,237,232,0.35); }
 
-/* compact sliders */
-.sl-row { display:flex; justify-content:space-between; align-items:center; margin-bottom:3px; }
+/* sliders */
+.sl-row { display:flex; justify-content:space-between; align-items:center; margin-bottom:2px; }
 .sl-val { font-family:'DM Mono',monospace; font-size:11px; color:var(--white); }
-.sl-range { width:100%; margin-bottom:8px; }
-input[type="range"] { -webkit-appearance:none; width:100%; height:2px; background:rgba(240,237,232,0.15); outline:none; border-radius:0; }
-input[type="range"]::-webkit-slider-thumb { -webkit-appearance:none; width:13px; height:13px; background:var(--white); border-radius:50%; cursor:pointer; }
+.sl-range { width:100%; margin-bottom:7px; }
+input[type="range"] {
+  -webkit-appearance:none; width:100%; height:2px;
+  background: rgba(240,237,232,0.1); outline:none; border-radius:0;
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance:none; width:11px; height:11px;
+  background: var(--white); border-radius:50%; cursor:pointer;
+  transition: transform 0.15s;
+}
+input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.3); }
 
-/* compact toggles */
-.tog-grid { display:grid; grid-template-columns:1fr 1fr; gap:5px 12px; }
+/* toggles */
+.tog-grid { display:grid; grid-template-columns:1fr 1fr; gap:5px 14px; }
 .tog-row { display:flex; align-items:center; gap:6px; }
-.tog-lbl { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.06em; color:rgba(240,237,232,0.4); text-transform:uppercase; }
+.tog-lbl { font-family:'DM Mono',monospace; font-size:8px; letter-spacing:0.06em; color:rgba(240,237,232,0.35); text-transform:uppercase; }
 .toggle { position:relative; width:28px; height:16px; display:inline-block; flex-shrink:0; }
 .toggle input { opacity:0; width:0; height:0; }
-.toggle-slider { position:absolute; inset:0; background:rgba(240,237,232,0.1); border-radius:8px; cursor:pointer; transition:background 0.2s; }
-.toggle-slider::before { content:''; position:absolute; left:2px; top:2px; width:12px; height:12px; background:rgba(240,237,232,0.5); border-radius:50%; transition:transform 0.2s,background 0.2s; }
-.toggle input:checked + .toggle-slider { background:rgba(240,237,232,0.25); }
+.toggle-slider { position:absolute; inset:0; background:rgba(240,237,232,0.08); border-radius:8px; cursor:none; transition:background 0.2s; }
+.toggle-slider::before { content:''; position:absolute; left:2px; top:2px; width:12px; height:12px; background:rgba(240,237,232,0.4); border-radius:50%; transition:transform 0.2s,background 0.2s; }
+.toggle input:checked + .toggle-slider { background:rgba(240,237,232,0.18); }
 .toggle input:checked + .toggle-slider::before { transform:translateX(12px); background:var(--white); }
 
 /* logo thumb */
-.logo-thumb { background:rgba(255,255,255,0.04); border:1px solid rgba(240,237,232,0.1); display:flex; align-items:center; justify-content:center; overflow:hidden; flex-shrink:0; }
+.logo-thumb { background:rgba(255,255,255,0.03); border:1px solid rgba(240,237,232,0.08); display:flex; align-items:center; justify-content:center; overflow:hidden; flex-shrink:0; }
 .logo-thumb img { width:100%; height:100%; object-fit:contain; }
 
 /* buttons */
-.btn-primary { width:100%; background:var(--white); color:var(--black); border:none; font-family:'DM Mono',monospace; font-size:11px; letter-spacing:0.2em; text-transform:uppercase; padding:10px; cursor:pointer; transition:opacity 0.2s; }
-.btn-primary:hover { opacity:0.85; }
-.btn-secondary { width:100%; background:transparent; color:rgba(240,237,232,0.4); border:1px solid rgba(240,237,232,0.15); font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.12em; text-transform:uppercase; padding:6px; cursor:pointer; transition:border-color 0.2s,color 0.2s; }
-.btn-secondary:hover { border-color:rgba(240,237,232,0.4); color:var(--white); }
+.btn-primary {
+  width:100%; background:var(--white); color:var(--black);
+  border:none; font-family:'DM Mono',monospace;
+  font-size:10px; letter-spacing:0.2em; text-transform:uppercase;
+  padding:9px 8px; cursor:none;
+  transition: opacity 0.2s, transform 0.15s;
+}
+.btn-primary:hover { opacity:0.88; }
+.btn-primary:active { transform:scale(0.98); }
+.btn-secondary {
+  width:100%; background:transparent;
+  color:rgba(240,237,232,0.35);
+  border:1px solid rgba(240,237,232,0.1);
+  font-family:'DM Mono',monospace; font-size:9px;
+  letter-spacing:0.12em; text-transform:uppercase;
+  padding:6px; cursor:none;
+  transition:border-color 0.2s,color 0.2s;
+}
+.btn-secondary:hover { border-color:rgba(240,237,232,0.35); color:var(--white); }
 
-/* preset buttons (dome) */
-.preset-btn { background:var(--input-bg); border:1px solid rgba(240,237,232,0.08); color:rgba(240,237,232,0.4); font-family:'DM Mono',monospace; font-size:10px; text-transform:uppercase; padding:7px 5px; text-align:center; cursor:pointer; transition:border-color 0.15s,color 0.15s,background 0.15s; }
-.preset-btn:hover { border-color:rgba(240,237,232,0.3); color:var(--white); }
+/* preset buttons */
+.preset-btn {
+  background: var(--input-bg);
+  border: 1px solid rgba(240,237,232,0.07);
+  color: rgba(240,237,232,0.35);
+  font-family: 'DM Mono', monospace;
+  font-size: 10px; text-transform: uppercase;
+  padding: 7px 5px; text-align: center; cursor: none;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
+}
+.preset-btn:hover { border-color:rgba(240,237,232,0.28); color:var(--white); }
 .preset-btn.active { border-color:var(--white); color:var(--white); background:rgba(240,237,232,0.06); }
-.preset-sub { display:block; font-size:7px; color:rgba(240,237,232,0.3); margin-top:2px; }
+.preset-sub { display:block; font-size:7px; color:rgba(240,237,232,0.25); margin-top:2px; }
 
-/* pat buttons */
-.pat-btn { background:var(--input-bg); border:1px solid rgba(240,237,232,0.08); color:rgba(240,237,232,0.4); font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.05em; text-transform:uppercase; padding:8px 6px; text-align:center; cursor:pointer; transition:border-color 0.15s,color 0.15s,background 0.15s; }
-.pat-btn:hover { border-color:rgba(240,237,232,0.3); color:var(--white); }
+/* pattern buttons */
+.pat-btn {
+  background: var(--input-bg);
+  border: 1px solid rgba(240,237,232,0.07);
+  color: rgba(240,237,232,0.35);
+  font-family: 'DM Mono', monospace;
+  font-size: 9px; letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 7px 8px; text-align: center; cursor: none;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
+}
+.pat-btn:hover { border-color:rgba(240,237,232,0.28); color:var(--white); }
 .pat-btn.active { border-color:var(--white); color:var(--white); background:rgba(240,237,232,0.06); }
 
-/* f-val for output display */
+/* f-val output */
 .f-val { font-family:'DM Mono',monospace; font-size:12px; color:var(--white); }
-.f-input { font-family:'DM Mono',monospace; font-size:13px; color:var(--white); background:transparent; border:none; border-bottom:1px solid rgba(240,237,232,0.2); outline:none; width:105px; padding:2px 0; -moz-appearance:textfield; }
+.f-input {
+  font-family:'DM Mono',monospace; font-size:12px; color:var(--white);
+  background:transparent; border:none;
+  border-bottom:1px solid rgba(240,237,232,0.15);
+  outline:none; width:105px; padding:2px 0;
+  -moz-appearance:textfield;
+  transition: border-bottom-color 0.2s;
+}
 .f-input::-webkit-inner-spin-button { -webkit-appearance:none; }
-.f-input:focus { border-bottom-color:rgba(240,237,232,0.6); }
-.f-divider { height:1px; background:rgba(240,237,232,0.06); margin:5px 0; }
+.f-input:focus { border-bottom-color: rgba(240,237,232,0.5); }
+.f-divider { height:1px; background:rgba(240,237,232,0.05); margin:5px 0; }
 
-/* LED screen items (hidden, kept for JS compat) */
+/* Quick-res presets strip */
+.qres-strip { display:flex; flex-direction:column; gap:3px; }
+.qres-btn {
+  background: none;
+  border: 1px solid rgba(240,237,232,0.07);
+  color: rgba(240,237,232,0.3);
+  font-family: 'DM Mono', monospace;
+  font-size: 8px; letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 5px 8px; cursor: none; text-align: left;
+  transition: border-color 0.15s, color 0.15s;
+  white-space: nowrap;
+}
+.qres-btn:hover { border-color:rgba(240,237,232,0.28); color:var(--white); }
+.qres-btn.active { border-color: rgba(240,237,232,0.4); color: var(--white); background: rgba(240,237,232,0.04); }
+
+/* tone ramp preview */
+.tone-bar {
+  width:100%; height:8px;
+  background: linear-gradient(to right, #000, #fff);
+  border: 1px solid rgba(240,237,232,0.08);
+  margin-top: 4px;
+}
+
+.bgroup-actions { flex: 0 0 110px !important; min-width: 110px; justify-content: center; align-items: stretch; }
+
+/* logo position buttons */
+.logo-pos-btn {
+  background: var(--input-bg);
+  border: 1px solid rgba(240,237,232,0.08);
+  color: rgba(240,237,232,0.35);
+  font-size: 13px; padding: 5px;
+  text-align: center; cursor: none;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
+  line-height: 1;
+}
+.logo-pos-btn:hover { border-color:rgba(240,237,232,0.3); color:var(--white); }
+.logo-pos-btn.active { border-color:var(--white); color:var(--white); background:rgba(240,237,232,0.07); }
+
+/* LED hidden stubs */
 .screen-item,.screen-item-head,.screen-fields,.sf { display:none; }
+
+/* ── NOTIFICATION ── */
+.notif {
+  position: fixed;
+  bottom: calc(var(--panel-h) + 12px);
+  left: 50%;
+  transform: translateX(-50%) translateY(8px);
+  background: rgba(240,237,232,0.1);
+  border: 1px solid rgba(240,237,232,0.2);
+  backdrop-filter: blur(8px);
+  font-family: 'DM Mono', monospace;
+  font-size: 10px; letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--white);
+  padding: 8px 18px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s, transform 0.3s;
+  z-index: 500;
+}
+.notif.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* ── MOBILE ── */
+@media (max-width: 768px) {
+  body { cursor: auto; }
+  .cursor, .cursor-ring { display: none; }
+  .mode-tab { cursor: pointer; }
+  .toggle-slider { cursor: pointer; }
+  .btn-primary,.btn-secondary,.preset-btn,.pat-btn,.qres-btn,.cp-swatch { cursor: pointer; }
+  .kbd-hint { display: none; }
+  .topbar { padding: 0 12px; gap: 10px; }
+  .topbar-title { font-size: 15px; }
+  .back-link span { display: none; }
+  .mode-tabs { padding: 2px; }
+  .mode-tab { padding: 5px 12px; font-size: 9px; }
+  .bottom-panel { height: auto; max-height: 220px; }
+  .bgroup { padding: 10px 12px; min-width: 110px; }
+}
 </style>
 </head>
 <body>
 
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+<div class="notif" id="notif"></div>
+
+<!-- ══ TOPBAR ══ -->
 <div class="topbar">
   <div class="topbar-left">
-    <a href="../index.html" class="back-link">← stranyov.com</a>
-    <div class="topbar-title">Test Pattern Generator <span class="beta-badge">BETA</span></div>
+    <a href="../index.html" class="back-link">← <span>stranyov.com</span></a>
+    <div class="topbar-sep"></div>
+    <div class="topbar-title">Test Pattern Generator</div>
+    <div class="topbar-badge">Beta</div>
   </div>
   <div class="mode-tabs">
     <button class="mode-tab disabled" data-mode="led">LED</button>
@@ -130,16 +458,24 @@ input[type="range"]::-webkit-slider-thumb { -webkit-appearance:none; width:13px;
   <div class="res-display" id="resDisplay">—</div>
 </div>
 
+<!-- ══ CANVAS AREA ══ -->
 <div class="main">
-
 <div class="canvas-area" id="canvasArea">
-  <div class="canvas-wrap"><canvas id="canvas"></canvas></div>
-  <div class="canvas-info" id="canvasInfo"></div>
+  <div class="canvas-area-grid"></div>
+  <div class="canvas-wrap" id="canvasWrap">
+    <canvas id="canvas"></canvas>
+  </div>
+  <div class="canvas-zoom" id="canvasZoom">100%</div>
+  <div class="canvas-coords" id="canvasCoords">—</div>
+  <div class="canvas-meta">
+    <div class="canvas-pill" id="canvasInfo">—</div>
+  </div>
 </div>
 
-<div class="bottom-panel">
+<!-- ══ BOTTOM PANEL ══ -->
+<div class="bottom-panel" id="bottomPanel">
 
-<!-- ══ LED (hidden, DOM elements kept for JS) ══ -->
+<!-- LED stubs (hidden, JS compat) -->
 <div id="sb-led" class="bp-mode sb-hidden">
   <div style="display:none">
     <input id="s-modW" type="number" value="96">
@@ -170,73 +506,69 @@ input[type="range"]::-webkit-slider-thumb { -webkit-appearance:none; width:13px;
   <!-- Setup -->
   <div class="bgroup">
     <div class="bgroup-title">Setup</div>
-    <input type="text" class="bg-inp" id="p-name" placeholder="Pattern name" style="margin-bottom:7px">
+    <input type="text" class="bg-inp bg-wide" id="p-name" placeholder="Pattern name" style="margin-bottom:7px">
     <div class="bg-row">
-      <span class="bg-lbl" style="width:32px">PROJ</span>
+      <span class="bg-lbl" style="width:52px">Projector</span>
       <input type="number" class="bg-inp" id="p-projW" value="1920" min="1" max="8192">
       <input type="number" class="bg-inp" id="p-projH" value="1080" min="1" max="8192">
     </div>
     <div class="bg-row">
-      <span class="bg-lbl" style="width:32px">GRID</span>
+      <span class="bg-lbl" style="width:52px">Cols×Rows</span>
       <input type="number" class="bg-inp" id="p-cols" value="3" min="1" max="16">
       <input type="number" class="bg-inp" id="p-rows" value="1" min="1" max="16">
     </div>
     <div class="bg-row">
-      <span class="bg-lbl" style="width:32px">BLND</span>
+      <span class="bg-lbl" style="width:52px">Blend %</span>
       <input type="number" class="bg-inp" id="p-blendH" value="20" min="0" max="49" step="0.5">
       <input type="number" class="bg-inp" id="p-blendV" value="20" min="0" max="49" step="0.5">
     </div>
   </div>
-  <div class="bvdiv"></div>
 
   <!-- Output -->
   <div class="bgroup">
     <div class="bgroup-title">Output</div>
-    <div class="bg-row"><span class="bg-lbl" style="width:52px">Blend H</span><span class="f-val" id="p-bHpx">—</span></div>
-    <div class="bg-row"><span class="bg-lbl" style="width:52px">Blend V</span><span class="f-val" id="p-bVpx">—</span></div>
+    <div class="bg-row"><span class="bg-lbl" style="width:50px">Blend H</span><span class="f-val" id="p-bHpx">—</span></div>
+    <div class="bg-row"><span class="bg-lbl" style="width:50px">Blend V</span><span class="f-val" id="p-bVpx">—</span></div>
     <div class="f-divider"></div>
-    <div class="bg-row" style="margin-bottom:6px"><span class="bg-lbl" style="width:52px">Total W</span><input type="number" class="f-input" id="p-totWIn" value="4992" min="1" max="65536"></div>
-    <div class="bg-row"><span class="bg-lbl" style="width:52px">Total H</span><input type="number" class="f-input" id="p-totHIn" value="1080" min="1" max="65536"></div>
+    <div class="bg-row" style="margin-bottom:5px"><span class="bg-lbl" style="width:50px">Total W</span><input type="number" class="f-input" id="p-totWIn" value="4992" min="1" max="65536"></div>
+    <div class="bg-row"><span class="bg-lbl" style="width:50px">Total H</span><input type="number" class="f-input" id="p-totHIn" value="1080" min="1" max="65536"></div>
   </div>
-  <div class="bvdiv"></div>
 
   <!-- Colors -->
   <div class="bgroup">
     <div class="bgroup-title">Colors</div>
     <div class="bg-row">
-      <span class="bg-lbl" style="width:12px">G</span>
+      <span class="bg-lbl" style="width:40px">Grid</span>
       <label class="cp-swatch"><div class="cp-preview" id="p-colorPreview" style="background:#ff3333"></div><input type="color" id="p-color" value="#ff3333"></label>
       <input class="cp-hex" id="p-colorHex" value="#ff3333" maxlength="7">
     </div>
     <div class="bg-row">
-      <span class="bg-lbl" style="width:12px">T</span>
+      <span class="bg-lbl" style="width:40px">Text</span>
       <label class="cp-swatch"><div class="cp-preview" id="p-textColorPreview" style="background:#ffffff"></div><input type="color" id="p-textColor" value="#ffffff"></label>
       <input class="cp-hex" id="p-textColorHex" value="#ffffff" maxlength="7">
     </div>
     <div class="bg-row">
-      <span class="bg-lbl" style="width:12px">B</span>
+      <span class="bg-lbl" style="width:40px">Border</span>
       <label class="cp-swatch"><div class="cp-preview" id="p-borderColorPreview" style="background:#00dc3c"></div><input type="color" id="p-borderColor" value="#00dc3c"></label>
       <input class="cp-hex" id="p-borderColorHex" value="#00dc3c" maxlength="7">
     </div>
     <div class="bg-row">
-      <span class="bg-lbl" style="width:12px">C</span>
+      <span class="bg-lbl" style="width:40px">Circle</span>
       <label class="cp-swatch"><div class="cp-preview" id="p-circleColorPreview" style="background:#ffffff"></div><input type="color" id="p-circleColor" value="#ffffff"></label>
       <input class="cp-hex" id="p-circleColorHex" value="#ffffff" maxlength="7">
     </div>
   </div>
-  <div class="bvdiv"></div>
 
   <!-- Sliders -->
   <div class="bgroup">
-    <div class="bgroup-title">Sliders</div>
-    <div class="sl-row"><span class="bg-lbl">Line Thickness</span><span class="sl-val"><span id="p-lwVal">1.0</span>×</span></div>
+    <div class="bgroup-title">Adjust</div>
+    <div class="sl-row"><span class="bg-lbl">Line thickness</span><span class="sl-val"><span id="p-lwVal">1.0</span>×</span></div>
     <input type="range" id="p-lw" class="sl-range" min="0.3" max="5" value="1" step="0.1">
-    <div class="sl-row"><span class="bg-lbl">Text Size</span><span class="sl-val"><span id="p-tsVal">1.0</span>×</span></div>
+    <div class="sl-row"><span class="bg-lbl">Text size</span><span class="sl-val"><span id="p-tsVal">1.0</span>×</span></div>
     <input type="range" id="p-ts" class="sl-range" min="0.3" max="3" value="1" step="0.1">
-    <div class="sl-row"><span class="bg-lbl">Grid Density</span><span class="sl-val"><span id="p-gridColsVal">12</span></span></div>
+    <div class="sl-row"><span class="bg-lbl">Grid columns</span><span class="sl-val"><span id="p-gridColsVal">12</span></span></div>
     <input type="range" id="p-gridCols" class="sl-range" min="2" max="64" value="12" step="1">
   </div>
-  <div class="bvdiv"></div>
 
   <!-- Elements -->
   <div class="bgroup">
@@ -250,9 +582,10 @@ input[type="range"]::-webkit-slider-thumb { -webkit-appearance:none; width:13px;
       <div class="tog-row"><label class="toggle"><input type="checkbox" id="p-projids" checked><span class="toggle-slider"></span></label><span class="tog-lbl">Proj IDs</span></div>
       <div class="tog-row"><label class="toggle"><input type="checkbox" id="p-info" checked><span class="toggle-slider"></span></label><span class="tog-lbl">Info Text</span></div>
       <div class="tog-row"><label class="toggle"><input type="checkbox" id="p-overlay" checked><span class="toggle-slider"></span></label><span class="tog-lbl">Blend Zones</span></div>
+      <div class="tog-row"><label class="toggle"><input type="checkbox" id="p-safearea"><span class="toggle-slider"></span></label><span class="tog-lbl">Safe Area</span></div>
+      <div class="tog-row"><label class="toggle"><input type="checkbox" id="p-smpte"><span class="toggle-slider"></span></label><span class="tog-lbl">Color Bars</span></div>
     </div>
   </div>
-  <div class="bvdiv"></div>
 
   <!-- Logo -->
   <div class="bgroup">
@@ -263,21 +596,26 @@ input[type="range"]::-webkit-slider-thumb { -webkit-appearance:none; width:13px;
       </div>
       <div style="display:flex;flex-direction:column;gap:4px;flex:1">
         <button class="btn-secondary" id="p-logoUpload">↑ Upload</button>
-        <button class="btn-secondary" id="p-logoReset">Reset</button>
+        <button class="btn-secondary" id="p-logoReset">↺ Reset</button>
       </div>
     </div>
     <div class="sl-row"><span class="bg-lbl">Scale</span><span class="sl-val"><span id="p-logoScaleVal">100</span>%</span></div>
     <input type="range" id="p-logoScale" class="sl-range" min="20" max="300" value="100" step="5">
+    <div class="bg-lbl" style="margin-top:6px;margin-bottom:5px">Position</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:3px;width:80px">
+      <button class="logo-pos-btn active" data-pos="tr" title="Top Right">↗</button>
+      <button class="logo-pos-btn" data-pos="tl" title="Top Left">↖</button>
+      <button class="logo-pos-btn" data-pos="br" title="Bottom Right">↘</button>
+      <button class="logo-pos-btn" data-pos="bl" title="Bottom Left">↙</button>
+    </div>
     <input type="file" id="p-logoFile" accept="image/*" style="display:none;">
   </div>
-  <div class="bvdiv"></div>
 
   <!-- Actions -->
-  <div class="bgroup bgroup-actions" style="justify-content:flex-end">
-    <div style="display:flex;flex-direction:column;gap:6px">
-      <button class="btn-primary" id="p-dl">↓ Download</button>
-      <button class="btn-secondary" id="p-fs">⤢ Fullscreen</button>
-    </div>
+  <div class="bgroup bgroup-actions">
+    <button class="btn-primary" id="p-dl" style="margin-bottom:6px">↓ Download</button>
+    <button class="btn-secondary" id="p-fs" style="margin-bottom:4px">⤢ Fullscreen</button>
+    <button class="btn-secondary" id="p-reset">↺ Defaults</button>
   </div>
 
 </div><!-- /projection -->
@@ -287,9 +625,8 @@ input[type="range"]::-webkit-slider-thumb { -webkit-appearance:none; width:13px;
 
   <!-- Setup -->
   <div class="bgroup">
-    <div class="bgroup-title">Setup</div>
-    <input type="text" class="bg-inp" id="d-name" placeholder="Pattern name" style="margin-bottom:7px">
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-bottom:6px">
+    <div class="bgroup-title">Resolution</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-bottom:7px">
       <button class="preset-btn" data-dome="1920">1080p<span class="preset-sub">1920²</span></button>
       <button class="preset-btn active" data-dome="2048">2K<span class="preset-sub">2048²</span></button>
       <button class="preset-btn" data-dome="4096">4K<span class="preset-sub">4096²</span></button>
@@ -299,18 +636,17 @@ input[type="range"]::-webkit-slider-thumb { -webkit-appearance:none; width:13px;
       <span class="bg-lbl">Custom</span>
       <input type="number" class="bg-inp bg-med" id="d-size" value="2048" min="256" max="8192">
     </div>
+    <input type="text" class="bg-inp bg-wide" id="d-name" placeholder="Pattern name" style="margin-top:5px">
   </div>
-  <div class="bvdiv"></div>
 
   <!-- Pattern -->
-  <div class="bgroup">
+  <div class="bgroup" style="min-width:120px">
     <div class="bgroup-title">Pattern</div>
-    <div style="display:flex;flex-direction:column;gap:5px">
+    <div style="display:flex;flex-direction:column;gap:4px">
       <button class="pat-btn active" data-dpat="standard">Standard</button>
       <button class="pat-btn" data-dpat="zones">Zones</button>
     </div>
   </div>
-  <div class="bvdiv"></div>
 
   <!-- Color -->
   <div class="bgroup">
@@ -319,23 +655,22 @@ input[type="range"]::-webkit-slider-thumb { -webkit-appearance:none; width:13px;
       <label class="cp-swatch"><div class="cp-preview" id="d-colorPreview" style="background:#ffffff"></div><input type="color" id="d-color" value="#ffffff"></label>
       <input class="cp-hex" id="d-colorHex" value="#ffffff" maxlength="7">
     </div>
+    <div class="tone-bar"></div>
   </div>
-  <div class="bvdiv"></div>
 
   <!-- Sliders -->
-  <div class="bgroup">
-    <div class="bgroup-title">Sliders</div>
-    <div class="sl-row"><span class="bg-lbl">Line Thickness</span><span class="sl-val"><span id="d-lwVal">1.0</span>×</span></div>
+  <div class="bgroup" style="min-width:160px">
+    <div class="bgroup-title">Adjust</div>
+    <div class="sl-row"><span class="bg-lbl">Line</span><span class="sl-val"><span id="d-lwVal">1.0</span>×</span></div>
     <input type="range" id="d-lw" class="sl-range" min="0.3" max="5" value="1" step="0.1">
-    <div class="sl-row"><span class="bg-lbl">Text Size</span><span class="sl-val"><span id="d-tsVal">1.0</span>×</span></div>
+    <div class="sl-row"><span class="bg-lbl">Text</span><span class="sl-val"><span id="d-tsVal">1.0</span>×</span></div>
     <input type="range" id="d-ts" class="sl-range" min="0.3" max="3" value="1" step="0.1">
     <div class="sl-row"><span class="bg-lbl">Brightness</span><span class="sl-val"><span id="d-brVal">100</span>%</span></div>
     <input type="range" id="d-br" class="sl-range" min="0" max="100" value="100">
   </div>
-  <div class="bvdiv"></div>
 
   <!-- Elements -->
-  <div class="bgroup">
+  <div class="bgroup" style="min-width:180px">
     <div class="bgroup-title">Elements</div>
     <div class="tog-grid">
       <div class="tog-row"><label class="toggle"><input type="checkbox" id="d-circles" checked><span class="toggle-slider"></span></label><span class="tog-lbl">Circles</span></div>
@@ -346,10 +681,9 @@ input[type="range"]::-webkit-slider-thumb { -webkit-appearance:none; width:13px;
       <div class="tog-row"><label class="toggle"><input type="checkbox" id="d-corners" checked><span class="toggle-slider"></span></label><span class="tog-lbl">Corners</span></div>
     </div>
   </div>
-  <div class="bvdiv"></div>
 
   <!-- Logo -->
-  <div class="bgroup" style="width:188px">
+  <div class="bgroup" style="min-width:170px">
     <div class="bgroup-title">Logo</div>
     <div style="display:flex;gap:8px;align-items:flex-start;margin-bottom:8px">
       <div class="logo-thumb" id="d-logoThumb" style="width:52px;height:26px">
@@ -357,210 +691,136 @@ input[type="range"]::-webkit-slider-thumb { -webkit-appearance:none; width:13px;
       </div>
       <div style="display:flex;flex-direction:column;gap:4px;flex:1">
         <button class="btn-secondary" id="d-logoUpload">↑ Upload</button>
-        <button class="btn-secondary" id="d-logoReset">Reset</button>
+        <button class="btn-secondary" id="d-logoReset">↺ Reset</button>
       </div>
     </div>
     <div class="sl-row"><span class="bg-lbl">Scale</span><span class="sl-val"><span id="d-logoScaleVal">100</span>%</span></div>
     <input type="range" id="d-logoScale" class="sl-range" min="20" max="300" value="100" step="5">
     <input type="file" id="d-logoFile" accept="image/*" style="display:none;">
   </div>
-  <div class="bvdiv"></div>
 
   <!-- Actions -->
-  <div class="bgroup" style="width:118px;justify-content:flex-end">
-    <div style="display:flex;flex-direction:column;gap:6px">
-      <button class="btn-primary" id="d-dl">↓ Download</button>
-      <button class="btn-secondary" id="d-fs">⤢ Fullscreen</button>
-    </div>
+  <div class="bgroup bgroup-actions">
+    <button class="btn-primary" id="d-dl" style="margin-bottom:6px">↓ Download</button>
+    <button class="btn-secondary" id="d-fs" style="margin-bottom:4px">⤢ Fullscreen</button>
+    <button class="btn-secondary" id="d-reset">↺ Defaults</button>
   </div>
 
 </div><!-- /dome -->
-
 </div><!-- /bottom-panel -->
 </div><!-- /main -->
 
 <script>
 // ── STATE ──
-let mode   = 'led';
-let ledSub = 'screen';
+let mode = 'projection';
 let domePat = 'standard';
 let br = { screen:1, canvas:1, dome:1 };
 let ledPat = { screen:'white', canvas:'white' };
-let screenItems = [
-  {id:1,name:'SCR 1',w:1920,h:1080,x:0,y:0},
-  {id:2,name:'SCR 2',w:1920,h:1080,x:1920,y:0},
-];
+let screenItems = [{id:1,name:'SCR 1',w:1920,h:1080,x:0,y:0},{id:2,name:'SCR 2',w:1920,h:1080,x:1920,y:0}];
 let nextId = 3;
-const COLORS = ['#e05555','#55a0e0','#55e09a','#e0c455','#c455e0','#55e0d8'];
+let pLogoCustom = null, dLogoCustom = null;
+let pLogoPos = 'br'; // tr, tl, br, bl
+let currentScale = 1;
 
-// Logo state — null = use default (str_white.png)
-let pLogoCustom = null;
-let dLogoCustom = null;
-
-// Preload default logo
 const defaultLogoImg = new Image();
+defaultLogoImg.crossOrigin = 'anonymous';
 defaultLogoImg.onload = () => draw();
 defaultLogoImg.src = '../images/str_white.png';
 
-const canvas    = document.getElementById('canvas');
-const ctx       = canvas.getContext('2d');
-const canvasArea= document.getElementById('canvasArea');
-const canvasInfo= document.getElementById('canvasInfo');
-const resDisplay= document.getElementById('resDisplay');
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+const canvasArea = document.getElementById('canvasArea');
+const canvasInfo = document.getElementById('canvasInfo');
+const resDisplay = document.getElementById('resDisplay');
+const canvasZoom = document.getElementById('canvasZoom');
+const canvasCoords = document.getElementById('canvasCoords');
 
 // ── HELPERS ──
-function hexToRgb(hex) {
-  return [parseInt(hex.slice(1,3),16), parseInt(hex.slice(3,5),16), parseInt(hex.slice(5,7),16)];
-}
+function hexToRgb(hex) { return [parseInt(hex.slice(1,3),16),parseInt(hex.slice(3,5),16),parseInt(hex.slice(5,7),16)]; }
 function applyBr(r,g,b,bri) { return [Math.round(r*bri),Math.round(g*bri),Math.round(b*bri)]; }
 function v(id) { return document.getElementById(id); }
-function num(id,def) { return parseFloat(v(id).value)||def; }
+function num(id,def) { return parseFloat(v(id)?.value)||def; }
 
-// ── LOGO DRAW (preserves aspect ratio) ──
-function drawLogo(ctx2, W, H, customImg, scale=1) {
+// ── NOTIFICATION ──
+let notifTimer;
+function notify(msg) {
+  const el = v('notif');
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(notifTimer);
+  notifTimer = setTimeout(() => el.classList.remove('show'), 1800);
+}
+
+// ── LOGO ──
+function drawLogo(ctx2, W, H, customImg, scale=1, pos='br') {
   const img = customImg || defaultLogoImg;
   if (!img.complete || !img.naturalWidth) return;
-  const maxW = W * 0.14 * scale;
-  const maxH = H * 0.06 * scale;
-  const aspect = img.naturalWidth / img.naturalHeight;
-  let lw = maxW, lh = maxW / aspect;
-  if (lh > maxH) { lh = maxH; lw = maxH * aspect; }
-  const pad = W * 0.018;
-  ctx2.drawImage(img, W - lw - pad, H - lh - pad, lw, lh);
+  const maxW = W*0.14*scale, maxH = H*0.06*scale;
+  const aspect = img.naturalWidth/img.naturalHeight;
+  let lw = maxW, lh = maxW/aspect;
+  if (lh > maxH) { lh = maxH; lw = maxH*aspect; }
+  const pad = W*0.018;
+  const x = pos.includes('r') ? W-lw-pad : pad;
+  const y = pos.includes('b') ? H-lh-pad : pad;
+  ctx2.drawImage(img, x, y, lw, lh);
 }
 
-// ── LED PATTERNS ──
-const LED_PATS = [
-  {id:'white',label:'White'},{id:'black',label:'Black'},
-  {id:'red',label:'Red'},{id:'green',label:'Green'},
-  {id:'blue',label:'Blue'},{id:'colorbars',label:'Color Bars'},
-  {id:'grayscale',label:'Grayscale'},{id:'grid',label:'Grid'},
-  {id:'crosshatch',label:'Crosshatch'},{id:'checkerboard',label:'Checker'},
-  {id:'gradient',label:'Gradient'},{id:'deadpixel',label:'Dead Pixel'},
-];
-
-function buildPatBtns(containerId, patList, stateObj, stateKey) {
-  const el = v(containerId); el.innerHTML='';
-  patList.forEach(p=>{
-    const b=document.createElement('button');
-    b.className='pat-btn'+(stateObj[stateKey]===p.id?' active':'');
-    b.textContent=p.label;
-    b.addEventListener('click',()=>{ stateObj[stateKey]=p.id; el.querySelectorAll('.pat-btn').forEach(x=>x.classList.remove('active')); b.classList.add('active'); draw(); });
-    el.appendChild(b);
+// ── SMPTE COLOR BARS — centered mini strip below center text ──
+function drawSMPTEBars(ctx2, W, H, centerY) {
+  const bars = [[192,192,192],[192,192,0],[0,192,192],[0,192,0],[192,0,192],[192,0,0],[0,0,192]];
+  const barH = Math.round(H * 0.09);
+  const barW = Math.round(W * 0.55);
+  const startX = Math.round((W - barW) / 2);
+  const startY = Math.round(centerY + H * 0.04);
+  const bw = barW / bars.length;
+  ctx2.fillStyle = 'rgba(0,0,0,0.5)';
+  ctx2.fillRect(startX - 6, startY - 4, barW + 12, barH + 8);
+  bars.forEach(([r,g,b],i) => {
+    ctx2.fillStyle = `rgb(${r},${g},${b})`;
+    ctx2.fillRect(Math.round(startX + i*bw), startY, Math.round(bw)+1, barH);
   });
+  ctx2.fillStyle = 'rgba(255,255,255,0.28)';
+  ctx2.font = `${Math.max(9, H*0.013)}px DM Mono,monospace`;
+  ctx2.textAlign = 'center'; ctx2.textBaseline = 'top';
+  ctx2.fillText('SMPTE 75%', W/2, startY + barH + 5);
 }
 
-function drawLedPattern(ctx2,W,H,patId,bri,modW,modH,cols2,rows2) {
-  modW=modW||W; modH=modH||H; cols2=cols2||1; rows2=rows2||1;
-  switch(patId) {
-    case 'white': { const[r,g,b]=applyBr(255,255,255,bri); ctx2.fillStyle=`rgb(${r},${g},${b})`; ctx2.fillRect(0,0,W,H); break; }
-    case 'black': ctx2.fillStyle='#000'; ctx2.fillRect(0,0,W,H); break;
-    case 'red':   { const[r,g,b]=applyBr(255,0,0,bri); ctx2.fillStyle=`rgb(${r},${g},${b})`; ctx2.fillRect(0,0,W,H); break; }
-    case 'green': { const[r,g,b]=applyBr(0,255,0,bri); ctx2.fillStyle=`rgb(${r},${g},${b})`; ctx2.fillRect(0,0,W,H); break; }
-    case 'blue':  { const[r,g,b]=applyBr(0,0,255,bri); ctx2.fillStyle=`rgb(${r},${g},${b})`; ctx2.fillRect(0,0,W,H); break; }
-    case 'colorbars': {
-      const bars=[[255,255,255],[255,255,0],[0,255,255],[0,255,0],[255,0,255],[255,0,0],[0,0,255],[0,0,0]];
-      const bw=W/bars.length;
-      bars.forEach(([r,g,b],i)=>{ const[cr,cg,cb]=applyBr(r,g,b,bri); ctx2.fillStyle=`rgb(${cr},${cg},${cb})`; ctx2.fillRect(Math.round(i*bw),0,Math.round(bw)+1,H); }); break;
-    }
-    case 'grayscale': {
-      const steps=10,sw=W/steps;
-      for(let i=0;i<steps;i++){ const v2=Math.round((i/(steps-1))*255*bri); ctx2.fillStyle=`rgb(${v2},${v2},${v2})`; ctx2.fillRect(Math.round(i*sw),0,Math.round(sw)+1,H); } break;
-    }
-    case 'grid': {
-      ctx2.fillStyle='#000'; ctx2.fillRect(0,0,W,H);
-      ctx2.strokeStyle=`rgba(255,255,255,${bri})`; ctx2.lineWidth=1;
-      for(let c=0;c<=cols2;c++){ ctx2.beginPath(); ctx2.moveTo(c*modW,0); ctx2.lineTo(c*modW,H); ctx2.stroke(); }
-      for(let r=0;r<=rows2;r++){ ctx2.beginPath(); ctx2.moveTo(0,r*modH); ctx2.lineTo(W,r*modH); ctx2.stroke(); }
-      const fs=Math.min(modW,modH)*0.22;
-      if(fs>=6){ ctx2.fillStyle=`rgba(255,255,255,${bri*0.35})`; ctx2.font=`${fs}px DM Mono,monospace`; ctx2.textAlign='center'; ctx2.textBaseline='middle';
-        for(let r=0;r<rows2;r++) for(let c=0;c<cols2;c++) ctx2.fillText(`${c+1}×${r+1}`,c*modW+modW/2,r*modH+modH/2); } break;
-    }
-    case 'crosshatch': {
-      ctx2.fillStyle='#000'; ctx2.fillRect(0,0,W,H);
-      ctx2.strokeStyle=`rgba(255,255,255,${bri*0.45})`; ctx2.lineWidth=1;
-      for(let c=0;c<=cols2;c++){ ctx2.beginPath(); ctx2.moveTo(c*modW,0); ctx2.lineTo(c*modW,H); ctx2.stroke(); }
-      for(let r=0;r<=rows2;r++){ ctx2.beginPath(); ctx2.moveTo(0,r*modH); ctx2.lineTo(W,r*modH); ctx2.stroke(); }
-      ctx2.strokeStyle=`rgba(255,0,0,${bri})`; ctx2.lineWidth=Math.max(1,W/1000);
-      ctx2.beginPath(); ctx2.moveTo(W/2,0); ctx2.lineTo(W/2,H); ctx2.stroke();
-      ctx2.beginPath(); ctx2.moveTo(0,H/2); ctx2.lineTo(W,H/2); ctx2.stroke();
-      ctx2.strokeStyle=`rgba(255,255,255,${bri*0.2})`; ctx2.lineWidth=1;
-      ctx2.beginPath(); ctx2.moveTo(0,0); ctx2.lineTo(W,H); ctx2.stroke();
-      ctx2.beginPath(); ctx2.moveTo(W,0); ctx2.lineTo(0,H); ctx2.stroke(); break;
-    }
-    case 'checkerboard': {
-      for(let r=0;r<rows2;r++) for(let c=0;c<cols2;c++){
-        const val=(r+c)%2===0?Math.round(255*bri):0; ctx2.fillStyle=`rgb(${val},${val},${val})`; ctx2.fillRect(c*modW,r*modH,modW,modH); } break;
-    }
-    case 'gradient': {
-      const g=ctx2.createLinearGradient(0,0,W,0);
-      g.addColorStop(0,'#000'); g.addColorStop(1,`rgb(${Math.round(255*bri)},${Math.round(255*bri)},${Math.round(255*bri)})`);
-      ctx2.fillStyle=g; ctx2.fillRect(0,0,W,H); break;
-    }
-    case 'deadpixel': {
-      ctx2.fillStyle='#000'; ctx2.fillRect(0,0,W,H);
-      const val=Math.round(255*bri); ctx2.fillStyle=`rgb(${val},${val},${val})`;
-      const sp=Math.max(4,Math.min(modW,modH)/4);
-      for(let y=sp;y<H;y+=sp) for(let x=sp;x<W;x+=sp) ctx2.fillRect(Math.round(x),Math.round(y),1,1); break;
-    }
-  }
-}
-
-// ── LED SCREEN ──
-function drawScreen() {
-  const modW=num('s-modW',96),modH=num('s-modH',96),cols2=num('s-cols',6),rows2=num('s-rows',4),pitch=num('s-pitch',3.9);
-  const W=modW*cols2,H=modH*rows2;
-  canvas.width=W; canvas.height=H;
-  drawLedPattern(ctx,W,H,ledPat.screen,br.screen,modW,modH,cols2,rows2);
-  resDisplay.innerHTML=`<b>${W} × ${H}</b> px`;
-  canvasInfo.textContent=`${W}×${H}px · ${((modW*cols2*pitch)/10).toFixed(1)}×${((modH*rows2*pitch)/10).toFixed(1)}cm · pitch ${pitch}mm`;
-  fitCanvas();
-}
-
-// ── LED CANVAS ──
-function getCanvasBounds() {
-  if(!screenItems.length) return {minX:0,minY:0,W:1920,H:1080};
-  const minX=Math.min(...screenItems.map(s=>s.x)),minY=Math.min(...screenItems.map(s=>s.y));
-  return {minX,minY,W:Math.max(...screenItems.map(s=>s.x+s.w))-minX,H:Math.max(...screenItems.map(s=>s.y+s.h))-minY};
-}
-function drawLedCanvas() {
-  const {minX,minY,W,H}=getCanvasBounds();
-  canvas.width=Math.max(W,1); canvas.height=Math.max(H,1);
-  drawLedPattern(ctx,W,H,ledPat.canvas,br.canvas,W,H,1,1);
-  screenItems.forEach((s,i)=>{
-    const sx=s.x-minX,sy=s.y-minY,col=COLORS[i%COLORS.length];
-    ctx.strokeStyle=col; ctx.lineWidth=Math.max(2,W/400);
-    ctx.strokeRect(sx+1,sy+1,s.w-2,s.h-2);
-    const fs=Math.max(12,Math.min(s.w,s.h)*0.06);
-    ctx.fillStyle=col; ctx.globalAlpha=0.85;
-    ctx.font=`bold ${fs}px DM Mono,monospace`; ctx.textAlign='left'; ctx.textBaseline='top';
-    ctx.fillText(`${s.name}  ${s.w}×${s.h}`,sx+8,sy+8); ctx.globalAlpha=1;
+// ── SAFE AREAS ──
+function drawSafeAreas(ctx2, W, H) {
+  [[0.9,'rgba(255,255,0,0.5)','90% Action'],[0.8,'rgba(255,100,0,0.4)','80% Title']].forEach(([f, col, lbl]) => {
+    const x = W*(1-f)/2, y = H*(1-f)/2, sw = W*f, sh = H*f;
+    ctx2.strokeStyle = col;
+    ctx2.lineWidth = Math.max(1, W/800);
+    ctx2.setLineDash([8,4]);
+    ctx2.strokeRect(x, y, sw, sh);
+    ctx2.setLineDash([]);
+    ctx2.fillStyle = col;
+    ctx2.font = `${Math.max(10,W*0.012)}px DM Mono,monospace`;
+    ctx2.textAlign = 'left'; ctx2.textBaseline = 'bottom';
+    ctx2.fillText(lbl, x+4, y-2);
   });
-  resDisplay.innerHTML=`<b>${W} × ${H}</b> px`;
-  canvasInfo.textContent=`${W}×${H}px · ${screenItems.length} screens`;
-  fitCanvas();
 }
 
 // ── PROJECTION CALC ──
 function projCalc() {
-  const projW=num('p-projW',1920),projH=num('p-projH',1080),cols2=num('p-cols',3),rows2=num('p-rows',1);
-  const blendH=num('p-blendH',0),blendV=num('p-blendV',0);
-  const bHpx=Math.floor(projW*blendH/100),bVpx=Math.floor(projH*blendV/100);
-  const totW=projW*cols2-bHpx*(cols2-1),totH=projH*rows2-bVpx*(rows2-1);
+  const projW=num('p-projW',1920), projH=num('p-projH',1080);
+  const cols2=num('p-cols',3), rows2=num('p-rows',1);
+  const blendH=num('p-blendH',0), blendV=num('p-blendV',0);
+  const bHpx=Math.floor(projW*blendH/100), bVpx=Math.floor(projH*blendV/100);
+  const totW=projW*cols2-bHpx*(cols2-1), totH=projH*rows2-bVpx*(rows2-1);
   v('p-bHpx').textContent=`${bHpx} px`; v('p-bVpx').textContent=`${bVpx} px`;
-  if (document.activeElement!==v('p-totWIn')) v('p-totWIn').value=totW;
-  if (document.activeElement!==v('p-totHIn')) v('p-totHIn').value=totH;
+  if(document.activeElement!==v('p-totWIn')) v('p-totWIn').value=totW;
+  if(document.activeElement!==v('p-totHIn')) v('p-totHIn').value=totH;
   return {projW,projH,cols2,rows2,bHpx,bVpx,totW,totH};
 }
 
 // ── PROJECTION DRAW ──
 function drawProjection() {
   const {projW,projH,cols2,rows2,bHpx,bVpx,totW,totH} = projCalc();
-  canvas.width=Math.max(totW,1); canvas.height=Math.max(totH,1);
+  canvas.width = Math.max(totW,1); canvas.height = Math.max(totH,1);
 
-  const color   = v('p-color').value;
-  const lwMult  = num('p-lw',1);
-  const tsMult  = num('p-ts',1);
+  const color = v('p-color').value;
+  const lwMult = num('p-lw',1), tsMult = num('p-ts',1);
   const showGrid     = v('p-grid').checked;
   const showCircles  = v('p-circles').checked;
   const showCoords   = v('p-coords').checked;
@@ -569,162 +829,152 @@ function drawProjection() {
   const showProjIds  = v('p-projids').checked;
   const showInfo     = v('p-info').checked;
   const showOverlay  = v('p-overlay').checked;
+  const showSafe     = v('p-safearea').checked;
+  const showSmpte    = v('p-smpte').checked;
   const name         = v('p-name').value.trim();
 
   const [cr,cg,cb]   = hexToRgb(color);
   const [tcr,tcg,tcb] = hexToRgb(v('p-textColor').value);
   const [bcr,bcg,bcb] = hexToRgb(v('p-borderColor').value);
   const [ccr,ccg,ccb] = hexToRgb(v('p-circleColor').value);
-  const noW = projW - bHpx;
-  const noH = projH - bVpx;
-  const baseLw = Math.max(1, totW/1200) * lwMult;
-
-  // black bg
-  ctx.fillStyle='#000'; ctx.fillRect(0,0,totW,totH);
-
-  // ── grid across total canvas ──
-  const gridCols = Math.max(2, Math.round(num('p-gridCols', 12)));
-  const gridRows = Math.max(1, Math.round(gridCols * totH / totW));
+  const noW = projW - bHpx, noH = projH - bVpx;
+  const baseLw = Math.max(1, totW/1200)*lwMult;
+  const gridCols = Math.max(2, Math.round(num('p-gridCols',12)));
+  const gridRows = Math.max(1, Math.round(gridCols*totH/totW));
   const cellW = totW/gridCols, cellH = totH/gridRows;
+
+  ctx.fillStyle = '#000'; ctx.fillRect(0,0,totW,totH);
+
 
   if (showGrid) {
     for (let c=0;c<=gridCols;c++) {
-      const x = c*cellW;
-      const isCenterV = (c===gridCols/2);
-      ctx.strokeStyle = `rgba(${cr},${cg},${cb},${isCenterV?1:0.75})`;
-      ctx.lineWidth   = isCenterV ? baseLw*2 : baseLw;
+      const x = c*cellW, isC = (c===gridCols/2);
+      ctx.strokeStyle = `rgba(${cr},${cg},${cb},${isC?1:0.65})`;
+      ctx.lineWidth = isC ? baseLw*2.5 : baseLw;
       ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,totH); ctx.stroke();
     }
     for (let r=0;r<=gridRows;r++) {
-      const y = r*cellH;
-      const isCenterH = (r===gridRows/2);
-      ctx.strokeStyle = `rgba(${cr},${cg},${cb},${isCenterH?1:0.75})`;
-      ctx.lineWidth   = isCenterH ? baseLw*2 : baseLw;
+      const y = r*cellH, isC = (r===gridRows/2);
+      ctx.strokeStyle = `rgba(${cr},${cg},${cb},${isC?1:0.65})`;
+      ctx.lineWidth = isC ? baseLw*2.5 : baseLw;
       ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(totW,y); ctx.stroke();
     }
   }
 
-  // ── coordinate numbers (column boundaries) ──
   if (showCoords) {
     const halfCols = gridCols/2;
     const fs = Math.max(8, cellW*0.28)*tsMult;
-    ctx.font=`${fs}px DM Mono,monospace`; ctx.fillStyle=`rgba(${tcr},${tcg},${tcb},0.85)`;
+    ctx.font=`${fs}px DM Mono,monospace`;
+    ctx.fillStyle=`rgba(${tcr},${tcg},${tcb},0.8)`;
     for (let c=0;c<=gridCols;c++) {
-      if (c===0 || c===gridCols) continue;
-      const coord=Math.round(c-halfCols); if(coord===0) continue;
-      const x=c*cellW; const label=coord>0?`+${coord}`:`${coord}`;
-      ctx.textAlign='center'; ctx.textBaseline='top';    ctx.fillText(label,x,3);
+      if(c===0||c===gridCols) continue;
+      const coord = Math.round(c-halfCols); if(coord===0) continue;
+      const x = c*cellW; const label = coord>0?`+${coord}`:`${coord}`;
+      ctx.textAlign='center'; ctx.textBaseline='top'; ctx.fillText(label,x,3);
       ctx.textBaseline='bottom'; ctx.fillText(label,x,totH-3);
     }
   }
 
-  // ── row labels (left & right) — aligned to horizontal grid lines ──
   if (showRowLabels) {
     const upper='ABCDEFGHIJKLMNOP', lower='abcdefghijklmnop';
-    const halfRows=gridRows/2;
-    const fs=Math.max(8,cellH*0.32)*tsMult;
-    ctx.font=`${fs}px DM Mono,monospace`; ctx.fillStyle=`rgba(${tcr},${tcg},${tcb},0.85)`;
+    const halfRows = gridRows/2;
+    const fs = Math.max(8,cellH*0.32)*tsMult;
+    ctx.font=`${fs}px DM Mono,monospace`; ctx.fillStyle=`rgba(${tcr},${tcg},${tcb},0.8)`;
     for (let r=0;r<=gridRows;r++) {
-      if (r===0 || r===gridRows) continue;
-      const fromCenter = r - halfRows;
-      if (fromCenter === 0) continue;
-      let label;
-      if (fromCenter < 0) label = upper[Math.round(-fromCenter) - 1];
-      else                label = lower[Math.round(fromCenter) - 1];
-      if (!label) continue;
-      const y = r * cellH;
+      if(r===0||r===gridRows) continue;
+      const fromCenter = r-halfRows; if(fromCenter===0) continue;
+      let label = fromCenter<0 ? upper[Math.round(-fromCenter)-1] : lower[Math.round(fromCenter)-1];
+      if(!label) continue;
+      const y = r*cellH;
       ctx.textAlign='left'; ctx.textBaseline='middle'; ctx.fillText(label,4,y);
       ctx.textAlign='right'; ctx.fillText(label,totW-4,y);
     }
   }
 
-  // ── cell IDs (A1, B2 …) ──
   if (showCellIds) {
-    const colLetters='ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    const fs=Math.max(7,Math.min(cellW,cellH)*0.18)*tsMult;
+    const colLetters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    const fs = Math.max(7, Math.min(cellW,cellH)*0.18)*tsMult;
     ctx.font=`${fs}px DM Mono,monospace`;
-    ctx.fillStyle=`rgba(${tcr},${tcg},${tcb},0.55)`;
+    ctx.fillStyle=`rgba(${tcr},${tcg},${tcb},0.45)`;
     ctx.textAlign='left'; ctx.textBaseline='top';
-    for (let r=0;r<gridRows;r++) {
-      for (let c=0;c<gridCols;c++) {
-        const label=(colLetters[r]||'?')+(c+1);
-        ctx.fillText(label, c*cellW+4, r*cellH+4);
-      }
-    }
+    for (let r=0;r<gridRows;r++)
+      for (let c=0;c<gridCols;c++)
+        ctx.fillText((colLetters[r]||'?')+(c+1), c*cellW+4, r*cellH+4);
   }
 
-  // ── circles: one per projector area ──
   if (showCircles) {
-    ctx.strokeStyle=`rgba(${ccr},${ccg},${ccb},0.75)`;
+    ctx.strokeStyle=`rgba(${ccr},${ccg},${ccb},0.7)`;
     ctx.lineWidth=baseLw*1.5;
-    for (let r=0;r<rows2;r++) {
-      for (let c=0;c<cols2;c++) {
-        const cx2=c*noW+projW/2, cy2=r*noH+projH/2;
-        const R=Math.min(projW,projH)/2*0.998;
-        ctx.beginPath(); ctx.arc(cx2,cy2,R,0,Math.PI*2); ctx.stroke();
-      }
+    for (let r=0;r<rows2;r++) for (let c=0;c<cols2;c++) {
+      const cx2=c*noW+projW/2, cy2=r*noH+projH/2;
+      const R=Math.min(projW,projH)/2*0.998;
+      ctx.beginPath(); ctx.arc(cx2,cy2,R,0,Math.PI*2); ctx.stroke();
     }
   }
 
-  // ── projector IDs (large watermark per projector) ──
   if (showProjIds) {
-    const fs=Math.min(projW,projH)*0.12*tsMult;
+    const fs = Math.min(projW,projH)*0.12*tsMult;
     ctx.font=`bold ${fs}px Bebas Neue,sans-serif`;
     ctx.textAlign='center'; ctx.textBaseline='middle';
-    ctx.fillStyle=`rgba(${tcr},${tcg},${tcb},0.1)`;
-    for (let r=0;r<rows2;r++) {
-      for (let c=0;c<cols2;c++) {
-        ctx.fillText(`P${r*cols2+c+1}`, c*noW+projW/2, r*noH+projH*0.82);
-      }
-    }
+    ctx.fillStyle=`rgba(${tcr},${tcg},${tcb},0.08)`;
+    for (let r=0;r<rows2;r++) for (let c=0;c<cols2;c++)
+      ctx.fillText(`P${r*cols2+c+1}`, c*noW+projW/2, r*noH+projH*0.82);
   }
 
-  // ── info text (center of canvas) ──
   if (showInfo || name) {
     const cx2=totW/2, cy2=totH/2;
     if (name) {
       const fs=Math.min(totW*0.052,totH*0.088)*tsMult;
-      ctx.font=`bold ${fs}px sans-serif`;
+      ctx.font=`bold ${fs}px Bebas Neue,sans-serif`;
       ctx.textAlign='center'; ctx.textBaseline='middle';
       ctx.fillStyle=`rgba(${tcr},${tcg},${tcb},0.9)`;
-      ctx.fillText(name,cx2,cy2-(name&&showInfo?fs*1.1:0));
+      ctx.fillText(name,cx2,cy2-(showInfo?fs*1.1:0));
     }
     if (showInfo) {
       const fs=Math.max(10,Math.min(totW*0.022,totH*0.038))*tsMult;
       ctx.font=`${fs}px DM Mono,monospace`;
-      ctx.textAlign='center'; ctx.fillStyle=`rgba(${tcr},${tcg},${tcb},0.5)`;
-      const aspect=(totW/totH).toFixed(2);
+      ctx.textAlign='center'; ctx.fillStyle=`rgba(${tcr},${tcg},${tcb},0.45)`;
       const yo=name?fs*1.5:0;
-      ctx.fillText(`${totW}px x ${totH}px`,cx2,cy2+yo);
-      ctx.fillText(`${aspect}:1`,cx2,cy2+yo+fs*1.6);
-      ctx.fillText(`${gridCols} x ${gridRows} grid`,cx2,cy2+yo+fs*3.2);
+      ctx.fillText(`${totW}px × ${totH}px`,cx2,cy2+yo);
+      ctx.fillText(`${(totW/totH).toFixed(2)}:1`,cx2,cy2+yo+fs*1.6);
+      ctx.fillText(`${gridCols}×${gridRows} grid`,cx2,cy2+yo+fs*3.2);
     }
   }
 
-  // ── blend zone overlays ──
   if (showOverlay) {
-    ctx.strokeStyle=`rgba(${bcr},${bcg},${bcb},0.35)`;
+    ctx.strokeStyle=`rgba(${bcr},${bcg},${bcb},0.3)`;
     ctx.lineWidth=Math.max(1,totW/600)*lwMult;
-    for (let r=0;r<rows2;r++) for(let c=0;c<cols2;c++)
+    for (let r=0;r<rows2;r++) for (let c=0;c<cols2;c++)
       ctx.strokeRect(c*noW+0.5,r*noH+0.5,projW-1,projH-1);
-    if (bHpx>0) {
-      for(let c=0;c<cols2-1;c++) for(let r=0;r<rows2;r++) {
-        ctx.fillStyle='rgba(0,180,255,0.15)'; ctx.fillRect((c+1)*noW,r*noH,bHpx,projH);
+    if (bHpx>0)
+      for (let c=0;c<cols2-1;c++) for (let r=0;r<rows2;r++) {
+        ctx.fillStyle='rgba(0,180,255,0.12)'; ctx.fillRect((c+1)*noW,r*noH,bHpx,projH);
       }
-    }
-    if (bVpx>0) {
-      for(let r=0;r<rows2-1;r++) for(let c=0;c<cols2;c++) {
-        ctx.fillStyle='rgba(255,100,0,0.15)'; ctx.fillRect(c*noW,(r+1)*noH,projW,bVpx);
+    if (bVpx>0)
+      for (let r=0;r<rows2-1;r++) for (let c=0;c<cols2;c++) {
+        ctx.fillStyle='rgba(255,100,0,0.12)'; ctx.fillRect(c*noW,(r+1)*noH,projW,bVpx);
       }
-    }
   }
 
-  // ── safety border ──
-  ctx.strokeStyle=`rgba(${bcr},${bcg},${bcb},0.65)`; ctx.lineWidth=Math.max(2,totW/480)*lwMult;
+  if (showSafe) drawSafeAreas(ctx, totW, totH);
+
+  // color bars — centered below info text
+  if (showSmpte) {
+    const infoFs = Math.max(10, Math.min(totW*0.022, totH*0.038)) * tsMult;
+    const nameFs = Math.min(totW*0.052, totH*0.088) * tsMult;
+    let baseY = totH / 2;
+    if (name && showInfo) baseY += infoFs * 4.5;
+    else if (name) baseY += nameFs * 0.6;
+    else if (showInfo) baseY += infoFs * 4.5;
+    drawSMPTEBars(ctx, totW, totH, baseY);
+  }
+
+  // border
+  ctx.strokeStyle=`rgba(${bcr},${bcg},${bcb},0.6)`;
+  ctx.lineWidth=Math.max(2,totW/480)*lwMult;
   ctx.strokeRect(1,1,totW-2,totH-2);
 
-  // ── logo ──
-  drawLogo(ctx,totW,totH,pLogoCustom,num('p-logoScale',100)/100);
+  drawLogo(ctx,totW,totH,pLogoCustom,num('p-logoScale',100)/100,pLogoPos);
 
   resDisplay.innerHTML=`<b>${totW} × ${totH}</b> px`;
   canvasInfo.textContent=`${totW}×${totH}px · ${cols2}×${rows2} projectors · blend ${bHpx}×${bVpx}px`;
@@ -733,16 +983,14 @@ function drawProjection() {
 
 // ── DOME DRAW ──
 function drawDome() {
-  const size = num('d-size',2048);
-  const bri  = br.dome;
-  const color= v('d-color').value;
-  const name = v('d-name').value.trim();
-  const lwMult = num('d-lw',1);
-  const tsMult = num('d-ts',1);
-  const [cr,cg,cb] = hexToRgb(color);
-  const lw = Math.max(1,size/512)*lwMult;
-
-  function rgba(a) { return `rgba(${Math.round(cr*bri)},${Math.round(cg*bri)},${Math.round(cb*bri)},${a})`; }
+  const size=num('d-size',2048);
+  const bri=br.dome;
+  const color=v('d-color').value;
+  const name=v('d-name').value.trim();
+  const lwMult=num('d-lw',1), tsMult=num('d-ts',1);
+  const [cr,cg,cb]=hexToRgb(color);
+  const lw=Math.max(1,size/512)*lwMult;
+  function rgba(a){return `rgba(${Math.round(cr*bri)},${Math.round(cg*bri)},${Math.round(cb*bri)},${a})`;}
 
   canvas.width=size; canvas.height=size;
   const cx=size/2,cy=size/2,R=size/2;
@@ -759,187 +1007,210 @@ function drawDome() {
       ctx.lineWidth=isSafe?lw*2:lw;
       ctx.beginPath(); ctx.arc(cx,cy,R*f,0,Math.PI*2); ctx.stroke();
       if(doLabels){
-        const fs=size*0.016*tsMult; ctx.font=`${fs}px DM Mono,monospace`;
+        const fs=size*0.016*tsMult;
+        ctx.font=`${fs}px DM Mono,monospace`;
         ctx.fillStyle=rgba(0.5); ctx.textAlign='left'; ctx.textBaseline='middle';
         ctx.fillText(`${Math.round(f*100)}%`,cx+R*f+4,cy);
       }
     });
-    if(doCross){ ctx.strokeStyle=rgba(0.7); ctx.lineWidth=lw; ctx.beginPath(); ctx.moveTo(0,cy); ctx.lineTo(size,cy); ctx.stroke(); ctx.beginPath(); ctx.moveTo(cx,0); ctx.lineTo(cx,size); ctx.stroke(); }
+    if(doCross){ctx.strokeStyle=rgba(0.7);ctx.lineWidth=lw;ctx.beginPath();ctx.moveTo(0,cy);ctx.lineTo(size,cy);ctx.stroke();ctx.beginPath();ctx.moveTo(cx,0);ctx.lineTo(cx,size);ctx.stroke();}
   } else {
-    // standard
     if(doGrid){
       ctx.save(); ctx.beginPath(); ctx.arc(cx,cy,R*0.998,0,Math.PI*2); ctx.clip();
-      ctx.strokeStyle=rgba(0.18); ctx.lineWidth=lw*0.6;
+      ctx.strokeStyle=rgba(0.15); ctx.lineWidth=lw*0.6;
       const step=size/10;
-      for(let x2=step;x2<size;x2+=step){ ctx.beginPath(); ctx.moveTo(x2,0); ctx.lineTo(x2,size); ctx.stroke(); }
-      for(let y2=step;y2<size;y2+=step){ ctx.beginPath(); ctx.moveTo(0,y2); ctx.lineTo(size,y2); ctx.stroke(); }
+      for(let x2=step;x2<size;x2+=step){ctx.beginPath();ctx.moveTo(x2,0);ctx.lineTo(x2,size);ctx.stroke();}
+      for(let y2=step;y2<size;y2+=step){ctx.beginPath();ctx.moveTo(0,y2);ctx.lineTo(size,y2);ctx.stroke();}
       ctx.restore();
     }
-    if(doRadial){ ctx.strokeStyle=rgba(0.25); ctx.lineWidth=lw*0.7;
-      for(let deg=0;deg<360;deg+=30){ const rad=(deg-90)*Math.PI/180; ctx.beginPath(); ctx.moveTo(cx,cy); ctx.lineTo(cx+R*Math.cos(rad),cy+R*Math.sin(rad)); ctx.stroke(); }
+    if(doRadial){ctx.strokeStyle=rgba(0.2);ctx.lineWidth=lw*0.7;
+      for(let deg=0;deg<360;deg+=30){const rad=(deg-90)*Math.PI/180;ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(cx+R*Math.cos(rad),cy+R*Math.sin(rad));ctx.stroke();}
     }
     if(doCircles){
-      [0.25,0.5,0.75].forEach(f=>{ ctx.strokeStyle=rgba(0.3); ctx.lineWidth=lw*0.7; ctx.beginPath(); ctx.arc(cx,cy,R*f,0,Math.PI*2); ctx.stroke(); });
-      ctx.strokeStyle=`rgba(80,220,120,${bri*0.7})`; ctx.lineWidth=lw*1.2;
-      ctx.beginPath(); ctx.arc(cx,cy,R*0.9,0,Math.PI*2); ctx.stroke();
-      ctx.strokeStyle=rgba(0.9); ctx.lineWidth=lw*2;
-      ctx.beginPath(); ctx.arc(cx,cy,R*0.998,0,Math.PI*2); ctx.stroke();
+      [0.25,0.5,0.75].forEach(f=>{ctx.strokeStyle=rgba(0.28);ctx.lineWidth=lw*0.7;ctx.beginPath();ctx.arc(cx,cy,R*f,0,Math.PI*2);ctx.stroke();});
+      ctx.strokeStyle=`rgba(80,220,120,${bri*0.65})`;ctx.lineWidth=lw*1.2;
+      ctx.beginPath();ctx.arc(cx,cy,R*0.9,0,Math.PI*2);ctx.stroke();
+      ctx.strokeStyle=rgba(0.85);ctx.lineWidth=lw*2;
+      ctx.beginPath();ctx.arc(cx,cy,R*0.998,0,Math.PI*2);ctx.stroke();
     }
-    if(doCross){ ctx.strokeStyle=rgba(0.8); ctx.lineWidth=lw;
-      ctx.beginPath(); ctx.moveTo(0,cy); ctx.lineTo(size,cy); ctx.stroke();
-      ctx.beginPath(); ctx.moveTo(cx,0); ctx.lineTo(cx,size); ctx.stroke();
-      ctx.fillStyle=rgba(1); ctx.beginPath(); ctx.arc(cx,cy,lw*3,0,Math.PI*2); ctx.fill();
+    if(doCross){ctx.strokeStyle=rgba(0.75);ctx.lineWidth=lw;
+      ctx.beginPath();ctx.moveTo(0,cy);ctx.lineTo(size,cy);ctx.stroke();
+      ctx.beginPath();ctx.moveTo(cx,0);ctx.lineTo(cx,size);ctx.stroke();
+      ctx.fillStyle=rgba(1);ctx.beginPath();ctx.arc(cx,cy,lw*3,0,Math.PI*2);ctx.fill();
     }
     if(doLabels){
-      const fs=size*0.028*tsMult; ctx.font=`bold ${fs}px DM Mono,monospace`; ctx.fillStyle=rgba(0.8);
-      ctx.textAlign='center'; ctx.textBaseline='middle';
+      const fs=size*0.028*tsMult;
+      ctx.font=`bold ${fs}px DM Mono,monospace`;ctx.fillStyle=rgba(0.75);
+      ctx.textAlign='center';ctx.textBaseline='middle';
       const off=R*0.07;
-      ctx.fillText('N',cx,cy-R+off); ctx.fillText('S',cx,cy+R-off); ctx.fillText('E',cx+R-off,cy); ctx.fillText('W',cx-R+off,cy);
-      ctx.font=`${size*0.018*tsMult}px DM Mono,monospace`; ctx.fillStyle=rgba(0.4);
+      ctx.fillText('N',cx,cy-R+off);ctx.fillText('S',cx,cy+R-off);ctx.fillText('E',cx+R-off,cy);ctx.fillText('W',cx-R+off,cy);
+      ctx.font=`${size*0.018*tsMult}px DM Mono,monospace`;ctx.fillStyle=rgba(0.35);
       [['25%',0.25],['50%',0.5],['75%',0.75],['90%',0.9]].forEach(([lbl,f])=>ctx.fillText(lbl,cx+R*f+size*0.02,cy-size*0.012));
     }
-    if(doCorners){ ctx.strokeStyle=rgba(0.5); ctx.lineWidth=lw;
+    if(doCorners){ctx.strokeStyle=rgba(0.45);ctx.lineWidth=lw;
       const m=size*0.04;
       [[0,0],[size,0],[0,size],[size,size]].forEach(([x2,y2])=>{
         const dx=x2===0?m:-m,dy=y2===0?m:-m;
-        ctx.beginPath(); ctx.moveTo(x2+dx,y2); ctx.lineTo(x2,y2); ctx.lineTo(x2,y2+dy); ctx.stroke();
+        ctx.beginPath();ctx.moveTo(x2+dx,y2);ctx.lineTo(x2,y2);ctx.lineTo(x2,y2+dy);ctx.stroke();
       });
     }
   }
-
-  // name
   if(name){
     const fs=size*0.028*tsMult;
-    ctx.font=`bold ${fs}px sans-serif`; ctx.textAlign='center'; ctx.textBaseline='middle';
+    ctx.font=`bold ${fs}px Bebas Neue,sans-serif`;ctx.textAlign='center';ctx.textBaseline='middle';
     ctx.fillStyle='rgba(255,255,255,0.8)';
     ctx.fillText(name,cx,cy+R*0.15);
   }
-
-  // logo
   drawLogo(ctx,size,size,dLogoCustom,num('d-logoScale',100)/100);
-
   resDisplay.innerHTML=`<b>${size} × ${size}</b> px`;
   canvasInfo.textContent=`${size}×${size}px · dome · ${domePat}`;
   fitCanvas();
 }
 
-// ── FIT ──
+// ── FIT CANVAS ──
 function fitCanvas() {
-  const pad=48,aW=canvasArea.clientWidth-pad,aH=canvasArea.clientHeight-pad;
-  const cW=canvas.width,cH=canvas.height;
+  const pad=32;
+  const panelH = document.getElementById('bottomPanel').offsetHeight;
+  const aW = canvasArea.clientWidth-pad;
+  const aH = canvasArea.clientHeight-pad;
+  const cW = canvas.width, cH = canvas.height;
   if(!cW||!cH) return;
-  const scale=Math.min(aW/cW,aH/cH,1);
-  canvas.style.width=Math.round(cW*scale)+'px';
-  canvas.style.height=Math.round(cH*scale)+'px';
+  currentScale = Math.min(aW/cW, aH/cH, 1);
+  canvas.style.width  = Math.round(cW*currentScale)+'px';
+  canvas.style.height = Math.round(cH*currentScale)+'px';
+  canvasZoom.textContent = currentScale >= 0.995 ? '100%' : `${Math.round(currentScale*100)}%`;
 }
 
 function draw() {
-  if(mode==='led')        { ledSub==='screen'?drawScreen():drawLedCanvas(); }
+  if(mode==='led') return;
   else if(mode==='projection') drawProjection();
-  else                         drawDome();
+  else drawDome();
 }
 
-// ── SCREEN LIST (LED, kept for JS compat) ──
-function renderScreenList() {
-  const list=v('screenList'); if(!list) return; list.innerHTML='';
+// ── CURSOR COORDS ON CANVAS ──
+canvas.addEventListener('mousemove', e => {
+  const rect = canvas.getBoundingClientRect();
+  const x = Math.round((e.clientX-rect.left)/currentScale);
+  const y = Math.round((e.clientY-rect.top)/currentScale);
+  canvasCoords.style.display = 'block';
+  canvasCoords.textContent = `${x} × ${y}`;
+});
+canvas.addEventListener('mouseleave', () => {
+  canvasCoords.style.display = 'none';
+});
+
+// ── CUSTOM CURSOR ──
+if (window.matchMedia('(hover:hover) and (pointer:fine)').matches) {
+  const cur = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mx=0, my=0, rx=0, ry=0;
+  document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; });
+  (function animCur() {
+    cur.style.left=mx+'px'; cur.style.top=my+'px';
+    rx+=(mx-rx)*0.12; ry+=(my-ry)*0.12;
+    ring.style.left=rx+'px'; ring.style.top=ry+'px';
+    requestAnimationFrame(animCur);
+  })();
+  document.querySelectorAll('button,label,input,a').forEach(el => {
+    el.addEventListener('mouseenter', () => ring.classList.add('expand'));
+    el.addEventListener('mouseleave', () => ring.classList.remove('expand'));
+  });
 }
+
+// ── QUICK PRESETS ──
+document.querySelectorAll('.qres-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.qres-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    v('p-projW').value = btn.dataset.w;
+    v('p-projH').value = btn.dataset.h;
+    v('p-cols').value  = btn.dataset.cols;
+    v('p-rows').value  = btn.dataset.rows;
+    draw();
+  });
+});
 
 // ── COLOR WIRING ──
-function wireColor(colorId,previewId,hexId,cb2) {
-  const ci=v(colorId),pi=v(previewId),hi=v(hexId);
-  ci.addEventListener('input',e=>{ pi.style.background=e.target.value; hi.value=e.target.value; cb2(); });
-  hi.addEventListener('input',e=>{ if(/^#[0-9a-fA-F]{6}$/.test(e.target.value)){ ci.value=e.target.value; pi.style.background=e.target.value; cb2(); } });
-  hi.addEventListener('blur',e=>{ if(!/^#[0-9a-fA-F]{6}$/.test(e.target.value)) e.target.value=ci.value; });
+function wireColor(colorId, previewId, hexId, cb) {
+  const ci=v(colorId), pi=v(previewId), hi=v(hexId);
+  ci.addEventListener('input', e => { pi.style.background=e.target.value; hi.value=e.target.value; cb(); });
+  hi.addEventListener('input', e => { if(/^#[0-9a-fA-F]{6}$/.test(e.target.value)){ci.value=e.target.value;pi.style.background=e.target.value;cb();}});
+  hi.addEventListener('blur', e => { if(!/^#[0-9a-fA-F]{6}$/.test(e.target.value)) e.target.value=ci.value; });
+}
+
+// ── SLIDER WIRING ──
+function wireSlider(id, valId, cb) {
+  v(id).addEventListener('input', e => { v(valId).textContent=parseFloat(e.target.value).toFixed(1); cb(); });
 }
 
 // ── LOGO WIRING ──
-function wireLogoUpload(uploadId,resetId,fileId,thumbId,setter,redraw) {
-  v(uploadId).addEventListener('click',()=>v(fileId).click());
-  v(fileId).addEventListener('change',e=>{
+function wireLogoUpload(uploadId, resetId, fileId, thumbId, setter, redraw) {
+  v(uploadId).addEventListener('click', () => v(fileId).click());
+  v(fileId).addEventListener('change', e => {
     const file=e.target.files[0]; if(!file) return;
     const reader=new FileReader();
     reader.onload=ev=>{
       const img=new Image();
-      img.onload=()=>{
-        setter(img);
-        v(thumbId).innerHTML=`<img src="${ev.target.result}" style="width:100%;height:100%;object-fit:contain;">`;
-        redraw();
-      };
+      img.onload=()=>{ setter(img); v(thumbId).innerHTML=`<img src="${ev.target.result}" style="width:100%;height:100%;object-fit:contain;">`; redraw(); };
       img.src=ev.target.result;
     };
     reader.readAsDataURL(file);
   });
-  v(resetId).addEventListener('click',()=>{
+  v(resetId).addEventListener('click', () => {
     setter(null);
     v(thumbId).innerHTML=`<img src="../images/str_white.png" style="width:100%;height:100%;object-fit:contain;">`;
-    v(fileId).value='';
-    redraw();
+    v(fileId).value=''; redraw();
   });
 }
 
-// ── SLIDER WIRING ──
-function wireSlider(id,valId,cb2) {
-  v(id).addEventListener('input',e=>{ v(valId).textContent=parseFloat(e.target.value).toFixed(1); cb2(); });
+// ── DOWNLOAD ──
+function dlCanvas(fn) {
+  const a=document.createElement('a');
+  a.download=fn||`pattern_${canvas.width}x${canvas.height}.png`;
+  a.href=canvas.toDataURL('image/png');
+  a.click();
+  notify('Saved as PNG');
 }
 
-// ── HASH ROUTING ──
+// ── COPY TO CLIPBOARD ──
+async function copyCanvas() {
+  try {
+    canvas.toBlob(async blob => {
+      await navigator.clipboard.write([new ClipboardItem({'image/png':blob})]);
+      notify('Copied to clipboard');
+    });
+  } catch(e) { notify('Copy not supported'); }
+}
+
+// ── MODE SWITCH ──
 function setMode(m) {
-  mode = m;
-  if (window.location.hash.replace('#','') !== m) history.replaceState(null,'','#'+m);
+  mode=m;
+  if(window.location.hash.replace('#','')!==m) history.replaceState(null,'','#'+m);
   document.querySelectorAll('.mode-tab').forEach(b=>b.classList.remove('active'));
-  const tab = document.querySelector(`.mode-tab[data-mode="${m}"]`);
-  if (tab) tab.classList.add('active');
+  const tab=document.querySelector(`.mode-tab[data-mode="${m}"]`);
+  if(tab) tab.classList.add('active');
   ['sb-led','sb-projection','sb-dome'].forEach(id=>v(id).classList.toggle('sb-hidden',id!=='sb-'+m));
   draw();
 }
-window.addEventListener('hashchange',()=>{
+window.addEventListener('hashchange', () => {
   const m=window.location.hash.replace('#','');
   if(['projection','dome'].includes(m)&&m!==mode) setMode(m);
 });
+document.querySelectorAll('.mode-tab:not(.disabled)').forEach(btn=>btn.addEventListener('click',()=>setMode(btn.dataset.mode)));
 
-// ── EVENTS ──
-document.querySelectorAll('.mode-tab:not(.disabled)').forEach(btn=>btn.addEventListener('click',()=>{
-  setMode(btn.dataset.mode);
-}));
-
-['s-modW','s-modH','s-cols','s-rows','s-pitch'].forEach(id=>{ const el=v(id); if(el) el.addEventListener('input',draw); });
-const sbr=v('s-br'); if(sbr) sbr.addEventListener('input',e=>{ br.screen=e.target.value/100; v('s-brVal').textContent=e.target.value; draw(); });
-const abtn=v('addScreen'); if(abtn) abtn.addEventListener('click',()=>{
-  const last=screenItems[screenItems.length-1];
-  screenItems.push({id:nextId++,name:`SCR ${screenItems.length+1}`,w:1920,h:1080,x:last?last.x+last.w:0,y:0});
-  renderScreenList(); draw();
-});
-const cbr=v('c-br'); if(cbr) cbr.addEventListener('input',e=>{ br.canvas=e.target.value/100; v('c-brVal').textContent=e.target.value; draw(); });
-
-// When total canvas OR projector res changes: recalc cols + blend to keep canvas fixed
+// ── PROJECTION EVENTS ──
 function recalcFromTotalAndProj() {
-  const totW = parseInt(v('p-totWIn').value)||1;
-  const totH = parseInt(v('p-totHIn').value)||1;
-  const projW = num('p-projW',1920);
-  const projH = num('p-projH',1080);
-
-  const cols = Math.max(1, Math.round(totW / projW));
-  const rows = Math.max(1, Math.round(totH / projH));
-  v('p-cols').value = cols;
-  v('p-rows').value = rows;
-
-  if (cols > 1) {
-    const blendH = Math.max(0, Math.min(49, (projW * cols - totW) / (cols - 1) / projW * 100));
-    v('p-blendH').value = blendH.toFixed(2);
-  } else {
-    v('p-blendH').value = 0;
-  }
-  if (rows > 1) {
-    const blendV = Math.max(0, Math.min(49, (projH * rows - totH) / (rows - 1) / projH * 100));
-    v('p-blendV').value = blendV.toFixed(2);
-  } else {
-    v('p-blendV').value = 0;
-  }
+  const totW=parseInt(v('p-totWIn').value)||1, totH=parseInt(v('p-totHIn').value)||1;
+  const projW=num('p-projW',1920), projH=num('p-projH',1080);
+  const cols=Math.max(1,Math.round(totW/projW)), rows=Math.max(1,Math.round(totH/projH));
+  v('p-cols').value=cols; v('p-rows').value=rows;
+  if(cols>1){const bH=Math.max(0,Math.min(49,(projW*cols-totW)/(cols-1)/projW*100));v('p-blendH').value=bH.toFixed(2);}else{v('p-blendH').value=0;}
+  if(rows>1){const bV=Math.max(0,Math.min(49,(projH*rows-totH)/(rows-1)/projH*100));v('p-blendV').value=bV.toFixed(2);}else{v('p-blendV').value=0;}
   draw();
 }
 ['p-totWIn','p-totHIn','p-projW','p-projH'].forEach(id=>v(id).addEventListener('input',recalcFromTotalAndProj));
 ['p-cols','p-rows','p-blendH','p-blendV','p-name'].forEach(id=>v(id).addEventListener('input',draw));
-['p-grid','p-circles','p-coords','p-rowlabels','p-cellids','p-projids','p-info','p-overlay'].forEach(id=>v(id).addEventListener('change',draw));
+['p-grid','p-circles','p-coords','p-rowlabels','p-cellids','p-projids','p-info','p-overlay','p-safearea','p-smpte'].forEach(id=>v(id).addEventListener('change',draw));
 wireSlider('p-lw','p-lwVal',draw);
 wireSlider('p-ts','p-tsVal',draw);
 wireSlider('p-gridCols','p-gridColsVal',draw);
@@ -949,17 +1220,47 @@ wireColor('p-textColor','p-textColorPreview','p-textColorHex',draw);
 wireColor('p-borderColor','p-borderColorPreview','p-borderColorHex',draw);
 wireColor('p-circleColor','p-circleColorPreview','p-circleColorHex',draw);
 wireLogoUpload('p-logoUpload','p-logoReset','p-logoFile','p-logoThumb',img=>pLogoCustom=img,draw);
+v('p-dl').addEventListener('click',()=>dlCanvas(`Projection_${canvas.width}x${canvas.height}.png`));
+v('p-fs').addEventListener('click',()=>{ if(!document.fullscreenElement) canvasArea.requestFullscreen(); else document.exitFullscreen(); });
+v('p-reset').addEventListener('click', () => {
+  v('p-projW').value=1920; v('p-projH').value=1080;
+  v('p-cols').value=3; v('p-rows').value=1;
+  v('p-blendH').value=20; v('p-blendV').value=20;
+  v('p-lw').value=1; v('p-lwVal').textContent='1.0';
+  v('p-ts').value=1; v('p-tsVal').textContent='1.0';
+  v('p-gridCols').value=12; v('p-gridColsVal').textContent='12';
+  v('p-color').value='#ff3333'; v('p-colorPreview').style.background='#ff3333'; v('p-colorHex').value='#ff3333';
+  v('p-textColor').value='#ffffff'; v('p-textColorPreview').style.background='#ffffff'; v('p-textColorHex').value='#ffffff';
+  v('p-borderColor').value='#00dc3c'; v('p-borderColorPreview').style.background='#00dc3c'; v('p-borderColorHex').value='#00dc3c';
+  v('p-circleColor').value='#ffffff'; v('p-circleColorPreview').style.background='#ffffff'; v('p-circleColorHex').value='#ffffff';
+  ['p-grid','p-circles','p-coords','p-rowlabels','p-projids','p-info','p-overlay'].forEach(id=>v(id).checked=true);
+  ['p-cellids','p-safearea','p-smpte'].forEach(id=>v(id).checked=false);
+  v('p-name').value=''; pLogoCustom=null; pLogoPos='br';
+  v('p-logoThumb').innerHTML='<img src="../images/str_white.png" style="width:100%;height:100%;object-fit:contain;">';
+  document.querySelectorAll('.logo-pos-btn').forEach(b=>b.classList.toggle('active',b.dataset.pos==='br'));
+  notify('Reset to defaults'); draw();
+});
+document.querySelectorAll('.logo-pos-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    pLogoPos = btn.dataset.pos;
+    document.querySelectorAll('.logo-pos-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    draw();
+  });
+});
 
+// ── DOME EVENTS ──
 document.querySelectorAll('.preset-btn[data-dome]').forEach(btn=>btn.addEventListener('click',()=>{
-  document.querySelectorAll('.preset-btn[data-dome]').forEach(b=>b.classList.remove('active')); btn.classList.add('active');
-  v('d-size').value=btn.dataset.dome; draw();
+  document.querySelectorAll('.preset-btn[data-dome]').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active'); v('d-size').value=btn.dataset.dome; draw();
 }));
-v('d-size').addEventListener('input',e=>{
+v('d-size').addEventListener('input', e => {
   document.querySelectorAll('.preset-btn[data-dome]').forEach(b=>b.classList.toggle('active',b.dataset.dome===e.target.value)); draw();
 });
 document.querySelectorAll('.pat-btn[data-dpat]').forEach(btn=>btn.addEventListener('click',()=>{
   domePat=btn.dataset.dpat;
-  document.querySelectorAll('.pat-btn[data-dpat]').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); draw();
+  document.querySelectorAll('.pat-btn[data-dpat]').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active'); draw();
 }));
 ['d-circles','d-grid','d-cross','d-radial','d-labels','d-corners'].forEach(id=>v(id).addEventListener('change',draw));
 v('d-name').addEventListener('input',draw);
@@ -969,26 +1270,31 @@ wireSlider('d-ts','d-tsVal',draw);
 wireSlider('d-logoScale','d-logoScaleVal',draw);
 wireColor('d-color','d-colorPreview','d-colorHex',draw);
 wireLogoUpload('d-logoUpload','d-logoReset','d-logoFile','d-logoThumb',img=>dLogoCustom=img,draw);
-
-function dlCanvas(fn) { const a=document.createElement('a'); a.download=fn; a.href=canvas.toDataURL('image/png'); a.click(); }
-const sdl=v('s-dl'); if(sdl) sdl.addEventListener('click',()=>dlCanvas(`LED_${canvas.width}x${canvas.height}.png`));
-const cdl=v('c-dl'); if(cdl) cdl.addEventListener('click',()=>dlCanvas(`LEDCanvas_${canvas.width}x${canvas.height}.png`));
-v('p-dl').addEventListener('click',()=>dlCanvas(`Proj_${canvas.width}x${canvas.height}.png`));
 v('d-dl').addEventListener('click',()=>dlCanvas(`Dome_${canvas.width}x${canvas.height}.png`));
-const sfs=v('s-fs'); if(sfs) sfs.addEventListener('click',()=>canvasArea.requestFullscreen?.());
-const cfs=v('c-fs'); if(cfs) cfs.addEventListener('click',()=>canvasArea.requestFullscreen?.());
-v('p-fs').addEventListener('click',()=>canvasArea.requestFullscreen?.());
-v('d-fs').addEventListener('click',()=>canvasArea.requestFullscreen?.());
+v('d-fs').addEventListener('click',()=>{ if(!document.fullscreenElement) canvasArea.requestFullscreen(); else document.exitFullscreen(); });
+v('d-reset').addEventListener('click', () => {
+  v('d-size').value=2048;
+  document.querySelectorAll('.preset-btn[data-dome]').forEach(b=>b.classList.toggle('active',b.dataset.dome==='2048'));
+  v('d-color').value='#ffffff'; v('d-colorPreview').style.background='#ffffff'; v('d-colorHex').value='#ffffff';
+  v('d-lw').value=1; v('d-lwVal').textContent='1.0';
+  v('d-ts').value=1; v('d-tsVal').textContent='1.0';
+  v('d-br').value=100; v('d-brVal').textContent='100'; br.dome=1;
+  ['d-circles','d-grid','d-cross','d-radial','d-labels','d-corners'].forEach(id=>v(id).checked=true);
+  v('d-name').value=''; dLogoCustom=null;
+  v('d-logoThumb').innerHTML='<img src="../images/str_white.png" style="width:100%;height:100%;object-fit:contain;">';
+  domePat='standard';
+  document.querySelectorAll('.pat-btn[data-dpat]').forEach(b=>b.classList.toggle('active',b.dataset.dpat==='standard'));
+  notify('Reset to defaults'); draw();
+});
 
-window.addEventListener('resize',fitCanvas);
+
+
+// ── RESIZE ──
+window.addEventListener('resize', fitCanvas);
 
 // ── INIT ──
-buildPatBtns('pat-screen',LED_PATS,ledPat,'screen');
-buildPatBtns('pat-canvas',LED_PATS,ledPat,'canvas');
-renderScreenList();
-projCalc();
-const _initHash = window.location.hash.replace('#','');
-setMode(['projection','dome'].includes(_initHash) ? _initHash : 'projection');
+const hash = window.location.hash.replace('#','');
+setMode(['projection','dome'].includes(hash) ? hash : 'projection');
 </script>
 </body>
 </html>

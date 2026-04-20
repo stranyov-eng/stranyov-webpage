@@ -84,7 +84,7 @@
     "wide": false
   },
   {
-    "title": "Rave Rebels Deus | Ex Machina",
+    "title": "Rave Rebels Deus | Deus Ex Machina",
     "meta": "Brussels, Belgium · 2025",
     "role": "VJ · Sila Sveta",
     "category": "vj",
@@ -197,7 +197,7 @@
     "role": "Disguise Engineer · Andrey Fomin Production",
     "category": "disguise",
     "image": "qeo.png",
-    "link": "",
+    "link": "https://www.youtube.com/watch?v=WyP2VQ7UL5I",
     "wide": false
   },
   {
@@ -242,7 +242,7 @@
     "role": "Disguise Engineer · PRG",
     "category": "disguise",
     "image": "fifa22.png",
-    "link": "",
+    "link": "https://qatar.fischerappelt.com/cases/fff",
     "wide": false
   },
   {
@@ -310,9 +310,9 @@
   },
   {
     "title": "IN TO TSEH",
-    "meta": "Nikola-Lenivets, Russia · 2021",
-    "role": "Resolume Engineer · Sila Sveta",
-    "category": "vj",
+    "meta": "NIzhniy-Novgorod, Russia · 2021",
+    "role": "Disguise Engineer · Sila Sveta",
+    "category": "disguise"
     "image": "tseh.png",
     "link": "https://www.silasveta.com/projects/in-to-tseh",
     "wide": false
@@ -366,7 +366,7 @@
     "title": "American University in Cairo",
     "meta": "Cairo, Egypt · 2020",
     "role": "Resolume Engineer · Sila Sveta",
-    "category": "integration",
+    "category": "vj",
     "image": "auc.png",
     "link": "https://www.silasveta.com/projects/the-american-university-in-cairo",
     "wide": false

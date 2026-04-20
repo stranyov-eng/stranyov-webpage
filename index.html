@@ -12,14 +12,10 @@
     --black: #0a0a0a;
     --white: #f0ede8;
     --gray: #888;
-    --accent: #f0ede8;
-    --line: rgba(240,237,232,0.12);
+    --line: rgba(240,237,232,0.1);
   }
-
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
   html { scroll-behavior: smooth; }
-
   body {
     background: var(--black);
     color: var(--white);
@@ -29,272 +25,506 @@
     cursor: none;
   }
 
-  /* CUSTOM CURSOR */
+  /* CURSOR */
   .cursor {
-    position: fixed;
-    width: 8px; height: 8px;
-    background: var(--white);
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 9999;
-    transition: transform 0.15s ease, opacity 0.2s;
-    transform: translate(-50%, -50%);
+    position: fixed; width: 6px; height: 6px;
+    background: var(--white); border-radius: 50%;
+    pointer-events: none; z-index: 9999;
+    transition: transform 0.1s, opacity 0.2s, width 0.3s, height 0.3s;
+    transform: translate(-50%,-50%);
   }
+  .cursor.hover { width: 0; height: 0; opacity: 0; }
   .cursor-ring {
-    position: fixed;
-    width: 32px; height: 32px;
-    border: 1px solid rgba(240,237,232,0.4);
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 9998;
-    transition: transform 0.4s cubic-bezier(.23,1,.32,1), width 0.3s, height 0.3s, border-color 0.3s;
-    transform: translate(-50%, -50%);
+    position: fixed; width: 36px; height: 36px;
+    border: 1px solid rgba(240,237,232,0.35);
+    border-radius: 50%; pointer-events: none; z-index: 9998;
+    transition: transform 0.45s cubic-bezier(.23,1,.32,1), width 0.35s, height 0.35s, border-color 0.3s, border-radius 0.3s;
+    transform: translate(-50%,-50%);
   }
-  .cursor-ring.expand { width: 64px; height: 64px; border-color: rgba(240,237,232,0.2); }
+  .cursor-ring.expand { width: 60px; height: 60px; border-color: rgba(240,237,232,0.15); }
 
   /* NAV */
   nav {
     position: fixed; top: 0; left: 0; right: 0; z-index: 100;
     display: flex; align-items: center; justify-content: space-between;
-    padding: 12px 36px;
-    background: var(--black);
+    padding: 14px 40px;
+    background: rgba(10,10,10,0.88);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--line);
+    transition: padding 0.4s;
   }
-  nav::after {
-    content: ''; position: absolute; bottom: 0; left: 48px; right: 48px;
-    height: 1px; background: var(--line);
-  }
-  .nav-logo {
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-  }
-  .nav-logo img {
-    height: 36px;
-    width: auto;
-    display: block;
-  }
-  .nav-links { display: flex; gap: 36px; list-style: none; }
+  .nav-logo { text-decoration: none; display: flex; align-items: center; }
+  .nav-logo img { height: 32px; width: auto; display: block; }
+  .nav-links { display: flex; gap: 32px; list-style: none; }
   .nav-links a {
-    color: rgba(240,237,232,0.5);
+    color: rgba(240,237,232,0.4);
     text-decoration: none;
     font-size: 11px;
-    letter-spacing: 0.2em;
+    letter-spacing: 0.22em;
     text-transform: uppercase;
     font-weight: 400;
-    transition: color 0.3s;
+    transition: color 0.25s;
+    position: relative;
+  }
+  .nav-links a::after {
+    content: '';
+    position: absolute; bottom: -2px; left: 0;
+    width: 0; height: 1px;
+    background: var(--white);
+    transition: width 0.3s;
   }
   .nav-links a:hover { color: var(--white); }
+  .nav-links a:hover::after { width: 100%; }
 
   /* HERO */
   #hero {
     min-height: 100vh;
     display: flex; align-items: flex-end;
-    padding: 0 48px 80px;
-    position: relative;
-    overflow: hidden;
+    padding: 0 48px 72px;
+    position: relative; overflow: hidden;
   }
-  .hero-bg-text {
-    position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(120px, 22vw, 340px);
-    letter-spacing: -0.02em;
-    color: transparent;
-    -webkit-text-stroke: 1px rgba(240,237,232,0.04);
-    white-space: nowrap;
-    pointer-events: none;
-    user-select: none;
+  #hero-canvas { display: none; }
+  /* Optional: drop a real showreel video here */
+  #hero-video {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    opacity: 0.18;
+    display: block;
+  }
+  .hero-vignette {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at center, transparent 30%, rgba(10,10,10,0.75) 100%);
+    pointer-events: none; z-index: 1;
+  }
+  .hero-bottom-fade {
+    position: absolute; bottom: 0; left: 0; right: 0; height: 40%;
+    background: linear-gradient(to top, var(--black) 0%, transparent 100%);
+    pointer-events: none; z-index: 1;
   }
   .hero-content { position: relative; z-index: 2; width: 100%; }
   .hero-tag {
     font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.25em;
-    color: rgba(240,237,232,0.4);
+    font-size: 11px; letter-spacing: 0.28em;
+    color: rgba(240,237,232,0.35);
     text-transform: uppercase;
-    margin-bottom: 24px;
-    display: flex; align-items: center; gap: 12px;
+    margin-bottom: 20px;
+    display: flex; align-items: center; gap: 14px;
   }
   .hero-tag::before {
     content: ''; display: block;
-    width: 32px; height: 1px;
-    background: rgba(240,237,232,0.3);
+    width: 28px; height: 1px;
+    background: rgba(240,237,232,0.25);
   }
   h1 {
     font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(72px, 12vw, 180px);
-    line-height: 0.9;
+    font-size: clamp(72px, 13vw, 200px);
+    line-height: 0.88;
     letter-spacing: -0.01em;
-    margin-bottom: 40px;
+    margin-bottom: 44px;
+    will-change: transform;
   }
-  h1 .line2 { display: block; padding-left: clamp(60px, 10vw, 160px); }
+  h1 .line2 { display: block; padding-left: clamp(60px, 10vw, 180px); }
   .hero-bottom {
     display: flex; align-items: flex-end; justify-content: space-between;
+    gap: 40px;
   }
   .hero-desc {
-    max-width: 380px;
-    font-size: 14px;
-    line-height: 1.8;
-    color: rgba(240,237,232,0.55);
+    max-width: 360px;
+    font-size: 14px; line-height: 1.85;
+    color: rgba(240,237,232,0.5);
     font-weight: 300;
   }
-  .hero-stats {
-    display: flex; gap: 48px;
-  }
+  .hero-stats { display: flex; gap: 52px; }
   .stat-item { text-align: center; }
   .stat-num {
     font-family: 'Bebas Neue', sans-serif;
-    font-size: 48px;
-    line-height: 1;
+    font-size: 52px; line-height: 1;
     color: var(--white);
   }
   .stat-label {
-    font-size: 10px;
-    letter-spacing: 0.2em;
+    font-size: 10px; letter-spacing: 0.22em;
     text-transform: uppercase;
-    color: rgba(240,237,232,0.35);
+    color: rgba(240,237,232,0.3);
     margin-top: 4px;
+    font-family: 'DM Mono', monospace;
   }
   .scroll-hint {
-    position: absolute;
-    bottom: 32px; left: 50%; transform: translateX(-50%);
+    position: absolute; bottom: 28px; left: 50%;
+    transform: translateX(-50%);
     font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.2em;
-    color: rgba(240,237,232,0.25);
+    font-size: 10px; letter-spacing: 0.22em;
+    color: rgba(240,237,232,0.2);
     text-transform: uppercase;
     display: flex; flex-direction: column; align-items: center; gap: 10px;
+    z-index: 2;
   }
   .scroll-hint::after {
-    content: ''; display: block;
-    width: 1px; height: 40px;
-    background: rgba(240,237,232,0.15);
-    animation: scrollLine 2s ease-in-out infinite;
+    content: ''; width: 1px; height: 40px;
+    background: rgba(240,237,232,0.12);
+    animation: scrollLine 2.2s ease-in-out infinite;
   }
   @keyframes scrollLine {
-    0%, 100% { opacity: 0.15; }
-    50% { opacity: 0.5; }
+    0%, 100% { opacity: 0.15; transform: scaleY(1); transform-origin: top; }
+    50% { opacity: 0.6; }
   }
 
-  /* SECTION COMMON */
-  section { padding: 120px 48px; scroll-margin-top: 72px; }
+  /* TICKER */
+  .ticker-wrap {
+    overflow: hidden;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    padding: 16px 0;
+    background: #0c0c0c;
+  }
+  .ticker {
+    display: flex; gap: 0;
+    animation: ticker 32s linear infinite;
+    white-space: nowrap;
+  }
+  .ticker-item {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 12px; letter-spacing: 0.18em;
+    color: rgba(240,237,232,0.18);
+    padding: 0 28px;
+    display: flex; align-items: center; gap: 28px;
+  }
+  .ticker-item::after { content: '·'; color: rgba(240,237,232,0.1); }
+  @keyframes ticker {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  /* SECTIONS */
+  section { padding: 120px 48px; scroll-margin-top: 64px; }
   .section-header {
     display: flex; align-items: flex-start; justify-content: space-between;
     margin-bottom: 80px;
-    padding-bottom: 32px;
+    padding-bottom: 28px;
     border-bottom: 1px solid var(--line);
   }
   .section-num {
     font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    color: rgba(240,237,232,0.25);
-    letter-spacing: 0.15em;
-    padding-top: 6px;
+    font-size: 11px; color: rgba(240,237,232,0.2);
+    letter-spacing: 0.15em; padding-top: 8px;
   }
   h2 {
     font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(48px, 7vw, 96px);
-    line-height: 0.95;
-    letter-spacing: 0.02em;
+    font-size: clamp(48px, 7vw, 100px);
+    line-height: 0.9; letter-spacing: 0.02em;
   }
 
   /* ABOUT */
   #about { background: #0a0a0a; }
   .about-grid {
     display: grid;
-    grid-template-columns: 280px 1fr 1fr;
-    gap: 64px;
-    align-items: start;
+    grid-template-columns: 260px 1fr 1fr;
+    gap: 64px; align-items: start;
   }
   .about-photo {
-    width: 100%;
-    aspect-ratio: 3/4;
-    object-fit: cover;
-    object-position: top;
-    filter: grayscale(100%) brightness(0.85);
+    width: 100%; aspect-ratio: 3/4;
+    object-fit: cover; object-position: top;
+    filter: grayscale(100%) brightness(0.8);
     display: block;
+    transition: filter 0.6s;
   }
+  .about-photo:hover { filter: grayscale(60%) brightness(0.9); }
   .about-text {
-    font-size: 22px;
-    line-height: 1.7;
-    color: rgba(240,237,232,0.65);
-    font-weight: 300;
+    font-size: 20px; line-height: 1.75;
+    color: rgba(240,237,232,0.6); font-weight: 300;
   }
-  .about-text p + p { margin-top: 28px; }
-  .about-right {}
+  .about-text p + p { margin-top: 26px; }
   .skills-label {
     font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.2em;
-    color: rgba(240,237,232,0.25);
-    text-transform: uppercase;
-    margin-bottom: 20px;
+    font-size: 10px; letter-spacing: 0.22em;
+    color: rgba(240,237,232,0.22);
+    text-transform: uppercase; margin-bottom: 18px;
   }
-  .skills-list {
-    display: flex; flex-wrap: wrap; gap: 8px;
-    margin-bottom: 48px;
-  }
+  .skills-list { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 48px; }
   .skill-tag {
-    border: 1px solid rgba(240,237,232,0.18);
+    border: 1px solid rgba(240,237,232,0.15);
     padding: 7px 14px;
-    font-size: 12px;
-    font-family: 'DM Mono', monospace;
-    color: rgba(240,237,232,0.75);
+    font-size: 12px; font-family: 'DM Mono', monospace;
+    color: rgba(240,237,232,0.65);
     letter-spacing: 0.05em;
-    transition: border-color 0.3s, color 0.3s;
+    transition: border-color 0.3s, color 0.3s, background 0.3s;
   }
-  .skill-tag:hover { border-color: rgba(240,237,232,0.5); color: var(--white); }
+  .skill-tag:hover {
+    border-color: rgba(240,237,232,0.4);
+    color: var(--white);
+    background: rgba(240,237,232,0.04);
+  }
   .skill-tag.secondary {
-    border-color: rgba(240,237,232,0.07);
-    color: rgba(240,237,232,0.3);
-    font-size: 11px;
+    border-color: rgba(240,237,232,0.06);
+    color: rgba(240,237,232,0.28); font-size: 11px;
   }
-  .skill-tag.secondary:hover { border-color: rgba(240,237,232,0.2); color: rgba(240,237,232,0.55); }
+  .skill-tag.secondary:hover {
+    border-color: rgba(240,237,232,0.2);
+    color: rgba(240,237,232,0.55);
+  }
   .skills-also {
     display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
-    width: 100%;
-    padding-top: 4px;
-    border-top: 1px solid rgba(240,237,232,0.06);
+    width: 100%; padding-top: 4px;
+    border-top: 1px solid rgba(240,237,232,0.05);
   }
   .skills-etc {
     font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.1em;
-    color: rgba(240,237,232,0.18);
+    font-size: 10px; letter-spacing: 0.1em;
+    color: rgba(240,237,232,0.15);
   }
   .cert-badge {
     display: inline-flex; align-items: center; gap: 12px;
-    border: 1px solid rgba(240,237,232,0.2);
+    border: 1px solid rgba(240,237,232,0.18);
     padding: 10px 16px;
+    transition: border-color 0.3s;
   }
-  .cert-badge img {
-    height: 28px;
-    width: auto;
-    display: block;
-    opacity: 0.9;
-  }
+  .cert-badge:hover { border-color: rgba(240,237,232,0.4); }
+  .cert-badge img { height: 28px; width: auto; display: block; opacity: 0.9; }
   .cert-badge-text {
-    font-size: 11px;
-    letter-spacing: 0.1em;
-    color: rgba(240,237,232,0.6);
+    font-size: 11px; letter-spacing: 0.1em;
+    color: rgba(240,237,232,0.55);
     font-family: 'DM Mono', monospace;
   }
 
+  /* WORK */
+  #work { background: #090909; }
+  .projects-filter {
+    display: flex; align-items: center; gap: 0;
+    margin-bottom: 2px;
+    border-bottom: 1px solid var(--line);
+  }
+  .projects-label {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 26px; letter-spacing: 0.05em;
+    color: var(--white);
+    padding: 10px 32px 10px 0;
+    margin-right: 12px;
+    border-right: 1px solid var(--line);
+  }
+  .filter-btn {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px; letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(240,237,232,0.28);
+    background: none; border: none;
+    padding: 12px 28px 12px 0;
+    cursor: none;
+    transition: color 0.25s;
+    position: relative;
+  }
+  .filter-btn::after {
+    content: '';
+    position: absolute; bottom: -1px; left: 0;
+    width: 0; height: 1px;
+    background: var(--white);
+    transition: width 0.3s;
+  }
+  .filter-btn.active { color: var(--white); }
+  .filter-btn.active::after { width: calc(100% - 28px); }
+  .filter-btn:hover { color: rgba(240,237,232,0.65); }
+
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: calc(25vw * 0.75);
+    gap: 3px;
+    grid-auto-flow: dense;
+  }
+  .projects-grid.category-view {
+    grid-template-columns: repeat(5, 1fr);
+    grid-auto-rows: calc(20vw * 0.75);
+  }
+  .project-card[hidden] { display: none !important; }
+  .project-card {
+    position: relative; overflow: hidden;
+    background: #111; cursor: none;
+    display: block; text-decoration: none;
+  }
+  .project-card.wide { grid-column: span 2; }
+  .project-card.tall { grid-row: span 2; }
+  .projects-grid.category-view .project-card.wide,
+  .projects-grid.category-view .project-card.tall {
+    grid-column: span 1 !important;
+    grid-row: span 1 !important;
+  }
+  .project-img {
+    width: 100%; height: 100%;
+    object-fit: cover; display: block;
+    filter: grayscale(20%) brightness(0.65);
+    transition: filter 0.7s ease, transform 0.9s cubic-bezier(.23,1,.32,1);
+    will-change: transform;
+  }
+  .project-card:hover .project-img {
+    filter: grayscale(0%) brightness(0.88);
+    transform: scale(1.05);
+  }
+  .project-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top,
+      rgba(10,10,10,0.9) 0%,
+      rgba(10,10,10,0.2) 50%,
+      transparent 100%);
+    display: flex; flex-direction: column; justify-content: flex-end;
+    padding: 22px;
+  }
+  .project-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 19px; letter-spacing: 0.05em;
+    line-height: 1.1; margin-bottom: 5px;
+    color: rgba(240,237,232,0.5);
+    transition: color 0.3s;
+  }
+  .project-meta {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px; color: rgba(240,237,232,0.28);
+    letter-spacing: 0.1em; text-transform: uppercase;
+    transition: color 0.3s;
+  }
+  .project-role {
+    font-size: 11px; color: rgba(240,237,232,0.22);
+    margin-top: 3px; font-family: 'DM Mono', monospace;
+    transition: color 0.3s;
+  }
+  .project-card:hover .project-title { color: rgba(240,237,232,0.95); }
+  .project-card:hover .project-meta  { color: rgba(240,237,232,0.6); }
+  .project-card:hover .project-role  { color: rgba(240,237,232,0.48); }
+  /* click indicator */
+  .project-card::before {
+    content: '+';
+    position: absolute; top: 16px; right: 18px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 24px; letter-spacing: 0;
+    color: rgba(240,237,232,0);
+    transition: color 0.3s, transform 0.3s;
+    z-index: 2;
+    transform: rotate(0deg) scale(0.7);
+  }
+  .project-card:hover::before {
+    color: rgba(240,237,232,0.5);
+    transform: rotate(45deg) scale(1);
+  }
+
+  /* LIGHTBOX */
+  .lightbox {
+    position: fixed; inset: 0; z-index: 1000;
+    background: rgba(10,10,10,0.0);
+    display: flex; align-items: center; justify-content: center;
+    padding: 40px 24px;
+    pointer-events: none;
+    transition: background 0.4s;
+  }
+  .lightbox.open {
+    background: rgba(10,10,10,0.92);
+    pointer-events: all;
+  }
+  .lightbox-inner {
+    position: relative;
+    max-width: 960px; width: 100%;
+    max-height: 90vh;
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 0;
+    background: #111;
+    opacity: 0;
+    transform: translateY(24px) scale(0.97);
+    transition: opacity 0.4s cubic-bezier(.23,1,.32,1), transform 0.4s cubic-bezier(.23,1,.32,1);
+    overflow: hidden;
+  }
+  .lightbox.open .lightbox-inner {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  .lightbox-img-wrap {
+    position: relative;
+    aspect-ratio: 16/10;
+    overflow: hidden;
+    background: #0d0d0d;
+  }
+  .lightbox-img-wrap img {
+    width: 100%; height: 100%;
+    object-fit: cover; display: block;
+    filter: brightness(0.88);
+  }
+  .lightbox-info {
+    display: flex; flex-direction: column;
+    padding: 36px 32px;
+    border-left: 1px solid var(--line);
+  }
+  .lightbox-cat {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px; letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(240,237,232,0.3);
+    margin-bottom: 20px;
+  }
+  .lightbox-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 38px; line-height: 0.95;
+    letter-spacing: 0.03em;
+    color: var(--white);
+    margin-bottom: 18px;
+  }
+  .lightbox-meta {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px; color: rgba(240,237,232,0.4);
+    letter-spacing: 0.08em;
+    line-height: 1.7;
+    border-top: 1px solid var(--line);
+    padding-top: 18px;
+    margin-bottom: 18px;
+  }
+  .lightbox-role {
+    font-size: 12px; color: rgba(240,237,232,0.35);
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 0.06em;
+    line-height: 1.6;
+    margin-bottom: auto;
+  }
+  .lightbox-link {
+    display: inline-flex; align-items: center; gap: 10px;
+    margin-top: 32px;
+    border: 1px solid rgba(240,237,232,0.25);
+    padding: 12px 20px;
+    text-decoration: none;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px; letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(240,237,232,0.6);
+    transition: border-color 0.3s, color 0.3s, background 0.3s;
+  }
+  .lightbox-link:hover {
+    border-color: var(--white);
+    color: var(--white);
+    background: rgba(240,237,232,0.04);
+  }
+  .lightbox-link .arr { transition: transform 0.3s; }
+  .lightbox-link:hover .arr { transform: translateX(4px); }
+  .lightbox-close {
+    position: absolute; top: 16px; right: 16px;
+    width: 36px; height: 36px;
+    background: rgba(240,237,232,0.07);
+    border: 1px solid rgba(240,237,232,0.12);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    cursor: none; z-index: 2;
+    transition: background 0.2s, border-color 0.2s;
+  }
+  .lightbox-close:hover { background: rgba(240,237,232,0.14); border-color: rgba(240,237,232,0.3); }
+  .lightbox-close svg { width: 14px; height: 14px; stroke: rgba(240,237,232,0.6); }
+
   /* EXPERIENCE */
-  #experience { background: #0d0d0d; }
+  #experience { background: #0c0c0c; }
   .exp-section-header {
-    display: flex;
-    align-items: center;
+    display: flex; align-items: center;
     border-bottom: 1px solid var(--line);
     margin-bottom: 2px;
   }
   .exp-section-label {
     font-family: 'Bebas Neue', sans-serif;
-    font-size: 28px;
-    letter-spacing: 0.05em;
+    font-size: 26px; letter-spacing: 0.05em;
     color: var(--white);
-    padding: 10px 36px 10px 0;
+    padding: 10px 32px 10px 0;
     border-right: 1px solid var(--line);
   }
   .exp-list {
@@ -304,191 +534,49 @@
     background: var(--line);
   }
   .exp-item {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-    padding: 28px 32px 28px 0;
-    background: #0d0d0d;
-    position: relative;
+    display: flex; flex-direction: column; gap: 0;
+    padding: 30px 32px 30px 0;
+    background: #0c0c0c;
     transition: background 0.3s;
+    opacity: 0;
+    transform: translateY(16px);
+    transition: background 0.3s, opacity 0.6s, transform 0.6s;
   }
+  .exp-item.visible { opacity: 1; transform: translateY(0); }
   .exp-item:hover { background: #111; }
   .exp-dates {
     font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    color: rgba(240,237,232,0.3);
-    letter-spacing: 0.08em;
-    margin-bottom: 10px;
+    font-size: 10px; color: rgba(240,237,232,0.25);
+    letter-spacing: 0.1em; margin-bottom: 10px;
   }
   .exp-role {
-    font-size: 15px;
-    font-weight: 400;
-    color: var(--white);
-    margin-bottom: 2px;
-    line-height: 1.3;
+    font-size: 15px; font-weight: 400;
+    color: var(--white); margin-bottom: 2px; line-height: 1.3;
   }
   .exp-company {
-    font-size: 12px;
-    color: rgba(240,237,232,0.4);
+    font-size: 12px; color: rgba(240,237,232,0.38);
     margin-bottom: 14px;
   }
-  .exp-bullets {
-    list-style: none;
-    display: flex; flex-direction: column; gap: 5px;
-  }
+  .exp-bullets { list-style: none; display: flex; flex-direction: column; gap: 5px; }
   .exp-bullets li {
-    font-size: 12px;
-    color: rgba(240,237,232,0.3);
-    padding-left: 14px;
-    position: relative;
-    line-height: 1.55;
+    font-size: 12px; color: rgba(240,237,232,0.28);
+    padding-left: 14px; position: relative; line-height: 1.55;
   }
   .exp-bullets li::before {
-    content: '—';
-    position: absolute; left: 0;
-    color: rgba(240,237,232,0.15);
+    content: '—'; position: absolute; left: 0;
+    color: rgba(240,237,232,0.12);
   }
   .exp-loc {
     font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    color: rgba(240,237,232,0.15);
+    font-size: 10px; color: rgba(240,237,232,0.13);
     letter-spacing: 0.1em;
-    margin-top: auto;
-    padding-top: 14px;
-  }
-
-  /* WORK / PROJECTS */
-  #work { background: #0a0a0a; }
-  .projects-filter {
-    display: flex;
-    align-items: center;
-    gap: 0;
-    margin-bottom: 2px;
-    border-bottom: 1px solid var(--line);
-  }
-  .projects-label {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 28px;
-    letter-spacing: 0.05em;
-    color: var(--white);
-    padding: 10px 36px 10px 0;
-    margin-right: 12px;
-    border-right: 1px solid var(--line);
-  }
-  .filter-btn {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: rgba(240,237,232,0.3);
-    background: none;
-    border: none;
-    padding: 12px 28px 12px 0;
-    cursor: none;
-    transition: color 0.3s;
-    position: relative;
-  }
-  .filter-btn::after {
-    content: '';
-    position: absolute;
-    bottom: -1px; left: 0;
-    width: 0; height: 1px;
-    background: var(--white);
-    transition: width 0.3s;
-  }
-  .filter-btn.active { color: var(--white); }
-  .filter-btn.active::after { width: calc(100% - 28px); }
-  .filter-btn:hover { color: rgba(240,237,232,0.7); }
-
-  .projects-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    grid-auto-rows: calc(25vw * 0.75);
-    gap: 2px;
-    grid-auto-flow: dense;
-  }
-  .projects-grid.category-view {
-    grid-template-columns: repeat(5, 1fr);
-    grid-auto-rows: calc(20vw * 0.75);
-  }
-  .project-card[hidden] { display: none; }
-  .project-card.no-image { background: #111; }
-  .project-card.no-image .project-overlay {
-    opacity: 1;
-    background: linear-gradient(to top, rgba(10,10,10,0.95) 0%, rgba(10,10,10,0.5) 100%);
-  }
-  .project-card {
-    position: relative;
-    overflow: hidden;
-    background: #111;
-    cursor: none;
-  }
-  /* wide: 2 cols × 1 row → 8:3 */
-  .project-card.wide { grid-column: span 2; }
-  /* tall: 1 col × 2 rows → 4:6 */
-  .project-card.tall { grid-row: span 2; }
-  /* category view: all uniform 1×1 */
-  .projects-grid.category-view .project-card.wide,
-  .projects-grid.category-view .project-card.tall {
-    grid-column: span 1 !important;
-    grid-row: span 1 !important;
-  }
-  .project-img {
-    width: 100%; height: 100%;
-    object-fit: cover;
-    display: block;
-    filter: grayscale(20%) brightness(0.7);
-    transition: filter 0.6s ease, transform 0.8s cubic-bezier(.23,1,.32,1), opacity 0.4s ease;
-  }
-  .project-card:hover .project-img {
-    filter: grayscale(0%) brightness(0.85);
-    transform: scale(1.04);
-  }
-  .project-overlay {
-    position: absolute; inset: 0;
-    background: linear-gradient(to top, rgba(10,10,10,0.82) 0%, rgba(10,10,10,0.18) 55%, transparent 100%);
-    opacity: 1;
-    display: flex; flex-direction: column; justify-content: flex-end;
-    padding: 24px;
-  }
-  .project-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 20px;
-    letter-spacing: 0.05em;
-    line-height: 1.1;
-    margin-bottom: 6px;
-    color: rgba(240,237,232,0.55);
-    transition: color 0.3s;
-  }
-  .project-meta {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    color: rgba(240,237,232,0.3);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    transition: color 0.3s;
-  }
-  .project-role {
-    font-size: 11px;
-    color: rgba(240,237,232,0.25);
-    margin-top: 4px;
-    font-family: 'DM Mono', monospace;
-    transition: color 0.3s;
-  }
-  .project-card:hover .project-title { color: rgba(240,237,232,0.95); }
-  .project-card:hover .project-meta  { color: rgba(240,237,232,0.6); }
-  .project-card:hover .project-role  { color: rgba(240,237,232,0.5); }
-
-  /* always visible project info for featured */
-  .project-info-visible {
-    position: absolute;
-    bottom: 20px; left: 20px;
+    margin-top: auto; padding-top: 14px;
   }
 
   /* CONTACT */
   #contact {
-    background: #0d0d0d;
-    min-height: 60vh;
+    background: #0c0c0c;
+    min-height: 56vh;
     display: flex; flex-direction: column; justify-content: center;
   }
   .contact-inner {
@@ -497,109 +585,60 @@
   }
   .contact-headline {
     font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(56px, 9vw, 140px);
-    line-height: 0.9;
-    letter-spacing: 0.02em;
+    font-size: clamp(56px, 9vw, 144px);
+    line-height: 0.88; letter-spacing: 0.02em;
     color: var(--white);
   }
-  .contact-links { display: flex; flex-direction: column; gap: 16px; min-width: 280px; }
+  .contact-links { display: flex; flex-direction: column; gap: 0; min-width: 300px; }
   .contact-link {
     display: flex; align-items: center; justify-content: space-between;
     padding: 16px 0;
     border-bottom: 1px solid var(--line);
     text-decoration: none;
-    color: rgba(240,237,232,0.55);
-    font-size: 13px;
-    letter-spacing: 0.1em;
+    color: rgba(240,237,232,0.45);
+    font-size: 13px; letter-spacing: 0.1em;
     text-transform: uppercase;
     font-family: 'DM Mono', monospace;
-    transition: color 0.3s;
+    transition: color 0.25s, padding-left 0.25s;
     position: relative;
   }
   .contact-link::after {
     content: '→';
-    color: rgba(240,237,232,0.2);
+    color: rgba(240,237,232,0.18);
     transition: transform 0.3s, color 0.3s;
   }
-  .contact-link:hover { color: var(--white); }
-  .contact-link:hover::after { transform: translateX(4px); color: var(--white); }
+  .contact-link:hover { color: var(--white); padding-left: 4px; }
+  .contact-link:hover::after { transform: translateX(5px); color: var(--white); }
 
   /* FOOTER */
   footer {
-    padding: 32px 48px;
+    padding: 28px 48px;
     border-top: 1px solid var(--line);
     display: flex; align-items: center; justify-content: space-between;
   }
   .footer-copy {
     font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    color: rgba(240,237,232,0.2);
+    font-size: 10px; color: rgba(240,237,232,0.18);
     letter-spacing: 0.15em;
   }
-  .footer-logo {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 16px;
-    letter-spacing: 0.1em;
-    color: rgba(240,237,232,0.2);
-  }
 
-  /* ANIMATIONS */
+  /* FADE-UP */
   .fade-up {
-    opacity: 0;
-    transform: translateY(40px);
-    transition: opacity 0.8s ease, transform 0.8s ease;
+    opacity: 0; transform: translateY(32px);
+    transition: opacity 0.85s ease, transform 0.85s ease;
   }
   .fade-up.visible { opacity: 1; transform: translateY(0); }
 
-  /* horizontal ticker */
-  .ticker-wrap {
-    overflow: hidden;
-    border-top: 1px solid var(--line);
-    border-bottom: 1px solid var(--line);
-    padding: 18px 0;
-    background: #0d0d0d;
-  }
-  .ticker {
-    display: flex; gap: 0;
-    animation: ticker 30s linear infinite;
-    white-space: nowrap;
-  }
-  .ticker-item {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 13px;
-    letter-spacing: 0.15em;
-    color: rgba(240,237,232,0.2);
-    padding: 0 32px;
-    display: flex; align-items: center; gap: 32px;
-  }
-  .ticker-item::after {
-    content: '·';
-    color: rgba(240,237,232,0.15);
-  }
-  @keyframes ticker {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(-50%); }
-  }
-
   /* BURGER */
   .burger {
-    display: none;
-    flex-direction: column;
-    justify-content: center;
-    gap: 5px;
-    width: 36px;
-    height: 36px;
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 4px;
-    z-index: 201;
-    flex-shrink: 0;
+    display: none; flex-direction: column;
+    justify-content: center; gap: 5px;
+    width: 36px; height: 36px;
+    background: none; border: none;
+    cursor: pointer; padding: 4px; z-index: 201;
   }
   .burger span {
-    display: block;
-    width: 100%;
-    height: 1px;
+    display: block; width: 100%; height: 1px;
     background: var(--white);
     transition: transform 0.3s, opacity 0.3s;
     transform-origin: center;
@@ -607,105 +646,74 @@
   .burger.active span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
   .burger.active span:nth-child(2) { opacity: 0; }
   .burger.active span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
-
-  /* MOBILE MENU */
   .mobile-menu {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: var(--black);
-    z-index: 200;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    display: none; position: fixed; inset: 0;
+    background: var(--black); z-index: 200;
+    flex-direction: column; align-items: center; justify-content: center;
   }
   .mobile-menu.open { display: flex; }
   .mobile-menu ul { list-style: none; text-align: center; width: 100%; }
   .mobile-menu li { border-bottom: 1px solid var(--line); }
   .mobile-menu a {
-    display: block;
-    padding: 22px 48px;
+    display: block; padding: 22px 48px;
     font-family: 'Bebas Neue', sans-serif;
-    font-size: 44px;
-    letter-spacing: 0.05em;
-    color: rgba(240,237,232,0.55);
-    text-decoration: none;
-    transition: color 0.2s;
+    font-size: 44px; letter-spacing: 0.05em;
+    color: rgba(240,237,232,0.5);
+    text-decoration: none; transition: color 0.2s;
   }
   .mobile-menu a:active { color: var(--white); }
 
+  /* MOBILE */
   @media (max-width: 768px) {
-    /* Nav */
-    nav { padding: 14px 20px; }
-    nav::after { left: 20px; right: 20px; }
-    .nav-links { display: none; }
-    .burger { display: flex; }
-
-    /* Cursor — restore for touch */
     body { cursor: auto; }
     .cursor, .cursor-ring { display: none; }
     .filter-btn { cursor: pointer; }
-
-    /* Hero */
+    nav { padding: 14px 20px; }
+    .nav-links { display: none; }
+    .burger { display: flex; }
     section { padding: 64px 20px; }
-    #hero { padding: 80px 20px 56px; }
-    h1 { font-size: clamp(52px, 14vw, 80px); line-height: 0.88; }
-    h1 .line2 { padding-left: 28px; }
-    .hero-bottom { flex-direction: column; gap: 28px; align-items: flex-start; }
+    #hero { padding: 80px 20px 56px; min-height: 100svh; }
+    h1 { font-size: clamp(52px, 15vw, 80px); line-height: 0.87; }
+    h1 .line2 { padding-left: 24px; }
+    .hero-bottom { flex-direction: column; gap: 24px; align-items: flex-start; }
     .hero-stats { gap: 32px; }
-    .hero-desc { font-size: 13px; }
-
-    /* About */
+    .hero-desc { font-size: 13px; line-height: 1.8; }
     .about-grid { grid-template-columns: 1fr; gap: 32px; }
-    .about-photo { aspect-ratio: 4/3; max-height: 280px; }
-    .about-text { font-size: 16px; line-height: 1.75; }
-
-    /* Experience */
+    .about-photo { aspect-ratio: 4/3; max-height: 260px; }
+    .about-text { font-size: 16px; }
     .exp-list { grid-template-columns: 1fr; }
     .exp-item { padding: 24px 0; }
-    .exp-loc { padding-top: 10px; }
-    .exp-section-header { margin-bottom: 0; }
-
-    /* Projects filter — horizontal scroll */
     .projects-filter {
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-      scrollbar-width: none;
-      flex-wrap: nowrap;
+      overflow-x: auto; -webkit-overflow-scrolling: touch;
+      scrollbar-width: none; flex-wrap: nowrap;
     }
     .projects-filter::-webkit-scrollbar { display: none; }
-    .projects-label { flex-shrink: 0; font-size: 22px; padding: 10px 16px 10px 0; }
+    .projects-label { flex-shrink: 0; font-size: 20px; padding: 10px 16px 10px 0; }
     .filter-btn { flex-shrink: 0; padding: 12px 16px 12px 0; font-size: 10px; }
-
-    /* Projects grid — 2 columns */
     .projects-grid {
       grid-template-columns: repeat(2, 1fr);
       grid-auto-rows: calc(50vw * 0.75);
     }
     .project-card.wide { grid-column: span 2; }
-    .project-card.tall { grid-row: span 2; }
     .projects-grid.category-view {
       grid-template-columns: repeat(2, 1fr);
       grid-auto-rows: calc(50vw * 0.75);
     }
     .projects-grid.category-view .project-card.wide,
     .projects-grid.category-view .project-card.tall {
-      grid-column: span 1 !important;
-      grid-row: span 1 !important;
+      grid-column: span 1 !important; grid-row: span 1 !important;
     }
-
-    /* Project overlay — mobile text sizes */
-    .project-title { font-size: 15px; color: rgba(240,237,232,0.75); }
-    .project-meta  { font-size: 9px;  color: rgba(240,237,232,0.45); }
-    .project-role  { font-size: 9px;  color: rgba(240,237,232,0.38); }
-
-    /* Contact */
+    .project-title { font-size: 14px; color: rgba(240,237,232,0.78); }
+    .project-meta  { font-size: 9px; color: rgba(240,237,232,0.5); }
+    .project-role  { font-size: 9px; }
     .contact-inner { flex-direction: column; gap: 32px; }
     .contact-headline { font-size: clamp(48px, 14vw, 80px); }
-    .contact-link { font-size: 11px; padding: 14px 0; }
-
-    /* Footer */
     footer { padding: 20px; flex-direction: column; gap: 12px; align-items: flex-start; }
+    /* mobile lightbox */
+    .lightbox-inner { grid-template-columns: 1fr; max-height: 95vh; overflow-y: auto; }
+    .lightbox-img-wrap { aspect-ratio: 16/10; }
+    .lightbox-info { border-left: none; border-top: 1px solid var(--line); padding: 24px 20px; }
+    .lightbox-title { font-size: 28px; }
   }
 </style>
 </head>
@@ -715,13 +723,12 @@
 <div class="cursor-ring" id="cursorRing"></div>
 
 <nav>
-  <a href="#hero" class="nav-logo"><img src="images/str_white.png" alt="STRANYOV"></a>
+  <a href="#hero" class="nav-logo"><img src="images/str_white.png" alt="STRANYOV" onerror="this.style.display='none'"></a>
   <ul class="nav-links">
     <li><a href="#about">About</a></li>
     <li><a href="#work">Projects</a></li>
     <li><a href="#experience">Experience</a></li>
     <li><a href="#contact">Contact</a></li>
-    <li><a href="patterns/led.html">Test Patterns</a></li>
   </ul>
   <button class="burger" id="burger" aria-label="Menu">
     <span></span><span></span><span></span>
@@ -734,15 +741,18 @@
     <li><a href="#work" class="mob-link">Projects</a></li>
     <li><a href="#experience" class="mob-link">Experience</a></li>
     <li><a href="#contact" class="mob-link">Contact</a></li>
-    <li><a href="patterns/led.html" class="mob-link">Test Patterns</a></li>
   </ul>
 </div>
 
+<!-- ===================== HERO ===================== -->
 <section id="hero">
-  <div class="hero-bg-text">STRANYOV</div>
+  <canvas id="hero-canvas"></canvas>
+  <video id="hero-video" src="video/showreel.mp4" autoplay muted loop playsinline style="display:block"></video>
+  <div class="hero-vignette"></div>
+  <div class="hero-bottom-fade"></div>
   <div class="hero-content">
     <div class="hero-tag">Video Engineer &amp; VJ · Dubai, UAE</div>
-    <h1>
+    <h1 id="hero-title">
       YURI
       <span class="line2">STRANYOV</span>
     </h1>
@@ -752,19 +762,19 @@
       </p>
       <div class="hero-stats">
         <div class="stat-item">
-          <div class="stat-num">12+</div>
+          <div class="stat-num" data-count="12">0</div>
           <div class="stat-label">Years</div>
         </div>
         <div class="stat-item">
-          <div class="stat-num">100+</div>
+          <div class="stat-num" data-count="100">0</div>
           <div class="stat-label">Projects</div>
         </div>
         <div class="stat-item">
-          <div class="stat-num">15+</div>
+          <div class="stat-num" data-count="15">0</div>
           <div class="stat-label">Countries</div>
         </div>
       </div>
-    </a>
+    </div>
   </div>
   <div class="scroll-hint">Scroll</div>
 </section>
@@ -798,6 +808,7 @@
   </div>
 </div>
 
+<!-- ===================== ABOUT ===================== -->
 <section id="about">
   <div class="section-header fade-up">
     <div class="section-num">01</div>
@@ -833,16 +844,12 @@
         <img src="images/cert_d3.png" alt="disguise Certified Trainer" onerror="this.style.display='none'">
         <div class="cert-badge-text">disguise Certified Trainer</div>
       </div>
-    </a>
+    </div>
   </div>
 </section>
 
+<!-- ===================== PROJECTS ===================== -->
 <section id="work">
-  <!-- ↓ Featured projects — edit image filenames here (up to 10) -->
-  <script type="application/json" id="featured-config">
-  ["joy_26.avif", "rr_nov25.png", "gotf.png", "rr_apr25.png", "woohoo.png", "lexus.png", "huracan.png", "joy_25.png"]
-  </script>
-
   <div class="projects-filter fade-up">
     <span class="projects-label">Projects</span>
     <button class="filter-btn active" data-filter="all">All</button>
@@ -851,413 +858,361 @@
     <button class="filter-btn" data-filter="integration">Integration</button>
   </div>
 
-  <div class="projects-grid fade-up">
-
-    <a href="https://hellocharlie.com/project/the-joy-awards-2026/" target="_blank" class="project-card tall" data-category="disguise">
+  <div class="projects-grid fade-up" id="projectsGrid">
+    <div class="project-card tall" data-category="disguise" data-title="Joy Awards 2026" data-meta="Riyadh, Saudi Arabia · 2026" data-role="Disguise Engineer · PRG" data-link="https://hellocharlie.com/project/the-joy-awards-2026/" data-img="images/joy_26.avif">
       <img class="project-img" src="images/joy_26.avif" alt="Joy Awards 2026">
       <div class="project-overlay">
         <div class="project-title">Joy Awards 2026</div>
         <div class="project-meta">Riyadh, Saudi Arabia · 2026</div>
         <div class="project-role">Disguise Engineer · PRG</div>
       </div>
-    </a>
-
-    <a href="https://www.silasveta.com/projects/rave-rebels-2025-the-ship" target="_blank" class="project-card" data-category="vj">
+    </div>
+    <div class="project-card" data-category="vj" data-title="Rave Rebels | The Ship" data-meta="Brussels, Belgium · 2025" data-role="VJ · Sila Sveta" data-link="https://www.silasveta.com/projects/rave-rebels-2025-the-ship" data-img="images/rr_nov25.png">
       <img class="project-img" src="images/rr_nov25.png" alt="Rave Rebels | The Ship">
       <div class="project-overlay">
         <div class="project-title">Rave Rebels | The Ship</div>
-        <div class="project-meta">2025</div>
+        <div class="project-meta">Brussels, Belgium · 2025</div>
         <div class="project-role">VJ · Sila Sveta</div>
       </div>
-    </a>
-
-    <a href="https://www.youtube.com/watch?v=uQtXQmlZ1A0" target="_blank" class="project-card wide" data-category="disguise">
+    </div>
+    <div class="project-card wide" data-category="disguise" data-title="GOTF Opening Ceremony" data-meta="Abu Dhabi, UAE · 2025" data-role="Disguise Engineer" data-link="https://www.youtube.com/watch?v=uQtXQmlZ1A0" data-img="images/gotf.png">
       <img class="project-img" src="images/gotf.png" alt="GOTF Opening Ceremony">
       <div class="project-overlay">
         <div class="project-title">GOTF Opening Ceremony</div>
         <div class="project-meta">Abu Dhabi, UAE · 2025</div>
         <div class="project-role">Disguise Engineer</div>
       </div>
-    </a>
-
-    <a href="https://www.linkedin.com/posts/done-dusted_presidentscup-doneanddusted-uae2025-ugcPost-7337907230450601984-DQIK/?utm_source=share&utm_medium=member_desktop&rcm=ACoAAAlTO5UBD-j7drvCRrCIG6DWEdS04Zefigs" target="_blank" class="project-card" data-category="disguise">
+    </div>
+    <div class="project-card" data-category="disguise" data-title="President's Cup" data-meta="Abu Dhabi, UAE · 2025" data-role="Disguise Engineer · PRG" data-link="https://www.linkedin.com/posts/done-dusted_presidentscup-doneanddusted-uae2025-ugcPost-7337907230450601984-DQIK/" data-img="images/pres_cup.png">
       <img class="project-img" src="images/pres_cup.png" alt="President's Cup">
       <div class="project-overlay">
         <div class="project-title">President's Cup</div>
         <div class="project-meta">Abu Dhabi, UAE · 2025</div>
         <div class="project-role">Disguise Engineer · PRG</div>
       </div>
-    </a>
-
-    <a href="oops.html" class="project-card" data-category="disguise">
+    </div>
+    <div class="project-card" data-category="disguise" data-title="EWC 25 Opening Ceremony" data-meta="Riyadh, Saudi Arabia · 2025" data-role="Disguise Engineer · PRG" data-link="" data-img="images/ewc25.png">
       <img class="project-img" src="images/ewc25.png" alt="EWC 25 Opening Ceremony">
       <div class="project-overlay">
         <div class="project-title">EWC 25 Opening Ceremony</div>
         <div class="project-meta">Riyadh, Saudi Arabia · 2025</div>
         <div class="project-role">Disguise Engineer · PRG</div>
       </div>
-    </a>
-
-    <a href="oops.html" class="project-card" data-category="disguise">
+    </div>
+    <div class="project-card" data-category="disguise" data-title="The Last Crescendo" data-meta="Riyadh, Saudi Arabia · 2025" data-role="Disguise Engineer · PRG" data-link="" data-img="images/tlc.png">
       <img class="project-img" src="images/tlc.png" alt="The Last Crescendo">
       <div class="project-overlay">
         <div class="project-title">The Last Crescendo</div>
         <div class="project-meta">Riyadh, Saudi Arabia · 2025</div>
         <div class="project-role">Disguise Engineer · PRG</div>
       </div>
-    </a>
-
-    <a href="https://hellocharlie.com/project/joy-awards-2025/" target="_blank" class="project-card" data-category="disguise">
+    </div>
+    <div class="project-card" data-category="disguise" data-title="Joy Awards 25" data-meta="Riyadh, Saudi Arabia · 2025" data-role="Disguise Engineer · PRG" data-link="https://hellocharlie.com/project/joy-awards-2025/" data-img="images/joy_25.png">
       <img class="project-img" src="images/joy_25.png" alt="Joy Awards 25">
       <div class="project-overlay">
         <div class="project-title">Joy Awards 25</div>
         <div class="project-meta">Riyadh, Saudi Arabia · 2025</div>
         <div class="project-role">Disguise Engineer · PRG</div>
       </div>
-    </a>
-
-    <a href="oops.html" class="project-card" data-category="disguise">
+    </div>
+    <div class="project-card" data-category="disguise" data-title="F1 Concerts 2025" data-meta="Abu Dhabi, UAE · 2025" data-role="Disguise Engineer · PRG" data-link="" data-img="images/f1_conc_25.png">
       <img class="project-img" src="images/f1_conc_25.png" alt="F1 Concerts 2025">
       <div class="project-overlay">
         <div class="project-title">F1 Concerts 2025</div>
         <div class="project-meta">Abu Dhabi, UAE · 2025</div>
         <div class="project-role">Disguise Engineer · PRG</div>
       </div>
-    </a>
-
-    <a href="https://www.silasveta.com/projects/rave-rabels-2025-belgium" target="_blank" class="project-card" data-category="vj">
+    </div>
+    <div class="project-card" data-category="vj" data-title="Rave Rebels Deus | Ex Machina" data-meta="Brussels, Belgium · 2025" data-role="VJ · Sila Sveta" data-link="https://www.silasveta.com/projects/rave-rabels-2025-belgium" data-img="images/rr_apr25.png">
       <img class="project-img" src="images/rr_apr25.png" alt="Rave Rebels Deus | Ex Machina">
       <div class="project-overlay">
         <div class="project-title">Rave Rebels Deus | Ex Machina</div>
         <div class="project-meta">Brussels, Belgium · 2025</div>
         <div class="project-role">VJ · Sila Sveta</div>
       </div>
-    </a>
-
-    <a href="https://rodinadubai.com/" target="_blank" class="project-card tall" data-category="integration">
+    </div>
+    <div class="project-card tall" data-category="integration" data-title="Rodina Restaurant" data-meta="Dubai, UAE · 2025" data-role="Video Systems Engineer · Vivid Studios" data-link="https://rodinadubai.com/" data-img="images/rodina.png">
       <img class="project-img" src="images/rodina.png" alt="Rodina Restaurant">
       <div class="project-overlay">
         <div class="project-title">Rodina Restaurant</div>
         <div class="project-meta">Dubai, UAE · 2025</div>
         <div class="project-role">Video Systems Engineer · Vivid Studios</div>
       </div>
-    </a>
-
-    <a href="https://blumedubai.com/blume-dubai-mall/" target="_blank" class="project-card" data-category="integration">
+    </div>
+    <div class="project-card" data-category="integration" data-title="Blume Restaurant" data-meta="Dubai, UAE · 2025" data-role="Video Systems Engineer · Vivid Studios" data-link="https://blumedubai.com/blume-dubai-mall/" data-img="images/blume.png">
       <img class="project-img" src="images/blume.png" alt="Blume Restaurant">
       <div class="project-overlay">
         <div class="project-title">Blume Restaurant</div>
         <div class="project-meta">Dubai, UAE · 2025</div>
         <div class="project-role">Video Systems Engineer · Vivid Studios</div>
       </div>
-    </a>
-
-    <a href="https://stageprecision.com/blogs/showcase/woohoo-restaurant?srsltid=AfmBOopunXeSZrgFTrnsFqXcLTvAMPr-V9hrYCz2fydyssA9VfDXy5Qy" target="_blank" class="project-card" data-category="integration">
+    </div>
+    <div class="project-card" data-category="integration" data-title="Woohoo Restaurant" data-meta="Dubai, UAE · 2025" data-role="Video Systems Engineer · Vivid Studios" data-link="https://stageprecision.com/blogs/showcase/woohoo-restaurant" data-img="images/woohoo.png">
       <img class="project-img" src="images/woohoo.png" alt="Woohoo Restaurant">
       <div class="project-overlay">
         <div class="project-title">Woohoo Restaurant</div>
         <div class="project-meta">Dubai, UAE · 2025</div>
         <div class="project-role">Video Systems Engineer · Vivid Studios</div>
       </div>
-    </a>
-
-    <a href="oops.html" class="project-card" data-category="disguise">
+    </div>
+    <div class="project-card" data-category="disguise" data-title="Latino Night" data-meta="Riyadh, Saudi Arabia · 2024" data-role="Disguise Engineer · PRG" data-link="" data-img="images/latino.png">
       <img class="project-img" src="images/latino.png" alt="Latino Night">
       <div class="project-overlay">
         <div class="project-title">Latino Night</div>
         <div class="project-meta">Riyadh, Saudi Arabia · 2024</div>
         <div class="project-role">Disguise Engineer · PRG</div>
       </div>
-    </a>
-
-    <a href="oops.html" class="project-card" data-category="disguise">
+    </div>
+    <div class="project-card" data-category="disguise" data-title="F1 Concerts 2024" data-meta="Abu Dhabi, UAE · 2024" data-role="Disguise Engineer · PRG" data-link="" data-img="images/f1_conc_24.png">
       <img class="project-img" src="images/f1_conc_24.png" alt="F1 Concerts 2024">
       <div class="project-overlay">
         <div class="project-title">F1 Concerts 2024</div>
         <div class="project-meta">Abu Dhabi, UAE · 2024</div>
         <div class="project-role">Disguise Engineer · PRG</div>
       </div>
-    </a>
-
-    <a href="oops.html" class="project-card" data-category="disguise">
+    </div>
+    <div class="project-card" data-category="disguise" data-title="Usyk vs Fury 2" data-meta="Riyadh, Saudi Arabia · 2024" data-role="Disguise Engineer · PRG" data-link="" data-img="images/usyk2.png">
       <img class="project-img" src="images/usyk2.png" alt="Usyk vs Fury 2">
       <div class="project-overlay">
         <div class="project-title">Usyk vs Fury 2</div>
         <div class="project-meta">Riyadh, Saudi Arabia · 2024</div>
         <div class="project-role">Disguise Engineer · PRG</div>
       </div>
-    </a>
-
-    <a href="oops.html" class="project-card" data-category="disguise">
+    </div>
+    <div class="project-card" data-category="disguise" data-title="Six Kings Slam" data-meta="Riyadh, Saudi Arabia · 2024" data-role="Disguise Engineer · PRG" data-link="" data-img="images/sks.png">
       <img class="project-img" src="images/sks.png" alt="Six Kings Slam">
       <div class="project-overlay">
         <div class="project-title">Six Kings Slam</div>
         <div class="project-meta">Riyadh, Saudi Arabia · 2024</div>
         <div class="project-role">Disguise Engineer · PRG</div>
       </div>
-    </a>
-
-    <a href="https://www.facebook.com/100089378779878/videos/1446005386117333/" target="_blank" class="project-card tall" data-category="disguise">
+    </div>
+    <div class="project-card tall" data-category="disguise" data-title="Ambani's Wedding" data-meta="Mumbai, India · 2024" data-role="Disguise Engineer · Blue I" data-link="https://www.facebook.com/100089378779878/videos/1446005386117333/" data-img="images/ambani.png">
       <img class="project-img" src="images/ambani.png" alt="Ambani's Wedding">
       <div class="project-overlay">
         <div class="project-title">Ambani's Wedding</div>
         <div class="project-meta">Mumbai, India · 2024</div>
         <div class="project-role">Disguise Engineer · Blue I</div>
       </div>
-    </a>
-
-    <a href="oops.html" class="project-card" data-category="integration">
+    </div>
+    <div class="project-card" data-category="integration" data-title="Luxuria Karaoke Club" data-meta="Dubai, UAE · 2024" data-role="Video Systems Engineer · Vivid Studios" data-link="" data-img="images/luxuria.png">
       <img class="project-img" src="images/luxuria.png" alt="Luxuria Karaoke Club">
       <div class="project-overlay">
         <div class="project-title">Luxuria Karaoke Club</div>
         <div class="project-meta">Dubai, UAE · 2024</div>
         <div class="project-role">Video Systems Engineer · Vivid Studios</div>
       </div>
-    </a>
-
-    <a href="https://gem.eg/en/whats-on/temporary-exhibitions/the-immersive-exhibition/" target="_blank" class="project-card wide" data-category="disguise">
+    </div>
+    <div class="project-card wide" data-category="disguise" data-title="Tutankhamun — The Immersive Experience" data-meta="Cairo, Egypt · 2023" data-role="Projection Engineer · Sila Sveta" data-link="https://gem.eg/en/whats-on/temporary-exhibitions/the-immersive-exhibition/" data-img="images/tut.png">
       <img class="project-img" src="images/tut.png" alt="Tutankhamun — The Immersive Experience">
       <div class="project-overlay">
         <div class="project-title">Tutankhamun — The Immersive Experience</div>
         <div class="project-meta">Cairo, Egypt · 2023</div>
         <div class="project-role">Projection Engineer · Sila Sveta</div>
       </div>
-    </a>
-
-    <a href="https://www.onezaabeel.com/the-link/" target="_blank" class="project-card tall" data-category="integration">
+    </div>
+    <div class="project-card tall" data-category="integration" data-title="Bridge of Love — The Link" data-meta="Dubai, UAE · 2023" data-role="Disguise Engineer · Vivid Studios" data-link="https://www.onezaabeel.com/the-link/" data-img="images/bol.png">
       <img class="project-img" src="images/bol.png" alt="Bridge of Love — The Link">
       <div class="project-overlay">
         <div class="project-title">Bridge of Love — The Link</div>
         <div class="project-meta">Dubai, UAE · 2023</div>
         <div class="project-role">Disguise Engineer · Vivid Studios</div>
       </div>
-    </a>
-
-    <a href="oops.html" class="project-card" data-category="disguise">
+    </div>
+    <div class="project-card" data-category="disguise" data-title="Qatar Expo 2023 Opening Ceremony" data-meta="Doha, Qatar · 2023" data-role="Disguise Engineer · Andrey Fomin Production" data-link="https://www.youtube.com/watch?v=WyP2VQ7UL5I" data-img="images/qeo.png">
       <img class="project-img" src="images/qeo.png" alt="Qatar Expo 2023 Opening Ceremony">
       <div class="project-overlay">
         <div class="project-title">Qatar Expo 2023 Opening Ceremony</div>
         <div class="project-meta">Doha, Qatar · 2023</div>
         <div class="project-role">Disguise Engineer · Andrey Fomin Production</div>
       </div>
-    </a>
-
-    <a href="oops.html" class="project-card" data-category="disguise">
+    </div>
+    <div class="project-card" data-category="disguise" data-title="Flag Day 2023" data-meta="Riyadh, Saudi Arabia · 2023" data-role="Disguise Engineer · PRG" data-link="" data-img="images/flagday.png">
       <img class="project-img" src="images/flagday.png" alt="Flag Day 2023">
       <div class="project-overlay">
         <div class="project-title">Flag Day 2023</div>
         <div class="project-meta">Riyadh, Saudi Arabia · 2023</div>
         <div class="project-role">Disguise Engineer · PRG</div>
       </div>
-    </a>
-
-    <a href="oops.html" class="project-card" data-category="disguise">
+    </div>
+    <div class="project-card" data-category="disguise" data-title="Gamers 8" data-meta="Riyadh, Saudi Arabia · 2023" data-role="Video Systems Engineer · PRG" data-link="" data-img="images/gamers8.png">
       <img class="project-img" src="images/gamers8.png" alt="Gamers 8">
       <div class="project-overlay">
         <div class="project-title">Gamers 8</div>
         <div class="project-meta">Riyadh, Saudi Arabia · 2023</div>
         <div class="project-role">Video Systems Engineer · PRG</div>
       </div>
-    </a>
-
-    <a href="https://www.delivered.global/projects/the-weaving" target="_blank" class="project-card" data-category="integration">
+    </div>
+    <div class="project-card" data-category="integration" data-title="The Weaving" data-meta="Dubai, UAE · 2023" data-role="Disguise Engineer" data-link="https://www.delivered.global/projects/the-weaving" data-img="images/weaving.png">
       <img class="project-img" src="images/weaving.png" alt="The Weaving">
       <div class="project-overlay">
         <div class="project-title">The Weaving</div>
         <div class="project-meta">Dubai, UAE · 2023</div>
         <div class="project-role">Disguise Engineer</div>
       </div>
-    </a>
-
-    <a href="https://zenonrestaurant.com/" target="_blank" class="project-card" data-category="integration">
+    </div>
+    <div class="project-card" data-category="integration" data-title="Zenon Restaurant" data-meta="Dubai, UAE · 2023" data-role="Resolume Engineer · Vivid Studios" data-link="https://zenonrestaurant.com/" data-img="images/zenon.png">
       <img class="project-img" src="images/zenon.png" alt="Zenon Restaurant">
       <div class="project-overlay">
         <div class="project-title">Zenon Restaurant</div>
         <div class="project-meta">Dubai, UAE · 2023</div>
         <div class="project-role">Resolume Engineer · Vivid Studios</div>
       </div>
-    </a>
-
-    <a href="oops.html" class="project-card" data-category="disguise">
-      <img class="project-img" src="images/fifa22.png" alt="FIFA Fan Festival 2022">
-      <div class="project-overlay">
-        <div class="project-title">FIFA Fan Festival 2022</div>
-        <div class="project-meta">Doha, Qatar · 2022</div>
-        <div class="project-role">Disguise Engineer · PRG</div>
-      </div>
-    </a>
-
-    <a href="oops.html" class="project-card" data-category="disguise">
+    </div>
+    <div class="project-card" data-category="disguise" data-title="FIFA Fan Festival 2022" data-meta="Doha, Qatar · 2022" data-role="Disguise Engineer · PRG" data-link="https://qatar.fischerappelt.com/cases/fff" data-img="images/adipec22.png">
       <img class="project-img" src="images/adipec22.png" alt="ADIPEC 2022">
       <div class="project-overlay">
         <div class="project-title">ADIPEC 2022</div>
         <div class="project-meta">Abu Dhabi, UAE · 2022</div>
         <div class="project-role">Disguise Engineer · PRG</div>
       </div>
-    </a>
-
-    <a href="oops.html" class="project-card" data-category="disguise">
+    </div>
+    <div class="project-card" data-category="disguise" data-title="Banyan Tree Hotel Opening" data-meta="Al Ula, Saudi Arabia · 2022" data-role="Disguise Engineer · PRG" data-link="" data-img="images/alula.png">
       <img class="project-img" src="images/alula.png" alt="Banyan Tree Hotel Opening">
       <div class="project-overlay">
         <div class="project-title">Banyan Tree Hotel Opening</div>
         <div class="project-meta">Al Ula, Saudi Arabia · 2022</div>
         <div class="project-role">Disguise Engineer · PRG</div>
       </div>
-    </a>
-
-    <a href="https://www.prg.com/en-gb/news/2022/q3/kpop" target="_blank" class="project-card" data-category="disguise">
+    </div>
+    <div class="project-card" data-category="disguise" data-title="KPOP Festival — Saranghae KSA" data-meta="Jeddah, Saudi Arabia · 2022" data-role="Disguise Engineer · PRG" data-link="https://www.prg.com/en-gb/news/2022/q3/kpop" data-img="images/kpop.png">
       <img class="project-img" src="images/kpop.png" alt="KPOP Festival — Saranghae KSA">
       <div class="project-overlay">
         <div class="project-title">KPOP Festival — Saranghae KSA</div>
         <div class="project-meta">Jeddah, Saudi Arabia · 2022</div>
         <div class="project-role">Disguise Engineer · PRG</div>
       </div>
-    </a>
-
-    <a href="oops.html" class="project-card" data-category="disguise">
+    </div>
+    <div class="project-card" data-category="disguise" data-title="Rage on the Red Sea" data-meta="Jeddah, Saudi Arabia · 2022" data-role="Video Systems Engineer · PRG" data-link="" data-img="images/rrs.png">
       <img class="project-img" src="images/rrs.png" alt="Rage on the Red Sea">
       <div class="project-overlay">
         <div class="project-title">Rage on the Red Sea</div>
         <div class="project-meta">Jeddah, Saudi Arabia · 2022</div>
         <div class="project-role">Video Systems Engineer · PRG</div>
       </div>
-    </a>
-
-    <a href="https://www.silasveta.com/projects/in-to-polyelab" target="_blank" class="project-card" data-category="disguise">
+    </div>
+    <div class="project-card" data-category="disguise" data-title="IN TO POLELAB" data-meta="Moscow, Russia · 2022" data-role="Disguise Engineer · Sila Sveta" data-link="https://www.silasveta.com/projects/in-to-polyelab" data-img="images/pole.png">
       <img class="project-img" src="images/pole.png" alt="IN TO POLELAB">
       <div class="project-overlay">
         <div class="project-title">IN TO POLELAB</div>
         <div class="project-meta">Moscow, Russia · 2022</div>
         <div class="project-role">Disguise Engineer · Sila Sveta</div>
       </div>
-    </a>
-
-    <a href="https://www.silasveta.com/projects/beyond-lexus-lx" target="_blank" class="project-card" data-category="disguise">
+    </div>
+    <div class="project-card" data-category="disguise" data-title="Beyond — Lexus LX Launch" data-meta="Riyadh, Saudi Arabia · 2021" data-role="Disguise Engineer · Sila Sveta" data-link="https://www.silasveta.com/projects/beyond-lexus-lx" data-img="images/lexus.png">
       <img class="project-img" src="images/lexus.png" alt="Beyond — Lexus LX Launch">
       <div class="project-overlay">
         <div class="project-title">Beyond — Lexus LX Launch</div>
         <div class="project-meta">Riyadh, Saudi Arabia · 2021</div>
         <div class="project-role">Disguise Engineer · Sila Sveta</div>
       </div>
-    </a>
-
-    <a href="https://www.silasveta.com/projects/first-man-in-space" target="_blank" class="project-card tall" data-category="disguise">
+    </div>
+    <div class="project-card tall" data-category="disguise" data-title="First Man In Space" data-meta="Baikonur, Kazakhstan · 2021" data-role="Disguise Engineer · Sila Sveta" data-link="https://www.silasveta.com/projects/first-man-in-space" data-img="images/baikonur.png">
       <img class="project-img" src="images/baikonur.png" alt="First Man In Space">
       <div class="project-overlay">
         <div class="project-title">First Man In Space</div>
         <div class="project-meta">Baikonur, Kazakhstan · 2021</div>
         <div class="project-role">Disguise Engineer · Sila Sveta</div>
       </div>
-    </a>
-
-    <a href="https://www.silasveta.com/projects/in-to-tseh" target="_blank" class="project-card" data-category="vj">
+    </div>
+    <div class="project-card" data-category="vj" data-title="IN TO TSEH" data-meta="Nizhny Novgorod, Russia · 2021" data-role="Resolume Engineer · Sila Sveta" data-link="https://www.silasveta.com/projects/in-to-tseh" data-img="images/tseh.png">
       <img class="project-img" src="images/tseh.png" alt="IN TO TSEH">
       <div class="project-overlay">
         <div class="project-title">IN TO TSEH</div>
-        <div class="project-meta">Nikola-Lenivets, Russia · 2021</div>
+        <div class="project-meta">Nizhny Novgorod, Russia · 2021</div>
         <div class="project-role">Resolume Engineer · Sila Sveta</div>
       </div>
-    </a>
-
-    <a href="https://www.silasveta.com/projects/nechto" target="_blank" class="project-card tall" data-category="vj">
+    </div>
+    <div class="project-card tall" data-category="vj" data-title="NECHTO" data-meta="Kyiv, Ukraine · 2021" data-role="VJ · Sila Sveta" data-link="https://www.silasveta.com/projects/nechto" data-img="images/nechto.png">
       <img class="project-img" src="images/nechto.png" alt="NECHTO">
       <div class="project-overlay">
         <div class="project-title">NECHTO</div>
         <div class="project-meta">Kyiv, Ukraine · 2021</div>
         <div class="project-role">VJ · Sila Sveta</div>
       </div>
-    </a>
-
-    <a href="https://www.silasveta.com/projects/space-ark" target="_blank" class="project-card" data-category="vj">
+    </div>
+    <div class="project-card" data-category="vj" data-title="Space Ark" data-meta="Yerevan, Armenia · 2021" data-role="VJ · Sila Sveta" data-link="https://www.silasveta.com/projects/space-ark" data-img="images/spaceark.png">
       <img class="project-img" src="images/spaceark.png" alt="Space Ark">
       <div class="project-overlay">
         <div class="project-title">Space Ark</div>
         <div class="project-meta">Yerevan, Armenia · 2021</div>
         <div class="project-role">VJ · Sila Sveta</div>
       </div>
-    </a>
-
-    <a href="https://www.silasveta.com/projects/sila-sveta-in-tretyakov-gallery" target="_blank" class="project-card" data-category="disguise">
+    </div>
+    <div class="project-card" data-category="disguise" data-title="Sila Sveta in Tretyakov Gallery" data-meta="Moscow, Russia · 2020" data-role="Disguise Engineer · Sila Sveta" data-link="https://www.silasveta.com/projects/sila-sveta-in-tretyakov-gallery" data-img="images/tretyakovka.png">
       <img class="project-img" src="images/tretyakovka.png" alt="Sila Sveta in Tretyakov Gallery">
       <div class="project-overlay">
         <div class="project-title">Sila Sveta in Tretyakov Gallery</div>
         <div class="project-meta">Moscow, Russia · 2020</div>
         <div class="project-role">Disguise Engineer · Sila Sveta</div>
       </div>
-    </a>
-
-    <a href="https://www.silasveta.com/projects/levitation-2" target="_blank" class="project-card" data-category="disguise">
+    </div>
+    <div class="project-card" data-category="disguise" data-title="Levitation 2" data-meta="Moscow, Russia · 2020" data-role="Disguise Engineer · Sila Sveta" data-link="https://www.silasveta.com/projects/levitation-2" data-img="images/levitation.png">
       <img class="project-img" src="images/levitation.png" alt="Levitation 2">
       <div class="project-overlay">
         <div class="project-title">Levitation 2</div>
         <div class="project-meta">Moscow, Russia · 2020</div>
         <div class="project-role">Disguise Engineer · Sila Sveta</div>
       </div>
-    </a>
-
-    <a href="https://www.silasveta.com/projects/in-to" target="_blank" class="project-card" data-category="disguise">
+    </div>
+    <div class="project-card" data-category="disguise" data-title="IN TO" data-meta="Perm, Russia · 2020" data-role="Disguise Engineer · Sila Sveta" data-link="https://www.silasveta.com/projects/in-to" data-img="images/into.png">
       <img class="project-img" src="images/into.png" alt="IN TO">
       <div class="project-overlay">
         <div class="project-title">IN TO</div>
         <div class="project-meta">Perm, Russia · 2020</div>
         <div class="project-role">Disguise Engineer · Sila Sveta</div>
       </div>
-    </a>
-
-    <a href="https://www.silasveta.com/projects/the-american-university-in-cairo" target="_blank" class="project-card" data-category="integration">
+    </div>
+    <div class="project-card" data-category="vj" data-title="American University in Cairo" data-meta="Cairo, Egypt · 2020" data-role="Resolume Engineer · Sila Sveta" data-link="https://www.silasveta.com/projects/the-american-university-in-cairo" data-img="images/auc.png">
       <img class="project-img" src="images/auc.png" alt="American University in Cairo">
       <div class="project-overlay">
         <div class="project-title">American University in Cairo</div>
         <div class="project-meta">Cairo, Egypt · 2020</div>
         <div class="project-role">Resolume Engineer · Sila Sveta</div>
       </div>
-    </a>
-
-    <a href="https://www.silasveta.com/projects/arma-xll" target="_blank" class="project-card" data-category="vj">
+    </div>
+    <div class="project-card" data-category="vj" data-title="Arma XII" data-meta="Moscow, Russia · 2020" data-role="VJ · Sila Sveta" data-link="https://www.silasveta.com/projects/arma-xll" data-img="images/arma.png">
       <img class="project-img" src="images/arma.png" alt="Arma XII">
       <div class="project-overlay">
         <div class="project-title">Arma XII</div>
         <div class="project-meta">Moscow, Russia · 2020</div>
         <div class="project-role">VJ · Sila Sveta</div>
       </div>
-    </a>
-
-    <a href="https://www.silasveta.com/projects/trans-studio" target="_blank" class="project-card" data-category="integration">
+    </div>
+    <div class="project-card" data-category="integration" data-title="Trans Studio Theme Park" data-meta="Jakarta, Indonesia · 2019" data-role="Disguise Engineer · Sila Sveta" data-link="https://www.silasveta.com/projects/trans-studio" data-img="images/transstudio.png">
       <img class="project-img" src="images/transstudio.png" alt="Trans Studio Theme Park">
       <div class="project-overlay">
         <div class="project-title">Trans Studio Theme Park</div>
         <div class="project-meta">Jakarta, Indonesia · 2019</div>
         <div class="project-role">Disguise Engineer · Sila Sveta</div>
       </div>
-    </a>
-
-    <a href="https://www.silasveta.com/projects/lamborghini-huracan" target="_blank" class="project-card" data-category="disguise">
+    </div>
+    <div class="project-card" data-category="disguise" data-title="Lamborghini Huracán Launch" data-meta="Berlin &amp; Milan · 2019" data-role="Disguise Engineer · Sila Sveta" data-link="https://www.silasveta.com/projects/lamborghini-huracan" data-img="images/huracan.png">
       <img class="project-img" src="images/huracan.png" alt="Lamborghini Huracán Launch">
       <div class="project-overlay">
         <div class="project-title">Lamborghini Huracán Launch</div>
         <div class="project-meta">Berlin &amp; Milan · 2019</div>
         <div class="project-role">Disguise Engineer · Sila Sveta</div>
       </div>
-    </a>
-
-    <a href="https://www.silasveta.com/projects/mercedes-eqc" target="_blank" class="project-card" data-category="disguise">
+    </div>
+    <div class="project-card" data-category="disguise" data-title="Mercedes EQC Launch" data-meta="Beijing, China · 2019" data-role="Disguise Engineer · Sila Sveta" data-link="https://www.silasveta.com/projects/mercedes-eqc" data-img="images/eqc.png">
       <img class="project-img" src="images/eqc.png" alt="Mercedes EQC Launch">
       <div class="project-overlay">
         <div class="project-title">Mercedes EQC Launch</div>
         <div class="project-meta">Beijing, China · 2019</div>
         <div class="project-role">Disguise Engineer · Sila Sveta</div>
       </div>
-    </a>
-
+    </div>
   </div>
 </section>
 
+<!-- ===================== EXPERIENCE ===================== -->
 <section id="experience">
   <div class="exp-section-header fade-up">
     <span class="exp-section-label">Work Experience</span>
   </div>
-  <div class="exp-list">
-    <div class="exp-item fade-up">
+  <div class="exp-list" id="expList">
+    <div class="exp-item">
       <div class="exp-dates">2024 — 2025</div>
       <div>
         <div class="exp-role">Lead Video &amp; Systems Engineer</div>
@@ -1270,7 +1225,7 @@
       </div>
       <div class="exp-loc">Dubai, UAE</div>
     </div>
-    <div class="exp-item fade-up">
+    <div class="exp-item">
       <div class="exp-dates">2023 — 2024</div>
       <div>
         <div class="exp-role">Senior Video Engineer</div>
@@ -1282,7 +1237,7 @@
       </div>
       <div class="exp-loc">Dubai, UAE</div>
     </div>
-    <div class="exp-item fade-up">
+    <div class="exp-item">
       <div class="exp-dates">2022 — 2023</div>
       <div>
         <div class="exp-role">Senior Video Engineer</div>
@@ -1295,7 +1250,7 @@
       </div>
       <div class="exp-loc">Dubai, UAE</div>
     </div>
-    <div class="exp-item fade-up">
+    <div class="exp-item">
       <div class="exp-dates">2020 — 2022</div>
       <div>
         <div class="exp-role">Senior Video Engineer</div>
@@ -1308,7 +1263,7 @@
       </div>
       <div class="exp-loc">Moscow, Russia</div>
     </div>
-    <div class="exp-item fade-up">
+    <div class="exp-item">
       <div class="exp-dates">2018 — 2020</div>
       <div>
         <div class="exp-role">Video Engineer</div>
@@ -1320,7 +1275,7 @@
       </div>
       <div class="exp-loc">Moscow, Russia</div>
     </div>
-    <div class="exp-item fade-up">
+    <div class="exp-item">
       <div class="exp-dates">2013 — 2015</div>
       <div>
         <div class="exp-role">Technician / Video Engineer</div>
@@ -1335,6 +1290,7 @@
   </div>
 </section>
 
+<!-- ===================== CONTACT ===================== -->
 <section id="contact">
   <div class="contact-inner fade-up">
     <div>
@@ -1342,7 +1298,7 @@
       <div class="contact-headline">GET IN<br>TOUCH</div>
     </div>
     <div class="contact-links">
-      <a href="mailto:stranyov@gmail.com" class="contact-link">stranyov@gmail.com</a>
+      <a href="/cdn-cgi/l/email-protection#afdcdbddcec1d6c0d9efc8c2cec6c381ccc0c2" class="contact-link"><span class="__cf_email__" data-cfemail="64171016050a1d0b12240309050d084a070b09">[email&#160;protected]</span></a>
       <a href="tel:+971509100292" class="contact-link">+971 50 910 0292</a>
       <a href="https://t.me/stranyov" class="contact-link" target="_blank">Telegram @stranyov</a>
       <a href="https://instagram.com/stranyov" class="contact-link" target="_blank">Instagram @stranyov</a>
@@ -1352,107 +1308,206 @@
 
 <footer>
   <div class="footer-copy">© 2026 Yuri Stranyov · Dubai, UAE</div>
-  <img src="images/str_white.png" alt="STRANYOV" style="height:40px;width:auto;">
+  <img src="images/str_white.png" alt="STRANYOV" style="height:36px;width:auto;opacity:0.3;" onerror="this.style.display='none'">
 </footer>
 
-<script>
-  // Burger menu
-  const burger = document.getElementById('burger');
-  const mobileMenu = document.getElementById('mobileMenu');
-  burger.addEventListener('click', () => {
-    burger.classList.toggle('active');
-    mobileMenu.classList.toggle('open');
-    document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : '';
-  });
-  document.querySelectorAll('.mob-link').forEach(a => {
-    a.addEventListener('click', () => {
-      burger.classList.remove('active');
-      mobileMenu.classList.remove('open');
-      document.body.style.overflow = '';
-    });
-  });
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true">
+  <div class="lightbox-inner" id="lightboxInner">
+    <div class="lightbox-img-wrap">
+      <img id="lbImg" src="" alt="">
+    </div>
+    <div class="lightbox-info">
+      <div class="lightbox-cat" id="lbCat"></div>
+      <div class="lightbox-title" id="lbTitle"></div>
+      <div class="lightbox-meta" id="lbMeta"></div>
+      <div class="lightbox-role" id="lbRole"></div>
+      <a class="lightbox-link" id="lbLink" href="#" target="_blank" rel="noopener">
+        View Project <span class="arr">→</span>
+      </a>
+    </div>
+    <button class="lightbox-close" id="lbClose" aria-label="Close">
+      <svg viewBox="0 0 14 14" fill="none" stroke-width="1.5">
+        <line x1="1" y1="1" x2="13" y2="13"/>
+        <line x1="13" y1="1" x2="1" y2="13"/>
+      </svg>
+    </button>
+  </div>
+</div>
 
-  // Custom cursor — mouse only
-  if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
-    const cursor = document.getElementById('cursor');
-    const ring = document.getElementById('cursorRing');
-    let mx = 0, my = 0, rx = 0, ry = 0;
-    document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
-    function animCursor() {
-      cursor.style.left = mx + 'px';
-      cursor.style.top = my + 'px';
-      rx += (mx - rx) * 0.12;
-      ry += (my - ry) * 0.12;
-      ring.style.left = rx + 'px';
-      ring.style.top = ry + 'px';
-      requestAnimationFrame(animCursor);
-    }
-    animCursor();
-    document.querySelectorAll('a, .project-card, .skill-tag').forEach(el => {
-      el.addEventListener('mouseenter', () => ring.classList.add('expand'));
-      el.addEventListener('mouseleave', () => ring.classList.remove('expand'));
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+// ── HERO CANVAS ──────────────────────────────────────────────
+(function() {
+  // Canvas removed — video background active
+})();
+
+// ── HERO PARALLAX ────────────────────────────────────────────
+// Parallax the entire hero-content block so name and description move together
+const heroContent = document.querySelector('.hero-content');
+window.addEventListener('scroll', () => {
+  const y = window.scrollY;
+  if (y < window.innerHeight) {
+    heroContent.style.transform = `translateY(${y * 0.15}px)`;
+  }
+}, { passive: true });
+
+// ── STAT COUNTER ─────────────────────────────────────────────
+const statNums = document.querySelectorAll('.stat-num[data-count]');
+let statsAnimated = false;
+function animateStats() {
+  if (statsAnimated) return;
+  const hero = document.getElementById('hero');
+  const rect = hero.getBoundingClientRect();
+  if (rect.top < window.innerHeight) {
+    statsAnimated = true;
+    statNums.forEach(el => {
+      const target = parseInt(el.dataset.count);
+      const suffix = el.dataset.count >= '100' ? '+' : '+';
+      let cur = 0;
+      const step = Math.ceil(target / 30);
+      const interval = setInterval(() => {
+        cur = Math.min(cur + step, target);
+        el.textContent = cur + '+';
+        if (cur >= target) clearInterval(interval);
+      }, 30);
     });
   }
+}
+window.addEventListener('scroll', animateStats, { passive: true });
+animateStats();
 
-  // Scroll fade-in
-  const obs = new IntersectionObserver(entries => {
-    entries.forEach((e, i) => {
-      if (e.isIntersecting) {
-        setTimeout(() => e.target.classList.add('visible'), i * 80);
-      }
-    });
-  }, { threshold: 0.1 });
-  document.querySelectorAll('.fade-up').forEach(el => obs.observe(el));
+// ── CUSTOM CURSOR ────────────────────────────────────────────
+if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+  function animCursor() {
+    cursor.style.left = mx + 'px';
+    cursor.style.top = my + 'px';
+    rx += (mx - rx) * 0.1;
+    ry += (my - ry) * 0.1;
+    ring.style.left = rx + 'px';
+    ring.style.top = ry + 'px';
+    requestAnimationFrame(animCursor);
+  }
+  animCursor();
+  document.querySelectorAll('a, button, .project-card, .skill-tag, .cert-badge').forEach(el => {
+    el.addEventListener('mouseenter', () => { ring.classList.add('expand'); cursor.classList.add('hover'); });
+    el.addEventListener('mouseleave', () => { ring.classList.remove('expand'); cursor.classList.remove('hover'); });
+  });
+}
 
-  // Project filter
-  const grid = document.querySelector('.projects-grid');
+// ── FADE-UP OBSERVER ─────────────────────────────────────────
+const fadeObs = new IntersectionObserver((entries) => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), i * 60);
+      fadeObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.08 });
+document.querySelectorAll('.fade-up').forEach(el => fadeObs.observe(el));
 
-  function applyFilter(filter) {
-    if (filter === 'all') {
-      grid.classList.remove('category-view');
-      grid.querySelectorAll('.project-card').forEach(c => { c.hidden = false; });
-    } else {
-      grid.classList.add('category-view');
-      grid.querySelectorAll('.project-card').forEach(c => {
-        c.hidden = c.dataset.category !== filter;
+// ── EXP STAGGER ──────────────────────────────────────────────
+const expObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const items = e.target.querySelectorAll('.exp-item');
+      items.forEach((item, i) => {
+        setTimeout(() => item.classList.add('visible'), i * 120);
       });
+      expObs.unobserve(e.target);
     }
-  }
-
-  document.querySelectorAll('.filter-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      applyFilter(btn.dataset.filter);
-    });
   });
+}, { threshold: 0.05 });
+const expList = document.getElementById('expList');
+if (expList) expObs.observe(expList);
 
-  // Reorder grid: featured cards first
-  const featuredCfg = document.getElementById('featured-config');
-  const featured = featuredCfg ? JSON.parse(featuredCfg.textContent).slice(0, 10) : [];
-  const allCards = [...grid.querySelectorAll('.project-card')];
-  const featuredCards = featured
-    .map(img => allCards.find(c => (c.querySelector('img')?.getAttribute('src') || '').endsWith(img)))
-    .filter(Boolean);
-  const restCards = allCards.filter(c => !featuredCards.includes(c));
-  [...featuredCards, ...restCards].forEach(c => grid.appendChild(c));
-
-  // Stagger exp items
-  const expObs = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        const items = e.target.querySelectorAll('.exp-item');
-        items.forEach((item, i) => {
-          setTimeout(() => item.style.opacity = '1', i * 100);
-        });
-      }
+// ── PROJECT FILTER ───────────────────────────────────────────
+const grid = document.getElementById('projectsGrid');
+function applyFilter(filter) {
+  if (filter === 'all') {
+    grid.classList.remove('category-view');
+    grid.querySelectorAll('.project-card').forEach(c => c.removeAttribute('hidden'));
+  } else {
+    grid.classList.add('category-view');
+    grid.querySelectorAll('.project-card').forEach(c => {
+      if (c.dataset.category === filter) c.removeAttribute('hidden');
+      else c.setAttribute('hidden', '');
     });
-  }, { threshold: 0.05 });
-  const expList = document.querySelector('.exp-list');
-  if (expList) {
-    expList.querySelectorAll('.exp-item').forEach(el => el.style.opacity = '0');
-    expObs.observe(expList);
   }
+}
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilter(btn.dataset.filter);
+  });
+});
+
+// ── LIGHTBOX ─────────────────────────────────────────────────
+const lightbox = document.getElementById('lightbox');
+const lbImg = document.getElementById('lbImg');
+const lbTitle = document.getElementById('lbTitle');
+const lbMeta = document.getElementById('lbMeta');
+const lbRole = document.getElementById('lbRole');
+const lbCat = document.getElementById('lbCat');
+const lbLink = document.getElementById('lbLink');
+const lbClose = document.getElementById('lbClose');
+
+const catLabels = { disguise: 'Disguise / Live Production', vj: 'VJ / Resolume', integration: 'AV Integration' };
+
+function openLightbox(card) {
+  const d = card.dataset;
+  lbImg.src = d.img;
+  lbImg.alt = d.title;
+  lbTitle.textContent = d.title;
+  lbMeta.textContent = d.meta;
+  lbRole.textContent = d.role;
+  lbCat.textContent = catLabels[d.category] || d.category;
+  lbLink.href = d.link || 'oops.html';
+  if (!d.link) lbLink.setAttribute('target', '_self');
+  else lbLink.setAttribute('target', '_blank');
+  lbLink.style.display = 'inline-flex';
+  lightbox.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeLightbox() {
+  lightbox.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+grid.querySelectorAll('.project-card').forEach(card => {
+  card.addEventListener('click', e => {
+    e.preventDefault();
+    openLightbox(card);
+  });
+});
+
+lbClose.addEventListener('click', closeLightbox);
+lightbox.addEventListener('click', e => {
+  if (e.target === lightbox) closeLightbox();
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeLightbox();
+});
+
+// ── BURGER ───────────────────────────────────────────────────
+const burger = document.getElementById('burger');
+const mobileMenu = document.getElementById('mobileMenu');
+burger.addEventListener('click', () => {
+  burger.classList.toggle('active');
+  mobileMenu.classList.toggle('open');
+  document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : '';
+});
+document.querySelectorAll('.mob-link').forEach(a => {
+  a.addEventListener('click', () => {
+    burger.classList.remove('active');
+    mobileMenu.classList.remove('open');
+    document.body.style.overflow = '';
+  });
+});
 </script>
 </body>
 </html>
