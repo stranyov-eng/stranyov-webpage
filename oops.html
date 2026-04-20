@@ -386,10 +386,11 @@
     return move;
   }
 
+  // error rates: easy=75% random, medium=50%, hard=25%
+  const ERROR_RATE = { easy: 0.75, medium: 0.50, hard: 0.25 };
+
   function cpuMove() {
-    const move = difficulty === 'easy' ? randomMove()
-               : difficulty === 'medium' ? (Math.random() < 0.55 ? bestMove() : randomMove())
-               : bestMove();
+    const move = Math.random() < ERROR_RATE[difficulty] ? randomMove() : bestMove();
     if (move == null || move === -1) return;
     board[move] = 'o';
     cells[move].textContent = 'O';
