@@ -8,137 +8,134 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root {
-  --black: #0a0a0a;
-  --white: #f0ede8;
-  --line: rgba(240,237,232,0.1);
-  --input-bg: #1a1a1a;
-}
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html, body { height: 100%; overflow: hidden; }
-body { background: var(--black); color: var(--white); font-family: 'DM Sans', sans-serif; font-weight: 300; display: flex; flex-direction: column; }
+:root { --black:#0a0a0a; --white:#f0ede8; --line:rgba(240,237,232,0.1); --input-bg:#1a1a1a; }
+*,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
+html,body { height:100%; overflow:hidden; }
+body { background:var(--black); color:var(--white); font-family:'DM Sans',sans-serif; font-weight:300; display:flex; flex-direction:column; }
 
-/* TOPBAR */
-.topbar { display: flex; align-items: center; padding: 0 24px; height: 52px; border-bottom: 1px solid var(--line); flex-shrink: 0; }
-.topbar-left { display: flex; align-items: center; gap: 20px; flex-shrink: 0; }
-.back-link { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.2em; color: rgba(240,237,232,0.35); text-decoration: none; text-transform: uppercase; transition: color 0.2s; }
-.back-link:hover { color: var(--white); }
-.topbar-title { font-family: 'Bebas Neue', sans-serif; font-size: 20px; letter-spacing: 0.1em; }
-.mode-tabs { display: flex; gap: 2px; margin: 0 auto; }
-.mode-tab { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; padding: 7px 22px; background: none; border: 1px solid transparent; color: rgba(240,237,232,0.3); cursor: pointer; transition: color 0.2s, border-color 0.2s, background 0.2s; }
-.mode-tab:hover { color: rgba(240,237,232,0.7); border-color: rgba(240,237,232,0.12); }
-.mode-tab.active { color: var(--white); border-color: rgba(240,237,232,0.35); background: rgba(240,237,232,0.05); }
-.res-display { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.08em; color: rgba(240,237,232,0.4); flex-shrink: 0; }
-.res-display b { color: var(--white); font-weight: 400; }
+.topbar { display:flex; align-items:center; padding:0 24px; height:52px; border-bottom:1px solid var(--line); flex-shrink:0; }
+.topbar-left { display:flex; align-items:center; gap:20px; flex-shrink:0; }
+.back-link { font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.2em; color:rgba(240,237,232,0.35); text-decoration:none; text-transform:uppercase; transition:color 0.2s; }
+.back-link:hover { color:var(--white); }
+.topbar-title { font-family:'Bebas Neue',sans-serif; font-size:20px; letter-spacing:0.1em; }
+.mode-tabs { display:flex; gap:2px; margin:0 auto; }
+.mode-tab { font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.18em; text-transform:uppercase; padding:7px 22px; background:none; border:1px solid transparent; color:rgba(240,237,232,0.3); cursor:pointer; transition:color 0.2s,border-color 0.2s,background 0.2s; }
+.mode-tab:hover { color:rgba(240,237,232,0.7); border-color:rgba(240,237,232,0.12); }
+.mode-tab.active { color:var(--white); border-color:rgba(240,237,232,0.35); background:rgba(240,237,232,0.05); }
+.mode-tab.disabled { opacity:0.22; cursor:not-allowed; pointer-events:none; }
+.beta-badge { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.15em; background:rgba(240,237,232,0.08); border:1px solid rgba(240,237,232,0.18); padding:2px 7px; vertical-align:middle; color:rgba(240,237,232,0.4); margin-left:10px; }
+.res-display { font-family:'DM Mono',monospace; font-size:11px; letter-spacing:0.08em; color:rgba(240,237,232,0.4); flex-shrink:0; }
+.res-display b { color:var(--white); font-weight:400; }
 
-/* LAYOUT */
-.main { display: flex; flex: 1; overflow: hidden; }
+.main { display:flex; flex:1; overflow:hidden; }
 
-/* SIDEBAR */
-.sidebar { width: 272px; flex-shrink: 0; border-right: 1px solid var(--line); overflow-y: auto; display: flex; flex-direction: column; }
-.sidebar::-webkit-scrollbar { width: 4px; }
-.sidebar::-webkit-scrollbar-thumb { background: rgba(240,237,232,0.08); }
+.sidebar { width:272px; flex-shrink:0; border-right:1px solid var(--line); overflow-y:auto; display:flex; flex-direction:column; }
+.sidebar::-webkit-scrollbar { width:4px; }
+.sidebar::-webkit-scrollbar-thumb { background:rgba(240,237,232,0.08); }
 
-.sub-tabs { display: flex; flex-shrink: 0; border-bottom: 1px solid var(--line); }
-.sub-tab { flex: 1; font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; padding: 11px 8px; background: none; border: none; border-bottom: 2px solid transparent; color: rgba(240,237,232,0.3); cursor: pointer; transition: color 0.2s, border-color 0.2s; }
-.sub-tab:hover { color: rgba(240,237,232,0.7); }
-.sub-tab.active { color: var(--white); border-bottom-color: var(--white); }
+.sub-tabs { display:flex; flex-shrink:0; border-bottom:1px solid var(--line); }
+.sub-tab { flex:1; font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.2em; text-transform:uppercase; padding:11px 8px; background:none; border:none; border-bottom:2px solid transparent; color:rgba(240,237,232,0.3); cursor:pointer; transition:color 0.2s,border-color 0.2s; }
+.sub-tab:hover { color:rgba(240,237,232,0.7); }
+.sub-tab.active { color:var(--white); border-bottom-color:var(--white); }
 
-.sb { padding: 18px; display: flex; flex-direction: column; gap: 18px; }
-.sb-hidden { display: none; }
+.sb { padding:18px; display:flex; flex-direction:column; gap:18px; }
+.sb-hidden { display:none; }
 
-.sec-label { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.25em; color: rgba(240,237,232,0.25); text-transform: uppercase; margin-bottom: 10px; }
-.divider { height: 1px; background: var(--line); margin: 0 -18px; }
+.sec-label { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.25em; color:rgba(240,237,232,0.25); text-transform:uppercase; margin-bottom:10px; }
+.divider { height:1px; background:var(--line); margin:0 -18px; }
 
-.field { display: flex; flex-direction: column; gap: 4px; }
-.field label { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.12em; color: rgba(240,237,232,0.35); }
-.field input[type="number"],
-.field input[type="text"] { background: var(--input-bg); border: 1px solid rgba(240,237,232,0.1); color: var(--white); font-family: 'DM Mono', monospace; font-size: 14px; padding: 8px 10px; width: 100%; outline: none; transition: border-color 0.2s; -moz-appearance: textfield; }
-.field input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; }
-.field input[type="number"]:focus,
-.field input[type="text"]:focus { border-color: rgba(240,237,232,0.4); }
+.field { display:flex; flex-direction:column; gap:4px; }
+.field label { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.12em; color:rgba(240,237,232,0.35); }
+.field input[type="number"],.field input[type="text"] { background:var(--input-bg); border:1px solid rgba(240,237,232,0.1); color:var(--white); font-family:'DM Mono',monospace; font-size:14px; padding:8px 10px; width:100%; outline:none; transition:border-color 0.2s; -moz-appearance:textfield; }
+.field input[type="number"]::-webkit-inner-spin-button { -webkit-appearance:none; }
+.field input:focus { border-color:rgba(240,237,232,0.4); }
 
-.row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.row-2 { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
 
-/* Color picker */
-.color-row { display: flex; align-items: center; gap: 10px; }
-.color-swatch { width: 32px; height: 32px; border: 1px solid rgba(240,237,232,0.2); cursor: pointer; flex-shrink: 0; padding: 0; background: none; overflow: hidden; position: relative; }
-.color-swatch input[type="color"] { position: absolute; inset: -4px; width: calc(100% + 8px); height: calc(100% + 8px); opacity: 0; cursor: pointer; }
-.color-preview { width: 100%; height: 100%; pointer-events: none; }
-.color-hex { font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: 0.1em; color: var(--white); background: var(--input-bg); border: 1px solid rgba(240,237,232,0.1); padding: 7px 10px; flex: 1; outline: none; }
+/* color picker */
+.color-row { display:flex; align-items:center; gap:10px; }
+.color-swatch { width:32px; height:32px; border:1px solid rgba(240,237,232,0.2); cursor:pointer; flex-shrink:0; padding:0; background:none; overflow:hidden; position:relative; }
+.color-swatch input[type="color"] { position:absolute; inset:-4px; width:calc(100% + 8px); height:calc(100% + 8px); opacity:0; cursor:pointer; }
+.color-preview { width:100%; height:100%; pointer-events:none; }
+.color-hex { font-family:'DM Mono',monospace; font-size:12px; letter-spacing:0.1em; color:var(--white); background:var(--input-bg); border:1px solid rgba(240,237,232,0.1); padding:7px 10px; flex:1; outline:none; }
 
-/* Pattern type selector */
-.pat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
-.pat-btn { background: var(--input-bg); border: 1px solid rgba(240,237,232,0.08); color: rgba(240,237,232,0.4); font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.05em; text-transform: uppercase; padding: 9px 6px; text-align: center; cursor: pointer; transition: border-color 0.15s, color 0.15s, background 0.15s; }
-.pat-btn:hover { border-color: rgba(240,237,232,0.3); color: var(--white); }
-.pat-btn.active { border-color: var(--white); color: var(--white); background: rgba(240,237,232,0.06); }
+/* slider with value */
+.slider-row { display:flex; justify-content:space-between; align-items:center; margin-bottom:5px; }
+.slider-val { font-family:'DM Mono',monospace; font-size:12px; color:var(--white); }
+input[type="range"] { -webkit-appearance:none; width:100%; height:2px; background:rgba(240,237,232,0.15); outline:none; border-radius:0; }
+input[type="range"]::-webkit-slider-thumb { -webkit-appearance:none; width:14px; height:14px; background:var(--white); border-radius:50%; cursor:pointer; }
 
-/* Toggles */
-.toggle-row { display: flex; align-items: center; justify-content: space-between; }
-.toggle-label { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.12em; color: rgba(240,237,232,0.35); text-transform: uppercase; }
-.toggle { position: relative; width: 32px; height: 18px; display: inline-block; }
-.toggle input { opacity: 0; width: 0; height: 0; }
-.toggle-slider { position: absolute; inset: 0; background: rgba(240,237,232,0.1); border-radius: 9px; cursor: pointer; transition: background 0.2s; }
-.toggle-slider::before { content: ''; position: absolute; left: 3px; top: 3px; width: 12px; height: 12px; background: rgba(240,237,232,0.5); border-radius: 50%; transition: transform 0.2s, background 0.2s; }
-.toggle input:checked + .toggle-slider { background: rgba(240,237,232,0.25); }
-.toggle input:checked + .toggle-slider::before { transform: translateX(14px); background: var(--white); }
-.toggles { display: flex; flex-direction: column; gap: 10px; }
+/* toggles */
+.toggle-row { display:flex; align-items:center; justify-content:space-between; }
+.toggle-label { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.12em; color:rgba(240,237,232,0.35); text-transform:uppercase; }
+.toggle { position:relative; width:32px; height:18px; display:inline-block; }
+.toggle input { opacity:0; width:0; height:0; }
+.toggle-slider { position:absolute; inset:0; background:rgba(240,237,232,0.1); border-radius:9px; cursor:pointer; transition:background 0.2s; }
+.toggle-slider::before { content:''; position:absolute; left:3px; top:3px; width:12px; height:12px; background:rgba(240,237,232,0.5); border-radius:50%; transition:transform 0.2s,background 0.2s; }
+.toggle input:checked + .toggle-slider { background:rgba(240,237,232,0.25); }
+.toggle input:checked + .toggle-slider::before { transform:translateX(14px); background:var(--white); }
+.toggles { display:flex; flex-direction:column; gap:10px; }
 
-/* Brightness */
-.br-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 7px; }
-.br-val { font-family: 'DM Mono', monospace; font-size: 13px; }
-input[type="range"] { -webkit-appearance: none; width: 100%; height: 2px; background: rgba(240,237,232,0.15); outline: none; border-radius: 0; }
-input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 14px; height: 14px; background: var(--white); border-radius: 50%; cursor: pointer; }
+/* buttons */
+.btn-primary { width:100%; background:var(--white); color:var(--black); border:none; font-family:'DM Mono',monospace; font-size:11px; letter-spacing:0.2em; text-transform:uppercase; padding:12px; cursor:pointer; transition:opacity 0.2s; }
+.btn-primary:hover { opacity:0.85; }
+.btn-secondary { width:100%; background:transparent; color:rgba(240,237,232,0.4); border:1px solid rgba(240,237,232,0.15); font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.15em; text-transform:uppercase; padding:9px; cursor:pointer; transition:border-color 0.2s,color 0.2s; }
+.btn-secondary:hover { border-color:rgba(240,237,232,0.4); color:var(--white); }
+.btn-dashed { width:100%; background:transparent; color:rgba(240,237,232,0.4); border:1px dashed rgba(240,237,232,0.18); font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.12em; text-transform:uppercase; padding:9px; cursor:pointer; transition:border-color 0.2s,color 0.2s; }
+.btn-dashed:hover { border-color:rgba(240,237,232,0.5); color:var(--white); }
 
-/* Buttons */
-.btn-primary { width: 100%; background: var(--white); color: var(--black); border: none; font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; padding: 12px; cursor: pointer; transition: opacity 0.2s; }
-.btn-primary:hover { opacity: 0.85; }
-.btn-secondary { width: 100%; background: transparent; color: rgba(240,237,232,0.4); border: 1px solid rgba(240,237,232,0.15); font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; padding: 9px; cursor: pointer; transition: border-color 0.2s, color 0.2s; }
-.btn-secondary:hover { border-color: rgba(240,237,232,0.4); color: var(--white); }
-.btn-dashed { width: 100%; background: transparent; color: rgba(240,237,232,0.4); border: 1px dashed rgba(240,237,232,0.18); font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; padding: 9px; cursor: pointer; transition: border-color 0.2s, color 0.2s; }
-.btn-dashed:hover { border-color: rgba(240,237,232,0.5); color: var(--white); }
+/* formula box */
+.formula-box { background:var(--input-bg); border:1px solid rgba(240,237,232,0.08); padding:12px; display:flex; flex-direction:column; gap:9px; }
+.f-row { display:flex; justify-content:space-between; align-items:center; }
+.f-label { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.12em; color:rgba(240,237,232,0.3); text-transform:uppercase; }
+.f-val { font-family:'DM Mono',monospace; font-size:13px; color:var(--white); }
+.f-val.big { font-size:15px; }
+.f-divider { height:1px; background:rgba(240,237,232,0.06); }
+.f-input { font-family:'DM Mono',monospace; font-size:15px; color:var(--white); background:transparent; border:none; border-bottom:1px solid rgba(240,237,232,0.2); outline:none; width:120px; padding:2px 0; -moz-appearance:textfield; }
+.f-input::-webkit-inner-spin-button { -webkit-appearance:none; }
+.f-input:focus { border-bottom-color:rgba(240,237,232,0.6); }
 
-/* Formula box */
-.formula-box { background: var(--input-bg); border: 1px solid rgba(240,237,232,0.08); padding: 12px; display: flex; flex-direction: column; gap: 9px; }
-.f-row { display: flex; justify-content: space-between; align-items: center; }
-.f-label { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.12em; color: rgba(240,237,232,0.3); text-transform: uppercase; }
-.f-val { font-family: 'DM Mono', monospace; font-size: 13px; color: var(--white); }
-.f-val.big { font-size: 15px; }
-.f-divider { height: 1px; background: rgba(240,237,232,0.06); }
+.color-sub-label { font-family:'DM Mono',monospace; font-size:8px; letter-spacing:0.1em; color:rgba(240,237,232,0.28); text-transform:uppercase; margin-bottom:5px; }
 
-/* Preset buttons */
-.preset-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
-.preset-btn { background: var(--input-bg); border: 1px solid rgba(240,237,232,0.08); color: rgba(240,237,232,0.4); font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.05em; text-transform: uppercase; padding: 11px 8px; text-align: center; cursor: pointer; transition: border-color 0.15s, color 0.15s, background 0.15s; }
-.preset-btn:hover { border-color: rgba(240,237,232,0.3); color: var(--white); }
-.preset-btn.active { border-color: var(--white); color: var(--white); background: rgba(240,237,232,0.06); }
-.preset-sub { display: block; font-size: 8px; color: rgba(240,237,232,0.3); margin-top: 3px; letter-spacing: 0.05em; }
+/* dome presets */
+.preset-grid { display:grid; grid-template-columns:1fr 1fr; gap:5px; }
+.preset-btn { background:var(--input-bg); border:1px solid rgba(240,237,232,0.08); color:rgba(240,237,232,0.4); font-family:'DM Mono',monospace; font-size:11px; text-transform:uppercase; padding:11px 8px; text-align:center; cursor:pointer; transition:border-color 0.15s,color 0.15s,background 0.15s; }
+.preset-btn:hover { border-color:rgba(240,237,232,0.3); color:var(--white); }
+.preset-btn.active { border-color:var(--white); color:var(--white); background:rgba(240,237,232,0.06); }
+.preset-sub { display:block; font-size:8px; color:rgba(240,237,232,0.3); margin-top:3px; }
 
-/* Screen items (LED canvas mode) */
-.screen-list { display: flex; flex-direction: column; gap: 8px; }
-.screen-item { background: var(--input-bg); border: 1px solid rgba(240,237,232,0.08); padding: 10px; }
-.screen-item-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-.screen-name { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.1em; color: rgba(240,237,232,0.55); }
-.screen-remove { background: none; border: none; color: rgba(240,237,232,0.2); font-size: 16px; line-height: 1; cursor: pointer; padding: 0 2px; transition: color 0.15s; }
-.screen-remove:hover { color: rgba(240,237,232,0.7); }
-.screen-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
-.sf { display: flex; flex-direction: column; gap: 3px; }
-.sf label { font-family: 'DM Mono', monospace; font-size: 8px; letter-spacing: 0.08em; color: rgba(240,237,232,0.25); }
-.sf input { background: rgba(255,255,255,0.04); border: 1px solid rgba(240,237,232,0.08); color: var(--white); font-family: 'DM Mono', monospace; font-size: 12px; padding: 5px 7px; width: 100%; outline: none; transition: border-color 0.2s; -moz-appearance: textfield; }
-.sf input::-webkit-inner-spin-button { -webkit-appearance: none; }
-.sf input:focus { border-color: rgba(240,237,232,0.35); }
+/* pat buttons */
+.pat-grid { display:grid; grid-template-columns:1fr 1fr; gap:5px; }
+.pat-btn { background:var(--input-bg); border:1px solid rgba(240,237,232,0.08); color:rgba(240,237,232,0.4); font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.05em; text-transform:uppercase; padding:9px 6px; text-align:center; cursor:pointer; transition:border-color 0.15s,color 0.15s,background 0.15s; }
+.pat-btn:hover { border-color:rgba(240,237,232,0.3); color:var(--white); }
+.pat-btn.active { border-color:var(--white); color:var(--white); background:rgba(240,237,232,0.06); }
 
-/* Logo upload area */
-.logo-upload { display: flex; gap: 8px; align-items: center; }
-.logo-thumb { width: 48px; height: 48px; background: rgba(255,255,255,0.04); border: 1px solid rgba(240,237,232,0.1); flex-shrink: 0; display: flex; align-items: center; justify-content: center; overflow: hidden; }
-.logo-thumb img { width: 100%; height: 100%; object-fit: contain; }
-.logo-thumb-default { font-family: 'Bebas Neue', sans-serif; font-size: 9px; letter-spacing: 0.1em; color: rgba(240,237,232,0.3); text-align: center; line-height: 1.2; padding: 4px; }
-.logo-controls { display: flex; flex-direction: column; gap: 5px; flex: 1; }
+/* screen items */
+.screen-list { display:flex; flex-direction:column; gap:8px; }
+.screen-item { background:var(--input-bg); border:1px solid rgba(240,237,232,0.08); padding:10px; }
+.screen-item-head { display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; }
+.screen-name { font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.1em; color:rgba(240,237,232,0.55); }
+.screen-remove { background:none; border:none; color:rgba(240,237,232,0.2); font-size:16px; line-height:1; cursor:pointer; padding:0 2px; transition:color 0.15s; }
+.screen-remove:hover { color:rgba(240,237,232,0.7); }
+.screen-fields { display:grid; grid-template-columns:1fr 1fr; gap:5px; }
+.sf { display:flex; flex-direction:column; gap:3px; }
+.sf label { font-family:'DM Mono',monospace; font-size:8px; letter-spacing:0.08em; color:rgba(240,237,232,0.25); }
+.sf input { background:rgba(255,255,255,0.04); border:1px solid rgba(240,237,232,0.08); color:var(--white); font-family:'DM Mono',monospace; font-size:12px; padding:5px 7px; width:100%; outline:none; transition:border-color 0.2s; -moz-appearance:textfield; }
+.sf input::-webkit-inner-spin-button { -webkit-appearance:none; }
+.sf input:focus { border-color:rgba(240,237,232,0.35); }
 
-/* CANVAS AREA */
-.canvas-area { flex: 1; display: flex; align-items: center; justify-content: center; background: #050505; overflow: hidden; position: relative; }
-.canvas-wrap { position: relative; box-shadow: 0 0 0 1px rgba(240,237,232,0.08); }
-canvas { display: block; image-rendering: pixelated; }
-.canvas-info { position: absolute; bottom: 14px; right: 16px; font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.15em; color: rgba(240,237,232,0.18); text-transform: uppercase; }
+/* logo */
+.logo-upload { display:flex; gap:8px; align-items:center; }
+.logo-thumb { width:56px; height:28px; background:rgba(255,255,255,0.04); border:1px solid rgba(240,237,232,0.1); flex-shrink:0; display:flex; align-items:center; justify-content:center; overflow:hidden; }
+.logo-thumb img { width:100%; height:100%; object-fit:contain; }
+.logo-thumb-default { font-family:'Bebas Neue',sans-serif; font-size:8px; letter-spacing:0.1em; color:rgba(240,237,232,0.35); text-align:center; }
+.logo-controls { display:flex; flex-direction:column; gap:5px; flex:1; }
+
+/* canvas area */
+.canvas-area { flex:1; display:flex; align-items:center; justify-content:center; background:#050505; overflow:hidden; position:relative; }
+.canvas-wrap { position:relative; box-shadow:0 0 0 1px rgba(240,237,232,0.08); }
+canvas { display:block; image-rendering:pixelated; }
+.canvas-info { position:absolute; bottom:14px; right:16px; font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.15em; color:rgba(240,237,232,0.18); text-transform:uppercase; }
 </style>
 </head>
 <body>
@@ -146,26 +143,25 @@ canvas { display: block; image-rendering: pixelated; }
 <div class="topbar">
   <div class="topbar-left">
     <a href="../index.html" class="back-link">← stranyov.com</a>
-    <div class="topbar-title">Test Pattern Generator</div>
+    <div class="topbar-title">Test Pattern Generator <span class="beta-badge">BETA</span></div>
   </div>
   <div class="mode-tabs">
-    <button class="mode-tab active" data-mode="led">LED</button>
-    <button class="mode-tab" data-mode="projection">Projection</button>
+    <button class="mode-tab disabled" data-mode="led">LED</button>
+    <button class="mode-tab active" data-mode="projection">Projection</button>
     <button class="mode-tab" data-mode="dome">Dome</button>
   </div>
   <div class="res-display" id="resDisplay">—</div>
 </div>
 
 <div class="main">
-<div class="sidebar" id="sidebar">
+<div class="sidebar">
 
-<!-- ══════════════ LED ══════════════ -->
-<div id="sb-led">
+<!-- ══ LED ══ -->
+<div id="sb-led" class="sb-hidden">
   <div class="sub-tabs">
     <button class="sub-tab active" data-sub="screen">Screen</button>
     <button class="sub-tab" data-sub="canvas">Canvas</button>
   </div>
-
   <!-- LED SCREEN -->
   <div id="sub-screen" class="sb">
     <div>
@@ -191,7 +187,7 @@ canvas { display: block; image-rendering: pixelated; }
     <div class="divider"></div>
     <div>
       <div class="sec-label">Brightness</div>
-      <div class="br-row"><span class="sec-label" style="margin:0">Level</span><span class="br-val"><span id="s-brVal">100</span>%</span></div>
+      <div class="slider-row"><span class="sec-label" style="margin:0">Level</span><span class="slider-val"><span id="s-brVal">100</span>%</span></div>
       <input type="range" id="s-br" min="0" max="100" value="100">
     </div>
     <div class="divider"></div>
@@ -200,7 +196,6 @@ canvas { display: block; image-rendering: pixelated; }
       <button class="btn-secondary" id="s-fs">⤢ Fullscreen</button>
     </div>
   </div>
-
   <!-- LED CANVAS -->
   <div id="sub-canvas" class="sb sb-hidden">
     <div>
@@ -213,7 +208,7 @@ canvas { display: block; image-rendering: pixelated; }
     <div class="divider"></div>
     <div>
       <div class="sec-label">Brightness</div>
-      <div class="br-row"><span class="sec-label" style="margin:0">Level</span><span class="br-val"><span id="c-brVal">100</span>%</span></div>
+      <div class="slider-row"><span class="sec-label" style="margin:0">Level</span><span class="slider-val"><span id="c-brVal">100</span>%</span></div>
       <input type="range" id="c-br" min="0" max="100" value="100">
     </div>
     <div class="divider"></div>
@@ -222,16 +217,15 @@ canvas { display: block; image-rendering: pixelated; }
       <button class="btn-secondary" id="c-fs">⤢ Fullscreen</button>
     </div>
   </div>
-</div><!-- /sb-led -->
+</div>
 
-<!-- ══════════════ PROJECTION ══════════════ -->
-<div id="sb-projection" class="sb sb-hidden">
+<!-- ══ PROJECTION ══ -->
+<div id="sb-projection" class="sb">
 
   <div>
     <div class="sec-label">Name</div>
     <div class="field"><input type="text" id="p-name" placeholder="Name your test pattern" style="font-size:12px;"></div>
   </div>
-
   <div class="divider"></div>
 
   <div>
@@ -249,10 +243,10 @@ canvas { display: block; image-rendering: pixelated; }
     </div>
   </div>
   <div>
-    <div class="sec-label">Blend Size (% of projector)</div>
+    <div class="sec-label">Blend (% of projector)</div>
     <div class="row-2">
-      <div class="field"><label>Horizontal %</label><input type="number" id="p-blendH" value="10" min="0" max="49" step="0.5"></div>
-      <div class="field"><label>Vertical %</label><input type="number" id="p-blendV" value="10" min="0" max="49" step="0.5"></div>
+      <div class="field"><label>Horizontal %</label><input type="number" id="p-blendH" value="20" min="0" max="49" step="0.5"></div>
+      <div class="field"><label>Vertical %</label><input type="number" id="p-blendV" value="20" min="0" max="49" step="0.5"></div>
     </div>
   </div>
   <div>
@@ -261,73 +255,112 @@ canvas { display: block; image-rendering: pixelated; }
       <div class="f-row"><span class="f-label">Blend H</span><span class="f-val" id="p-bHpx">—</span></div>
       <div class="f-row"><span class="f-label">Blend V</span><span class="f-val" id="p-bVpx">—</span></div>
       <div class="f-divider"></div>
-      <div class="f-row"><span class="f-label">Total Width</span><span class="f-val big" id="p-totW">—</span></div>
-      <div class="f-row"><span class="f-label">Total Height</span><span class="f-val big" id="p-totH">—</span></div>
+      <div class="f-row"><span class="f-label">Total W</span><input type="number" class="f-input" id="p-totWIn" value="4992" min="1" max="65536"></div>
+      <div class="f-row"><span class="f-label">Total H</span><input type="number" class="f-input" id="p-totHIn" value="1080" min="1" max="65536"></div>
     </div>
   </div>
-
   <div class="divider"></div>
 
   <div>
-    <div class="sec-label">Pattern Mode</div>
-    <div class="pat-grid">
-      <button class="pat-btn active" id="pm-unified">Unified</button>
-      <button class="pat-btn" id="pm-individual">Individual</button>
+    <div class="sec-label">Colors</div>
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <div>
+        <div class="color-sub-label">Grid</div>
+        <div class="color-row">
+          <label class="color-swatch"><div class="color-preview" id="p-colorPreview" style="background:#ff3333;"></div><input type="color" id="p-color" value="#ff3333"></label>
+          <input type="text" class="color-hex" id="p-colorHex" value="#ff3333" maxlength="7">
+        </div>
+      </div>
+      <div>
+        <div class="color-sub-label">Text</div>
+        <div class="color-row">
+          <label class="color-swatch"><div class="color-preview" id="p-textColorPreview" style="background:#ffffff;"></div><input type="color" id="p-textColor" value="#ffffff"></label>
+          <input type="text" class="color-hex" id="p-textColorHex" value="#ffffff" maxlength="7">
+        </div>
+      </div>
+      <div>
+        <div class="color-sub-label">Border</div>
+        <div class="color-row">
+          <label class="color-swatch"><div class="color-preview" id="p-borderColorPreview" style="background:#00dc3c;"></div><input type="color" id="p-borderColor" value="#00dc3c"></label>
+          <input type="text" class="color-hex" id="p-borderColorHex" value="#00dc3c" maxlength="7">
+        </div>
+      </div>
+      <div>
+        <div class="color-sub-label">Circles</div>
+        <div class="color-row">
+          <label class="color-swatch"><div class="color-preview" id="p-circleColorPreview" style="background:#ffffff;"></div><input type="color" id="p-circleColor" value="#ffffff"></label>
+          <input type="text" class="color-hex" id="p-circleColorHex" value="#ffffff" maxlength="7">
+        </div>
+      </div>
     </div>
   </div>
 
   <div>
-    <div class="sec-label">Color</div>
-    <div class="color-row">
-      <label class="color-swatch" id="p-swatchWrap">
-        <div class="color-preview" id="p-colorPreview" style="background:#ff3333;"></div>
-        <input type="color" id="p-color" value="#ff3333">
-      </label>
-      <input type="text" class="color-hex" id="p-colorHex" value="#ff3333" maxlength="7">
-    </div>
+    <div class="sec-label">Line Thickness</div>
+    <div class="slider-row"><span class="sec-label" style="margin:0">Multiplier</span><span class="slider-val"><span id="p-lwVal">1.0</span>×</span></div>
+    <input type="range" id="p-lw" min="0.3" max="5" value="1" step="0.1">
   </div>
+
+  <div>
+    <div class="sec-label">Text Size</div>
+    <div class="slider-row"><span class="sec-label" style="margin:0">Multiplier</span><span class="slider-val"><span id="p-tsVal">1.0</span>×</span></div>
+    <input type="range" id="p-ts" min="0.3" max="3" value="1" step="0.1">
+  </div>
+
+  <div>
+    <div class="sec-label">Grid Density</div>
+    <div class="slider-row"><span class="sec-label" style="margin:0">Columns</span><span class="slider-val"><span id="p-gridColsVal">12</span></span></div>
+    <input type="range" id="p-gridCols" min="2" max="64" value="12" step="1">
+  </div>
+  <div class="divider"></div>
 
   <div>
     <div class="sec-label">Elements</div>
     <div class="toggles">
       <div class="toggle-row"><span class="toggle-label">Grid</span><label class="toggle"><input type="checkbox" id="p-grid" checked><span class="toggle-slider"></span></label></div>
-      <div class="toggle-row"><span class="toggle-label">Circles</span><label class="toggle"><input type="checkbox" id="p-circles" checked><span class="toggle-slider"></span></label></div>
+      <div class="toggle-row"><span class="toggle-label">Circles (per projector)</span><label class="toggle"><input type="checkbox" id="p-circles" checked><span class="toggle-slider"></span></label></div>
       <div class="toggle-row"><span class="toggle-label">Coordinates</span><label class="toggle"><input type="checkbox" id="p-coords" checked><span class="toggle-slider"></span></label></div>
       <div class="toggle-row"><span class="toggle-label">Row Labels</span><label class="toggle"><input type="checkbox" id="p-rowlabels" checked><span class="toggle-slider"></span></label></div>
+      <div class="toggle-row"><span class="toggle-label">Cell IDs (A1, B3…)</span><label class="toggle"><input type="checkbox" id="p-cellids"><span class="toggle-slider"></span></label></div>
+      <div class="toggle-row"><span class="toggle-label">Projector IDs</span><label class="toggle"><input type="checkbox" id="p-projids" checked><span class="toggle-slider"></span></label></div>
       <div class="toggle-row"><span class="toggle-label">Info Text</span><label class="toggle"><input type="checkbox" id="p-info" checked><span class="toggle-slider"></span></label></div>
-      <div class="toggle-row"><span class="toggle-label">Projector Zones</span><label class="toggle"><input type="checkbox" id="p-overlay" checked><span class="toggle-slider"></span></label></div>
+      <div class="toggle-row"><span class="toggle-label">Blend Zones</span><label class="toggle"><input type="checkbox" id="p-overlay" checked><span class="toggle-slider"></span></label></div>
     </div>
   </div>
+  <div class="divider"></div>
 
   <div>
     <div class="sec-label">Logo</div>
     <div class="logo-upload">
       <div class="logo-thumb" id="p-logoThumb">
-        <div class="logo-thumb-default">STRA<br>NYOV</div>
+        <img id="p-logoDefault" src="../images/str_white.png" style="width:100%;height:100%;object-fit:contain;">
       </div>
       <div class="logo-controls">
-        <button class="btn-secondary" id="p-logoUpload" style="padding:7px;">↑ Upload</button>
+        <button class="btn-secondary" id="p-logoUpload" style="padding:7px;">↑ Upload custom</button>
         <button class="btn-secondary" id="p-logoReset" style="padding:7px;">Reset default</button>
       </div>
     </div>
     <input type="file" id="p-logoFile" accept="image/*" style="display:none;">
+    <div style="margin-top:10px;">
+      <div class="slider-row"><span class="sec-label" style="margin:0">Scale</span><span class="slider-val"><span id="p-logoScaleVal">100</span>%</span></div>
+      <input type="range" id="p-logoScale" min="20" max="300" value="100" step="5">
+    </div>
   </div>
-
   <div class="divider"></div>
+
   <div style="display:flex;flex-direction:column;gap:6px;">
     <button class="btn-primary" id="p-dl">↓ Download PNG</button>
     <button class="btn-secondary" id="p-fs">⤢ Fullscreen</button>
   </div>
-</div><!-- /sb-projection -->
+</div>
 
-<!-- ══════════════ DOME ══════════════ -->
+<!-- ══ DOME ══ -->
 <div id="sb-dome" class="sb sb-hidden">
 
   <div>
     <div class="sec-label">Name</div>
     <div class="field"><input type="text" id="d-name" placeholder="Name your test pattern" style="font-size:12px;"></div>
   </div>
-
   <div class="divider"></div>
 
   <div>
@@ -341,17 +374,14 @@ canvas { display: block; image-rendering: pixelated; }
   </div>
   <div>
     <div class="sec-label">Custom Resolution</div>
-    <div class="field"><label>Size (px, square)</label><input type="number" id="d-size" value="2048" min="256" max="8192" step="1"></div>
+    <div class="field"><label>Size (px, square)</label><input type="number" id="d-size" value="2048" min="256" max="8192"></div>
   </div>
-
   <div class="divider"></div>
 
   <div>
     <div class="sec-label">Pattern Type</div>
     <div class="pat-grid">
       <button class="pat-btn active" data-dpat="standard">Standard</button>
-      <button class="pat-btn" data-dpat="colorbars">Color Bars</button>
-      <button class="pat-btn" data-dpat="grayscale">Grayscale</button>
       <button class="pat-btn" data-dpat="zones">Zones</button>
     </div>
   </div>
@@ -366,6 +396,19 @@ canvas { display: block; image-rendering: pixelated; }
       <input type="text" class="color-hex" id="d-colorHex" value="#ffffff" maxlength="7">
     </div>
   </div>
+
+  <div>
+    <div class="sec-label">Line Thickness</div>
+    <div class="slider-row"><span class="sec-label" style="margin:0">Multiplier</span><span class="slider-val"><span id="d-lwVal">1.0</span>×</span></div>
+    <input type="range" id="d-lw" min="0.3" max="5" value="1" step="0.1">
+  </div>
+
+  <div>
+    <div class="sec-label">Text Size</div>
+    <div class="slider-row"><span class="sec-label" style="margin:0">Multiplier</span><span class="slider-val"><span id="d-tsVal">1.0</span>×</span></div>
+    <input type="range" id="d-ts" min="0.3" max="3" value="1" step="0.1">
+  </div>
+  <div class="divider"></div>
 
   <div>
     <div class="sec-label">Elements</div>
@@ -383,20 +426,20 @@ canvas { display: block; image-rendering: pixelated; }
     <div class="sec-label">Logo</div>
     <div class="logo-upload">
       <div class="logo-thumb" id="d-logoThumb">
-        <div class="logo-thumb-default">STRA<br>NYOV</div>
+        <img id="d-logoDefault" src="../images/str_white.png" style="width:100%;height:100%;object-fit:contain;">
       </div>
       <div class="logo-controls">
-        <button class="btn-secondary" id="d-logoUpload" style="padding:7px;">↑ Upload</button>
+        <button class="btn-secondary" id="d-logoUpload" style="padding:7px;">↑ Upload custom</button>
         <button class="btn-secondary" id="d-logoReset" style="padding:7px;">Reset default</button>
       </div>
     </div>
     <input type="file" id="d-logoFile" accept="image/*" style="display:none;">
   </div>
-
   <div class="divider"></div>
+
   <div>
     <div class="sec-label">Brightness</div>
-    <div class="br-row"><span class="sec-label" style="margin:0">Level</span><span class="br-val"><span id="d-brVal">100</span>%</span></div>
+    <div class="slider-row"><span class="sec-label" style="margin:0">Level</span><span class="slider-val"><span id="d-brVal">100</span>%</span></div>
     <input type="range" id="d-br" min="0" max="100" value="100">
   </div>
   <div class="divider"></div>
@@ -404,45 +447,65 @@ canvas { display: block; image-rendering: pixelated; }
     <button class="btn-primary" id="d-dl">↓ Download PNG</button>
     <button class="btn-secondary" id="d-fs">⤢ Fullscreen</button>
   </div>
-</div><!-- /sb-dome -->
+</div>
 
 </div><!-- /sidebar -->
 
 <div class="canvas-area" id="canvasArea">
-  <div class="canvas-wrap" id="canvasWrap">
-    <canvas id="canvas"></canvas>
-  </div>
+  <div class="canvas-wrap"><canvas id="canvas"></canvas></div>
   <div class="canvas-info" id="canvasInfo"></div>
 </div>
-</div><!-- /main -->
+</div>
 
 <script>
 // ── STATE ──
 let mode   = 'led';
 let ledSub = 'screen';
-let projMode = 'unified'; // 'unified' | 'individual'
-let domePat  = 'standard';
-
-let br = { screen: 1, canvas: 1, dome: 1 };
-
+let domePat = 'standard';
+let br = { screen:1, canvas:1, dome:1 };
+let ledPat = { screen:'white', canvas:'white' };
 let screenItems = [
-  { id:1, name:'SCR 1', w:1920, h:1080, x:0,    y:0 },
-  { id:2, name:'SCR 2', w:1920, h:1080, x:1920, y:0 },
+  {id:1,name:'SCR 1',w:1920,h:1080,x:0,y:0},
+  {id:2,name:'SCR 2',w:1920,h:1080,x:1920,y:0},
 ];
 let nextId = 3;
 const COLORS = ['#e05555','#55a0e0','#55e09a','#e0c455','#c455e0','#55e0d8'];
 
-let ledPat = { screen:'white', canvas:'white' };
+// Logo state — null = use default (str_white.png)
+let pLogoCustom = null;
+let dLogoCustom = null;
 
-// Logo state
-let pLogoImg = null; // custom image for projection
-let dLogoImg = null; // custom image for dome
+// Preload default logo
+const defaultLogoImg = new Image();
+defaultLogoImg.onload = () => draw();
+defaultLogoImg.src = '../images/str_white.png';
 
 const canvas    = document.getElementById('canvas');
 const ctx       = canvas.getContext('2d');
 const canvasArea= document.getElementById('canvasArea');
 const canvasInfo= document.getElementById('canvasInfo');
 const resDisplay= document.getElementById('resDisplay');
+
+// ── HELPERS ──
+function hexToRgb(hex) {
+  return [parseInt(hex.slice(1,3),16), parseInt(hex.slice(3,5),16), parseInt(hex.slice(5,7),16)];
+}
+function applyBr(r,g,b,bri) { return [Math.round(r*bri),Math.round(g*bri),Math.round(b*bri)]; }
+function v(id) { return document.getElementById(id); }
+function num(id,def) { return parseFloat(v(id).value)||def; }
+
+// ── LOGO DRAW (preserves aspect ratio) ──
+function drawLogo(ctx2, W, H, customImg, scale=1) {
+  const img = customImg || defaultLogoImg;
+  if (!img.complete || !img.naturalWidth) return;
+  const maxW = W * 0.14 * scale;
+  const maxH = H * 0.06 * scale;
+  const aspect = img.naturalWidth / img.naturalHeight;
+  let lw = maxW, lh = maxW / aspect;
+  if (lh > maxH) { lh = maxH; lw = maxH * aspect; }
+  const pad = W * 0.018;
+  ctx2.drawImage(img, W - lw - pad, H - lh - pad, lw, lh);
+}
 
 // ── LED PATTERNS ──
 const LED_PATS = [
@@ -455,49 +518,32 @@ const LED_PATS = [
 ];
 
 function buildPatBtns(containerId, patList, stateObj, stateKey) {
-  const el = document.getElementById(containerId);
-  el.innerHTML = '';
-  patList.forEach(p => {
-    const b = document.createElement('button');
-    b.className = 'pat-btn' + (stateObj[stateKey] === p.id ? ' active' : '');
-    b.textContent = p.label;
-    b.addEventListener('click', () => {
-      stateObj[stateKey] = p.id;
-      el.querySelectorAll('.pat-btn').forEach(x => x.classList.remove('active'));
-      b.classList.add('active');
-      draw();
-    });
+  const el = v(containerId); el.innerHTML='';
+  patList.forEach(p=>{
+    const b=document.createElement('button');
+    b.className='pat-btn'+(stateObj[stateKey]===p.id?' active':'');
+    b.textContent=p.label;
+    b.addEventListener('click',()=>{ stateObj[stateKey]=p.id; el.querySelectorAll('.pat-btn').forEach(x=>x.classList.remove('active')); b.classList.add('active'); draw(); });
     el.appendChild(b);
   });
 }
 
-// ── HELPERS ──
-function hexToRgb(hex) {
-  const r = parseInt(hex.slice(1,3),16);
-  const g = parseInt(hex.slice(3,5),16);
-  const b = parseInt(hex.slice(5,7),16);
-  return [r,g,b];
-}
-
-function applyBr(r,g,b2,bri) { return [Math.round(r*bri),Math.round(g*bri),Math.round(b2*bri)]; }
-
-// ── LED PATTERN DRAWING ──
-function drawLedPattern(ctx2, W, H, patId, bri, modW, modH, cols2, rows2) {
+function drawLedPattern(ctx2,W,H,patId,bri,modW,modH,cols2,rows2) {
   modW=modW||W; modH=modH||H; cols2=cols2||1; rows2=rows2||1;
   switch(patId) {
-    case 'white': { const [r,g,b]=applyBr(255,255,255,bri); ctx2.fillStyle=`rgb(${r},${g},${b})`; ctx2.fillRect(0,0,W,H); break; }
-    case 'black': { ctx2.fillStyle='#000'; ctx2.fillRect(0,0,W,H); break; }
-    case 'red':   { const [r,g,b]=applyBr(255,0,0,bri); ctx2.fillStyle=`rgb(${r},${g},${b})`; ctx2.fillRect(0,0,W,H); break; }
-    case 'green': { const [r,g,b]=applyBr(0,255,0,bri); ctx2.fillStyle=`rgb(${r},${g},${b})`; ctx2.fillRect(0,0,W,H); break; }
-    case 'blue':  { const [r,g,b]=applyBr(0,0,255,bri); ctx2.fillStyle=`rgb(${r},${g},${b})`; ctx2.fillRect(0,0,W,H); break; }
+    case 'white': { const[r,g,b]=applyBr(255,255,255,bri); ctx2.fillStyle=`rgb(${r},${g},${b})`; ctx2.fillRect(0,0,W,H); break; }
+    case 'black': ctx2.fillStyle='#000'; ctx2.fillRect(0,0,W,H); break;
+    case 'red':   { const[r,g,b]=applyBr(255,0,0,bri); ctx2.fillStyle=`rgb(${r},${g},${b})`; ctx2.fillRect(0,0,W,H); break; }
+    case 'green': { const[r,g,b]=applyBr(0,255,0,bri); ctx2.fillStyle=`rgb(${r},${g},${b})`; ctx2.fillRect(0,0,W,H); break; }
+    case 'blue':  { const[r,g,b]=applyBr(0,0,255,bri); ctx2.fillStyle=`rgb(${r},${g},${b})`; ctx2.fillRect(0,0,W,H); break; }
     case 'colorbars': {
       const bars=[[255,255,255],[255,255,0],[0,255,255],[0,255,0],[255,0,255],[255,0,0],[0,0,255],[0,0,0]];
       const bw=W/bars.length;
-      bars.forEach(([r,g,b2],i)=>{ const [cr,cg,cb]=applyBr(r,g,b2,bri); ctx2.fillStyle=`rgb(${cr},${cg},${cb})`; ctx2.fillRect(Math.round(i*bw),0,Math.round(bw)+1,H); }); break;
+      bars.forEach(([r,g,b],i)=>{ const[cr,cg,cb]=applyBr(r,g,b,bri); ctx2.fillStyle=`rgb(${cr},${cg},${cb})`; ctx2.fillRect(Math.round(i*bw),0,Math.round(bw)+1,H); }); break;
     }
     case 'grayscale': {
-      const steps=10; const sw=W/steps;
-      for(let i=0;i<steps;i++){ const v=Math.round((i/(steps-1))*255*bri); ctx2.fillStyle=`rgb(${v},${v},${v})`; ctx2.fillRect(Math.round(i*sw),0,Math.round(sw)+1,H); } break;
+      const steps=10,sw=W/steps;
+      for(let i=0;i<steps;i++){ const v2=Math.round((i/(steps-1))*255*bri); ctx2.fillStyle=`rgb(${v2},${v2},${v2})`; ctx2.fillRect(Math.round(i*sw),0,Math.round(sw)+1,H); } break;
     }
     case 'grid': {
       ctx2.fillStyle='#000'; ctx2.fillRect(0,0,W,H);
@@ -522,53 +568,45 @@ function drawLedPattern(ctx2, W, H, patId, bri, modW, modH, cols2, rows2) {
     }
     case 'checkerboard': {
       for(let r=0;r<rows2;r++) for(let c=0;c<cols2;c++){
-        const v=(r+c)%2===0?Math.round(255*bri):0; ctx2.fillStyle=`rgb(${v},${v},${v})`; ctx2.fillRect(c*modW,r*modH,modW,modH); } break;
+        const val=(r+c)%2===0?Math.round(255*bri):0; ctx2.fillStyle=`rgb(${val},${val},${val})`; ctx2.fillRect(c*modW,r*modH,modW,modH); } break;
     }
     case 'gradient': {
-      const grad=ctx2.createLinearGradient(0,0,W,0);
-      grad.addColorStop(0,'#000'); grad.addColorStop(1,`rgb(${Math.round(255*bri)},${Math.round(255*bri)},${Math.round(255*bri)})`);
-      ctx2.fillStyle=grad; ctx2.fillRect(0,0,W,H); break;
+      const g=ctx2.createLinearGradient(0,0,W,0);
+      g.addColorStop(0,'#000'); g.addColorStop(1,`rgb(${Math.round(255*bri)},${Math.round(255*bri)},${Math.round(255*bri)})`);
+      ctx2.fillStyle=g; ctx2.fillRect(0,0,W,H); break;
     }
     case 'deadpixel': {
       ctx2.fillStyle='#000'; ctx2.fillRect(0,0,W,H);
-      const v=Math.round(255*bri); ctx2.fillStyle=`rgb(${v},${v},${v})`;
+      const val=Math.round(255*bri); ctx2.fillStyle=`rgb(${val},${val},${val})`;
       const sp=Math.max(4,Math.min(modW,modH)/4);
       for(let y=sp;y<H;y+=sp) for(let x=sp;x<W;x+=sp) ctx2.fillRect(Math.round(x),Math.round(y),1,1); break;
     }
   }
 }
 
-// ── LED SCREEN DRAW ──
+// ── LED SCREEN ──
 function drawScreen() {
-  const modW=parseInt(document.getElementById('s-modW').value)||96;
-  const modH=parseInt(document.getElementById('s-modH').value)||96;
-  const cols2=parseInt(document.getElementById('s-cols').value)||6;
-  const rows2=parseInt(document.getElementById('s-rows').value)||4;
-  const pitch=parseFloat(document.getElementById('s-pitch').value)||3.9;
-  const W=modW*cols2, H=modH*rows2;
+  const modW=num('s-modW',96),modH=num('s-modH',96),cols2=num('s-cols',6),rows2=num('s-rows',4),pitch=num('s-pitch',3.9);
+  const W=modW*cols2,H=modH*rows2;
   canvas.width=W; canvas.height=H;
   drawLedPattern(ctx,W,H,ledPat.screen,br.screen,modW,modH,cols2,rows2);
-  const physW=((modW*cols2*pitch)/10).toFixed(1);
-  const physH=((modH*rows2*pitch)/10).toFixed(1);
   resDisplay.innerHTML=`<b>${W} × ${H}</b> px`;
-  canvasInfo.textContent=`${W}×${H}px · ${physW}×${physH}cm · pitch ${pitch}mm`;
+  canvasInfo.textContent=`${W}×${H}px · ${((modW*cols2*pitch)/10).toFixed(1)}×${((modH*rows2*pitch)/10).toFixed(1)}cm · pitch ${pitch}mm`;
   fitCanvas();
 }
 
-// ── LED CANVAS DRAW ──
+// ── LED CANVAS ──
 function getCanvasBounds() {
   if(!screenItems.length) return {minX:0,minY:0,W:1920,H:1080};
-  const minX=Math.min(...screenItems.map(s=>s.x));
-  const minY=Math.min(...screenItems.map(s=>s.y));
+  const minX=Math.min(...screenItems.map(s=>s.x)),minY=Math.min(...screenItems.map(s=>s.y));
   return {minX,minY,W:Math.max(...screenItems.map(s=>s.x+s.w))-minX,H:Math.max(...screenItems.map(s=>s.y+s.h))-minY};
 }
-
 function drawLedCanvas() {
   const {minX,minY,W,H}=getCanvasBounds();
   canvas.width=Math.max(W,1); canvas.height=Math.max(H,1);
   drawLedPattern(ctx,W,H,ledPat.canvas,br.canvas,W,H,1,1);
   screenItems.forEach((s,i)=>{
-    const sx=s.x-minX, sy=s.y-minY, col=COLORS[i%COLORS.length];
+    const sx=s.x-minX,sy=s.y-minY,col=COLORS[i%COLORS.length];
     ctx.strokeStyle=col; ctx.lineWidth=Math.max(2,W/400);
     ctx.strokeRect(sx+1,sy+1,s.w-2,s.h-2);
     const fs=Math.max(12,Math.min(s.w,s.h)*0.06);
@@ -577,389 +615,296 @@ function drawLedCanvas() {
     ctx.fillText(`${s.name}  ${s.w}×${s.h}`,sx+8,sy+8); ctx.globalAlpha=1;
   });
   resDisplay.innerHTML=`<b>${W} × ${H}</b> px`;
-  canvasInfo.textContent=`${W}×${H}px · ${screenItems.length} screen${screenItems.length!==1?'s':''}`;
+  canvasInfo.textContent=`${W}×${H}px · ${screenItems.length} screens`;
   fitCanvas();
 }
 
-// ── PROJECTION: CALC ──
+// ── PROJECTION CALC ──
 function projCalc() {
-  const projW=parseInt(document.getElementById('p-projW').value)||1920;
-  const projH=parseInt(document.getElementById('p-projH').value)||1080;
-  const cols2=parseInt(document.getElementById('p-cols').value)||3;
-  const rows2=parseInt(document.getElementById('p-rows').value)||1;
-  const blendH=parseFloat(document.getElementById('p-blendH').value)||0;
-  const blendV=parseFloat(document.getElementById('p-blendV').value)||0;
-  const bHpx=Math.floor(projW*blendH/100);
-  const bVpx=Math.floor(projH*blendV/100);
-  const totW=projW*cols2-bHpx*(cols2-1);
-  const totH=projH*rows2-bVpx*(rows2-1);
-  document.getElementById('p-bHpx').textContent=`${bHpx} px`;
-  document.getElementById('p-bVpx').textContent=`${bVpx} px`;
-  document.getElementById('p-totW').textContent=`${totW} px`;
-  document.getElementById('p-totH').textContent=`${totH} px`;
+  const projW=num('p-projW',1920),projH=num('p-projH',1080),cols2=num('p-cols',3),rows2=num('p-rows',1);
+  const blendH=num('p-blendH',0),blendV=num('p-blendV',0);
+  const bHpx=Math.floor(projW*blendH/100),bVpx=Math.floor(projH*blendV/100);
+  const totW=projW*cols2-bHpx*(cols2-1),totH=projH*rows2-bVpx*(rows2-1);
+  v('p-bHpx').textContent=`${bHpx} px`; v('p-bVpx').textContent=`${bVpx} px`;
+  if (document.activeElement!==v('p-totWIn')) v('p-totWIn').value=totW;
+  if (document.activeElement!==v('p-totHIn')) v('p-totHIn').value=totH;
   return {projW,projH,cols2,rows2,bHpx,bVpx,totW,totH};
-}
-
-// ── PROJECTION: DRAW SINGLE PANEL (unified or per-projector) ──
-function drawProjPanel(ctx2, x0, y0, W, H, color, opts) {
-  const {showGrid,showCircles,showCoords,showRowLabels,showInfo,name,totalW,totalH,projIdx,isUnified} = opts;
-  const [cr,cg,cb] = hexToRgb(color);
-
-  // black background
-  ctx2.fillStyle='#000';
-  ctx2.fillRect(x0,y0,W,H);
-
-  // auto grid: square-ish cells
-  const gridRows = Math.max(2, Math.round(H / (W / Math.max(4, Math.round(W/H * 4)))));
-  const gridCols = Math.round(W / H * gridRows);
-  const cellW = W / gridCols;
-  const cellH = H / gridRows;
-  const lw = Math.max(1, W/960);
-
-  // ── grid ──
-  if (showGrid) {
-    ctx2.strokeStyle = `rgba(${cr},${cg},${cb},0.85)`;
-    ctx2.lineWidth = lw;
-    for (let c=0;c<=gridCols;c++) {
-      const x = x0 + c*cellW;
-      // center line slightly brighter
-      if (c === gridCols/2) { ctx2.lineWidth = lw*1.8; ctx2.globalAlpha = 1; }
-      else { ctx2.lineWidth = lw; ctx2.globalAlpha = 0.75; }
-      ctx2.beginPath(); ctx2.moveTo(x,y0); ctx2.lineTo(x,y0+H); ctx2.stroke();
-    }
-    for (let r=0;r<=gridRows;r++) {
-      const y = y0 + r*cellH;
-      if (r === gridRows/2) { ctx2.lineWidth = lw*1.8; ctx2.globalAlpha = 1; }
-      else { ctx2.lineWidth = lw; ctx2.globalAlpha = 0.75; }
-      ctx2.beginPath(); ctx2.moveTo(x0,y); ctx2.lineTo(x0+W,y); ctx2.stroke();
-    }
-    ctx2.globalAlpha = 1; ctx2.lineWidth = lw;
-  }
-
-  // ── circle inscribed in height ──
-  if (showCircles) {
-    const R = H/2;
-    ctx2.strokeStyle = `rgba(255,255,255,0.75)`;
-    ctx2.lineWidth = lw * 1.5;
-    ctx2.beginPath();
-    ctx2.arc(x0+W/2, y0+H/2, R*0.998, 0, Math.PI*2);
-    ctx2.stroke();
-  }
-
-  // ── coordinate numbers (top & bottom edges) ──
-  if (showCoords) {
-    const halfCols = gridCols/2;
-    const fs = Math.max(8, cellW*0.32);
-    ctx2.font = `${fs}px DM Mono,monospace`;
-    ctx2.textAlign = 'center';
-    ctx2.textBaseline = 'top';
-    ctx2.fillStyle = 'rgba(255,255,255,0.85)';
-    for (let c=0;c<=gridCols;c++) {
-      const coord = Math.round(c - halfCols);
-      if (coord === 0) continue;
-      const x = x0 + c*cellW;
-      ctx2.fillText(coord > 0 ? `+${coord}` : `${coord}`, x, y0 + 3);
-    }
-    ctx2.textBaseline = 'bottom';
-    for (let c=0;c<=gridCols;c++) {
-      const coord = Math.round(c - halfCols);
-      if (coord === 0) continue;
-      ctx2.fillText(coord > 0 ? `+${coord}` : `${coord}`, x0+c*cellW, y0+H-3);
-    }
-  }
-
-  // ── row labels (left & right edges) ──
-  if (showRowLabels) {
-    const upper = 'ABCDEFGHIJKLMNOP';
-    const lower = 'abcdefghijklmnop';
-    const halfRows = gridRows/2;
-    const fs = Math.max(8, cellH*0.35);
-    ctx2.font = `${fs}px DM Mono,monospace`;
-    ctx2.fillStyle = 'rgba(255,255,255,0.85)';
-    for (let r=0;r<gridRows;r++) {
-      const distFromCenter = Math.floor(halfRows) - r;
-      let label;
-      if (distFromCenter > 0)      label = upper[distFromCenter-1];
-      else if (distFromCenter < 0) label = lower[-distFromCenter-1];
-      else continue;
-      const y = y0 + r*cellH + cellH/2;
-      ctx2.textAlign = 'left'; ctx2.textBaseline = 'middle';
-      ctx2.fillText(label, x0+4, y);
-      ctx2.textAlign = 'right';
-      ctx2.fillText(label, x0+W-4, y);
-    }
-  }
-
-  // ── title + info ──
-  if (showInfo || name) {
-    const cx2 = x0+W/2, cy2 = y0+H/2;
-    if (name) {
-      const titleFs = Math.min(W*0.055, H*0.09);
-      ctx2.font = `bold ${titleFs}px sans-serif`;
-      ctx2.textAlign = 'center'; ctx2.textBaseline = 'middle';
-      ctx2.fillStyle = 'rgba(255,255,255,0.9)';
-      ctx2.fillText(name, cx2, cy2 - titleFs*0.9);
-    }
-    if (showInfo) {
-      const infoFs = Math.max(10, Math.min(W*0.022, H*0.038));
-      ctx2.font = `${infoFs}px DM Mono,monospace`;
-      ctx2.textAlign = 'center'; ctx2.fillStyle = 'rgba(255,255,255,0.55)';
-      const displayW = isUnified ? totalW : W;
-      const displayH = isUnified ? totalH : H;
-      const aspect = (displayW/displayH).toFixed(2);
-      const gCols = Math.round(displayW/H*gridRows);
-      ctx2.fillText(`${displayW}px x ${displayH}px`, cx2, cy2+(name?infoFs*1.5:0));
-      ctx2.fillText(`${aspect}:1`, cx2, cy2+(name?infoFs*3:infoFs*1.5));
-      ctx2.fillText(`${gCols} x ${gridRows} grid`, cx2, cy2+(name?infoFs*4.5:infoFs*3));
-      if (!isUnified && projIdx !== undefined) {
-        const piFs = Math.max(10, Math.min(cellW, cellH)*0.3);
-        ctx2.font=`${piFs}px DM Mono,monospace`; ctx2.fillStyle='rgba(255,255,255,0.2)';
-        ctx2.textAlign='right'; ctx2.textBaseline='bottom';
-        ctx2.fillText(`P${projIdx+1}`, x0+W-8, y0+H-8);
-      }
-    }
-  }
-
-  // ── green safety border ──
-  ctx2.strokeStyle = 'rgba(0,220,60,0.7)';
-  ctx2.lineWidth = Math.max(2, W/480);
-  ctx2.strokeRect(x0+1, y0+1, W-2, H-2);
-}
-
-// ── LOGO DRAW ──
-function drawLogo(ctx2, W, H, logoImg, position) {
-  const pad = W * 0.02;
-  const logoW = W * 0.12;
-  const logoH = logoW * 0.4;
-  const x = W - logoW - pad;
-  const y = pad;
-  if (logoImg) {
-    ctx2.drawImage(logoImg, x, y, logoW, logoH);
-  } else {
-    // default: "STRANYOV" text
-    const fs = Math.max(8, logoW * 0.18);
-    ctx2.font = `bold ${fs}px Bebas Neue,sans-serif`;
-    ctx2.textAlign = 'right'; ctx2.textBaseline = 'top';
-    ctx2.fillStyle = 'rgba(255,255,255,0.3)';
-    ctx2.letterSpacing = '0.1em';
-    ctx2.fillText('STRANYOV', W - pad, pad);
-  }
 }
 
 // ── PROJECTION DRAW ──
 function drawProjection() {
   const {projW,projH,cols2,rows2,bHpx,bVpx,totW,totH} = projCalc();
-  canvas.width = Math.max(totW,1);
-  canvas.height = Math.max(totH,1);
+  canvas.width=Math.max(totW,1); canvas.height=Math.max(totH,1);
 
-  const color = document.getElementById('p-color').value;
-  const showGrid      = document.getElementById('p-grid').checked;
-  const showCircles   = document.getElementById('p-circles').checked;
-  const showCoords    = document.getElementById('p-coords').checked;
-  const showRowLabels = document.getElementById('p-rowlabels').checked;
-  const showInfo      = document.getElementById('p-info').checked;
-  const showOverlay   = document.getElementById('p-overlay').checked;
-  const name          = document.getElementById('p-name').value.trim();
+  const color   = v('p-color').value;
+  const lwMult  = num('p-lw',1);
+  const tsMult  = num('p-ts',1);
+  const showGrid     = v('p-grid').checked;
+  const showCircles  = v('p-circles').checked;
+  const showCoords   = v('p-coords').checked;
+  const showRowLabels= v('p-rowlabels').checked;
+  const showCellIds  = v('p-cellids').checked;
+  const showProjIds  = v('p-projids').checked;
+  const showInfo     = v('p-info').checked;
+  const showOverlay  = v('p-overlay').checked;
+  const name         = v('p-name').value.trim();
 
+  const [cr,cg,cb]   = hexToRgb(color);
+  const [tcr,tcg,tcb] = hexToRgb(v('p-textColor').value);
+  const [bcr,bcg,bcb] = hexToRgb(v('p-borderColor').value);
+  const [ccr,ccg,ccb] = hexToRgb(v('p-circleColor').value);
   const noW = projW - bHpx;
   const noH = projH - bVpx;
+  const baseLw = Math.max(1, totW/1200) * lwMult;
 
-  if (projMode === 'unified') {
-    // one big pattern across entire canvas
-    drawProjPanel(ctx, 0, 0, totW, totH, color, {
-      showGrid, showCircles, showCoords, showRowLabels, showInfo, name,
-      totalW: totW, totalH: totH, isUnified: true
-    });
-    // projector zones overlay
-    if (showOverlay) {
-      ctx.strokeStyle = 'rgba(255,255,255,0.45)';
-      ctx.lineWidth = Math.max(1, totW/800);
-      for (let r=0;r<rows2;r++) for (let c=0;c<cols2;c++) {
-        ctx.strokeRect(c*noW+0.5, r*noH+0.5, projW-1, projH-1);
-      }
-      // blend zones
-      if (bHpx>0) {
-        for (let c=0;c<cols2-1;c++) for (let r=0;r<rows2;r++) {
-          ctx.fillStyle='rgba(0,180,255,0.18)';
-          ctx.fillRect((c+1)*noW, r*noH, bHpx, projH);
-        }
-      }
-      if (bVpx>0) {
-        for (let r=0;r<rows2-1;r++) for (let c=0;c<cols2;c++) {
-          ctx.fillStyle='rgba(255,100,0,0.18)';
-          ctx.fillRect(c*noW, (r+1)*noH, projW, bVpx);
-        }
-      }
+  // black bg
+  ctx.fillStyle='#000'; ctx.fillRect(0,0,totW,totH);
+
+  // ── grid across total canvas ──
+  const gridCols = Math.max(2, Math.round(num('p-gridCols', 12)));
+  const gridRows = Math.max(1, Math.round(gridCols * totH / totW));
+  const cellW = totW/gridCols, cellH = totH/gridRows;
+
+  if (showGrid) {
+    for (let c=0;c<=gridCols;c++) {
+      const x = c*cellW;
+      const isCenterV = (c===gridCols/2);
+      ctx.strokeStyle = `rgba(${cr},${cg},${cb},${isCenterV?1:0.75})`;
+      ctx.lineWidth   = isCenterV ? baseLw*2 : baseLw;
+      ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,totH); ctx.stroke();
     }
-  } else {
-    // individual: each projector gets its own pattern
-    ctx.fillStyle='#000'; ctx.fillRect(0,0,totW,totH);
-    for (let r=0;r<rows2;r++) {
-      for (let c=0;c<cols2;c++) {
-        const px=c*noW, py=r*noH;
-        const idx=r*cols2+c;
-        drawProjPanel(ctx, px, py, projW, projH, color, {
-          showGrid, showCircles, showCoords, showRowLabels, showInfo, name,
-          totalW:totW, totalH:totH, projIdx:idx, isUnified:false
-        });
+    for (let r=0;r<=gridRows;r++) {
+      const y = r*cellH;
+      const isCenterH = (r===gridRows/2);
+      ctx.strokeStyle = `rgba(${cr},${cg},${cb},${isCenterH?1:0.75})`;
+      ctx.lineWidth   = isCenterH ? baseLw*2 : baseLw;
+      ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(totW,y); ctx.stroke();
+    }
+  }
+
+  // ── coordinate numbers (column boundaries) ──
+  if (showCoords) {
+    const halfCols = gridCols/2;
+    const fs = Math.max(8, cellW*0.28)*tsMult;
+    ctx.font=`${fs}px DM Mono,monospace`; ctx.fillStyle=`rgba(${tcr},${tcg},${tcb},0.85)`;
+    for (let c=0;c<=gridCols;c++) {
+      if (c===0 || c===gridCols) continue;
+      const coord=Math.round(c-halfCols); if(coord===0) continue;
+      const x=c*cellW; const label=coord>0?`+${coord}`:`${coord}`;
+      ctx.textAlign='center'; ctx.textBaseline='top';    ctx.fillText(label,x,3);
+      ctx.textBaseline='bottom'; ctx.fillText(label,x,totH-3);
+    }
+  }
+
+  // ── row labels (left & right) — aligned to horizontal grid lines ──
+  if (showRowLabels) {
+    const upper='ABCDEFGHIJKLMNOP', lower='abcdefghijklmnop';
+    const halfRows=gridRows/2;
+    const fs=Math.max(8,cellH*0.32)*tsMult;
+    ctx.font=`${fs}px DM Mono,monospace`; ctx.fillStyle=`rgba(${tcr},${tcg},${tcb},0.85)`;
+    for (let r=0;r<=gridRows;r++) {
+      if (r===0 || r===gridRows) continue;
+      const fromCenter = r - halfRows;
+      if (fromCenter === 0) continue;
+      let label;
+      if (fromCenter < 0) label = upper[Math.round(-fromCenter) - 1];
+      else                label = lower[Math.round(fromCenter) - 1];
+      if (!label) continue;
+      const y = r * cellH;
+      ctx.textAlign='left'; ctx.textBaseline='middle'; ctx.fillText(label,4,y);
+      ctx.textAlign='right'; ctx.fillText(label,totW-4,y);
+    }
+  }
+
+  // ── cell IDs (A1, B2 …) ──
+  if (showCellIds) {
+    const colLetters='ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    const fs=Math.max(7,Math.min(cellW,cellH)*0.18)*tsMult;
+    ctx.font=`${fs}px DM Mono,monospace`;
+    ctx.fillStyle=`rgba(${tcr},${tcg},${tcb},0.55)`;
+    ctx.textAlign='left'; ctx.textBaseline='top';
+    for (let r=0;r<gridRows;r++) {
+      for (let c=0;c<gridCols;c++) {
+        const label=(colLetters[r]||'?')+(c+1);
+        ctx.fillText(label, c*cellW+4, r*cellH+4);
       }
     }
   }
 
-  drawLogo(ctx, totW, totH, pLogoImg);
+  // ── circles: one per projector area ──
+  if (showCircles) {
+    ctx.strokeStyle=`rgba(${ccr},${ccg},${ccb},0.75)`;
+    ctx.lineWidth=baseLw*1.5;
+    for (let r=0;r<rows2;r++) {
+      for (let c=0;c<cols2;c++) {
+        const cx2=c*noW+projW/2, cy2=r*noH+projH/2;
+        const R=Math.min(projW,projH)/2*0.998;
+        ctx.beginPath(); ctx.arc(cx2,cy2,R,0,Math.PI*2); ctx.stroke();
+      }
+    }
+  }
 
-  resDisplay.innerHTML = `<b>${totW} × ${totH}</b> px`;
-  canvasInfo.textContent = `${totW}×${totH}px · ${cols2}×${rows2} projectors · blend ${bHpx}×${bVpx}px`;
+  // ── projector IDs (large watermark per projector) ──
+  if (showProjIds) {
+    const fs=Math.min(projW,projH)*0.12*tsMult;
+    ctx.font=`bold ${fs}px Bebas Neue,sans-serif`;
+    ctx.textAlign='center'; ctx.textBaseline='middle';
+    ctx.fillStyle=`rgba(${tcr},${tcg},${tcb},0.1)`;
+    for (let r=0;r<rows2;r++) {
+      for (let c=0;c<cols2;c++) {
+        ctx.fillText(`P${r*cols2+c+1}`, c*noW+projW/2, r*noH+projH*0.82);
+      }
+    }
+  }
+
+  // ── info text (center of canvas) ──
+  if (showInfo || name) {
+    const cx2=totW/2, cy2=totH/2;
+    if (name) {
+      const fs=Math.min(totW*0.052,totH*0.088)*tsMult;
+      ctx.font=`bold ${fs}px sans-serif`;
+      ctx.textAlign='center'; ctx.textBaseline='middle';
+      ctx.fillStyle=`rgba(${tcr},${tcg},${tcb},0.9)`;
+      ctx.fillText(name,cx2,cy2-(name&&showInfo?fs*1.1:0));
+    }
+    if (showInfo) {
+      const fs=Math.max(10,Math.min(totW*0.022,totH*0.038))*tsMult;
+      ctx.font=`${fs}px DM Mono,monospace`;
+      ctx.textAlign='center'; ctx.fillStyle=`rgba(${tcr},${tcg},${tcb},0.5)`;
+      const aspect=(totW/totH).toFixed(2);
+      const yo=name?fs*1.5:0;
+      ctx.fillText(`${totW}px x ${totH}px`,cx2,cy2+yo);
+      ctx.fillText(`${aspect}:1`,cx2,cy2+yo+fs*1.6);
+      ctx.fillText(`${gridCols} x ${gridRows} grid`,cx2,cy2+yo+fs*3.2);
+    }
+  }
+
+  // ── blend zone overlays ──
+  if (showOverlay) {
+    ctx.strokeStyle=`rgba(${bcr},${bcg},${bcb},0.35)`;
+    ctx.lineWidth=Math.max(1,totW/600)*lwMult;
+    for (let r=0;r<rows2;r++) for(let c=0;c<cols2;c++)
+      ctx.strokeRect(c*noW+0.5,r*noH+0.5,projW-1,projH-1);
+    if (bHpx>0) {
+      for(let c=0;c<cols2-1;c++) for(let r=0;r<rows2;r++) {
+        ctx.fillStyle='rgba(0,180,255,0.15)'; ctx.fillRect((c+1)*noW,r*noH,bHpx,projH);
+      }
+    }
+    if (bVpx>0) {
+      for(let r=0;r<rows2-1;r++) for(let c=0;c<cols2;c++) {
+        ctx.fillStyle='rgba(255,100,0,0.15)'; ctx.fillRect(c*noW,(r+1)*noH,projW,bVpx);
+      }
+    }
+  }
+
+  // ── safety border ──
+  ctx.strokeStyle=`rgba(${bcr},${bcg},${bcb},0.65)`; ctx.lineWidth=Math.max(2,totW/480)*lwMult;
+  ctx.strokeRect(1,1,totW-2,totH-2);
+
+  // ── logo ──
+  drawLogo(ctx,totW,totH,pLogoCustom,num('p-logoScale',100)/100);
+
+  resDisplay.innerHTML=`<b>${totW} × ${totH}</b> px`;
+  canvasInfo.textContent=`${totW}×${totH}px · ${cols2}×${rows2} projectors · blend ${bHpx}×${bVpx}px`;
   fitCanvas();
 }
 
 // ── DOME DRAW ──
 function drawDome() {
-  const size   = parseInt(document.getElementById('d-size').value)||2048;
-  const bri    = br.dome;
-  const color  = document.getElementById('d-color').value;
-  const name   = document.getElementById('d-name').value.trim();
+  const size = num('d-size',2048);
+  const bri  = br.dome;
+  const color= v('d-color').value;
+  const name = v('d-name').value.trim();
+  const lwMult = num('d-lw',1);
+  const tsMult = num('d-ts',1);
   const [cr,cg,cb] = hexToRgb(color);
-  function rgba(alpha) { return `rgba(${Math.round(cr*bri)},${Math.round(cg*bri)},${Math.round(cb*bri)},${alpha})`; }
+  const lw = Math.max(1,size/512)*lwMult;
 
-  canvas.width = size; canvas.height = size;
-  const cx=size/2, cy=size/2, R=size/2;
-  const lw = Math.max(1, size/512);
+  function rgba(a) { return `rgba(${Math.round(cr*bri)},${Math.round(cg*bri)},${Math.round(cb*bri)},${a})`; }
 
+  canvas.width=size; canvas.height=size;
+  const cx=size/2,cy=size/2,R=size/2;
   ctx.fillStyle='#000'; ctx.fillRect(0,0,size,size);
 
-  const doCircles = document.getElementById('d-circles').checked;
-  const doGrid    = document.getElementById('d-grid').checked;
-  const doCross   = document.getElementById('d-cross').checked;
-  const doRadial  = document.getElementById('d-radial').checked;
-  const doLabels  = document.getElementById('d-labels').checked;
-  const doCorners = document.getElementById('d-corners').checked;
+  const doCircles=v('d-circles').checked, doGrid=v('d-grid').checked;
+  const doCross=v('d-cross').checked, doRadial=v('d-radial').checked;
+  const doLabels=v('d-labels').checked, doCorners=v('d-corners').checked;
 
-  if (domePat === 'colorbars') {
-    // color wedges inside circle
-    ctx.save();
-    ctx.beginPath(); ctx.arc(cx,cy,R*0.998,0,Math.PI*2); ctx.clip();
-    const bars=[[255,255,255],[255,255,0],[0,255,255],[0,255,0],[255,0,255],[255,0,0],[0,0,255]];
-    const wedge = (Math.PI*2)/bars.length;
-    bars.forEach(([r,g,b2],i)=>{
-      const [ar,ag,ab]=applyBr(r,g,b2,bri);
-      ctx.fillStyle=`rgb(${ar},${ag},${ab})`;
-      ctx.beginPath(); ctx.moveTo(cx,cy);
-      ctx.arc(cx,cy,R,i*wedge-Math.PI/2,(i+1)*wedge-Math.PI/2);
-      ctx.closePath(); ctx.fill();
-    });
-    ctx.restore();
-    // outer ring
-    ctx.strokeStyle=rgba(0.9); ctx.lineWidth=lw*2;
-    ctx.beginPath(); ctx.arc(cx,cy,R*0.998,0,Math.PI*2); ctx.stroke();
-  } else if (domePat === 'grayscale') {
-    // radial grayscale ramp
-    ctx.save();
-    ctx.beginPath(); ctx.arc(cx,cy,R*0.998,0,Math.PI*2); ctx.clip();
-    const grad = ctx.createRadialGradient(cx,cy,0,cx,cy,R);
-    const wv = Math.round(255*bri);
-    grad.addColorStop(0, `rgb(${wv},${wv},${wv})`);
-    grad.addColorStop(1, '#000');
-    ctx.fillStyle=grad; ctx.fillRect(0,0,size,size);
-    ctx.restore();
-    ctx.strokeStyle=rgba(0.9); ctx.lineWidth=lw*2;
-    ctx.beginPath(); ctx.arc(cx,cy,R*0.998,0,Math.PI*2); ctx.stroke();
-  } else if (domePat === 'zones') {
-    // zone rings only
-    [0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0].forEach((f,i)=>{
-      const alpha = f===0.9 ? 0.9 : 0.35;
-      const c2 = f===0.9 ? `rgba(80,220,120,${bri*0.9})` : rgba(alpha);
-      ctx.strokeStyle=c2; ctx.lineWidth=f===0.9?lw*2:lw;
+  if (domePat==='zones') {
+    [0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0].forEach(f=>{
+      const isSafe=f===0.9;
+      ctx.strokeStyle=isSafe?`rgba(80,220,120,${bri*0.9})`:rgba(0.35);
+      ctx.lineWidth=isSafe?lw*2:lw;
       ctx.beginPath(); ctx.arc(cx,cy,R*f,0,Math.PI*2); ctx.stroke();
       if(doLabels){
-        const fs=size*0.016; ctx.font=`${fs}px DM Mono,monospace`;
+        const fs=size*0.016*tsMult; ctx.font=`${fs}px DM Mono,monospace`;
         ctx.fillStyle=rgba(0.5); ctx.textAlign='left'; ctx.textBaseline='middle';
-        ctx.fillText(`${Math.round(f*100)}%`, cx+R*f+4, cy);
+        ctx.fillText(`${Math.round(f*100)}%`,cx+R*f+4,cy);
       }
     });
-    if(doCross){
-      ctx.strokeStyle=rgba(0.7); ctx.lineWidth=lw;
-      ctx.beginPath(); ctx.moveTo(0,cy); ctx.lineTo(size,cy); ctx.stroke();
-      ctx.beginPath(); ctx.moveTo(cx,0); ctx.lineTo(cx,size); ctx.stroke();
-    }
+    if(doCross){ ctx.strokeStyle=rgba(0.7); ctx.lineWidth=lw; ctx.beginPath(); ctx.moveTo(0,cy); ctx.lineTo(size,cy); ctx.stroke(); ctx.beginPath(); ctx.moveTo(cx,0); ctx.lineTo(cx,size); ctx.stroke(); }
   } else {
-    // standard dome pattern
-    if (doGrid) {
-      ctx.save();
-      ctx.beginPath(); ctx.arc(cx,cy,R*0.998,0,Math.PI*2); ctx.clip();
+    // standard
+    if(doGrid){
+      ctx.save(); ctx.beginPath(); ctx.arc(cx,cy,R*0.998,0,Math.PI*2); ctx.clip();
       ctx.strokeStyle=rgba(0.18); ctx.lineWidth=lw*0.6;
       const step=size/10;
       for(let x2=step;x2<size;x2+=step){ ctx.beginPath(); ctx.moveTo(x2,0); ctx.lineTo(x2,size); ctx.stroke(); }
       for(let y2=step;y2<size;y2+=step){ ctx.beginPath(); ctx.moveTo(0,y2); ctx.lineTo(size,y2); ctx.stroke(); }
       ctx.restore();
     }
-    if (doRadial) {
-      ctx.strokeStyle=rgba(0.25); ctx.lineWidth=lw*0.7;
-      for(let deg=0;deg<360;deg+=30){
-        const rad=(deg-90)*Math.PI/180;
-        ctx.beginPath(); ctx.moveTo(cx,cy); ctx.lineTo(cx+R*Math.cos(rad),cy+R*Math.sin(rad)); ctx.stroke();
-      }
+    if(doRadial){ ctx.strokeStyle=rgba(0.25); ctx.lineWidth=lw*0.7;
+      for(let deg=0;deg<360;deg+=30){ const rad=(deg-90)*Math.PI/180; ctx.beginPath(); ctx.moveTo(cx,cy); ctx.lineTo(cx+R*Math.cos(rad),cy+R*Math.sin(rad)); ctx.stroke(); }
     }
-    if (doCircles) {
-      [0.25,0.5,0.75].forEach(f=>{
-        ctx.strokeStyle=rgba(0.3); ctx.lineWidth=lw*0.7;
-        ctx.beginPath(); ctx.arc(cx,cy,R*f,0,Math.PI*2); ctx.stroke();
-      });
+    if(doCircles){
+      [0.25,0.5,0.75].forEach(f=>{ ctx.strokeStyle=rgba(0.3); ctx.lineWidth=lw*0.7; ctx.beginPath(); ctx.arc(cx,cy,R*f,0,Math.PI*2); ctx.stroke(); });
       ctx.strokeStyle=`rgba(80,220,120,${bri*0.7})`; ctx.lineWidth=lw*1.2;
       ctx.beginPath(); ctx.arc(cx,cy,R*0.9,0,Math.PI*2); ctx.stroke();
       ctx.strokeStyle=rgba(0.9); ctx.lineWidth=lw*2;
       ctx.beginPath(); ctx.arc(cx,cy,R*0.998,0,Math.PI*2); ctx.stroke();
     }
-    if (doCross) {
-      ctx.strokeStyle=rgba(0.8); ctx.lineWidth=lw;
+    if(doCross){ ctx.strokeStyle=rgba(0.8); ctx.lineWidth=lw;
       ctx.beginPath(); ctx.moveTo(0,cy); ctx.lineTo(size,cy); ctx.stroke();
       ctx.beginPath(); ctx.moveTo(cx,0); ctx.lineTo(cx,size); ctx.stroke();
       ctx.fillStyle=rgba(1); ctx.beginPath(); ctx.arc(cx,cy,lw*3,0,Math.PI*2); ctx.fill();
     }
-    if (doLabels) {
-      const fs=size*0.028;
-      ctx.font=`bold ${fs}px DM Mono,monospace`; ctx.fillStyle=rgba(0.8);
+    if(doLabels){
+      const fs=size*0.028*tsMult; ctx.font=`bold ${fs}px DM Mono,monospace`; ctx.fillStyle=rgba(0.8);
       ctx.textAlign='center'; ctx.textBaseline='middle';
       const off=R*0.07;
-      ctx.fillText('N',cx,cy-R+off); ctx.fillText('S',cx,cy+R-off);
-      ctx.fillText('E',cx+R-off,cy); ctx.fillText('W',cx-R+off,cy);
-      ctx.font=`${size*0.018}px DM Mono,monospace`; ctx.fillStyle=rgba(0.4);
-      [['25%',0.25],['50%',0.5],['75%',0.75],['90%',0.9]].forEach(([label,f])=>{
-        ctx.fillText(label, cx+R*f+size*0.02, cy-size*0.012);
-      });
+      ctx.fillText('N',cx,cy-R+off); ctx.fillText('S',cx,cy+R-off); ctx.fillText('E',cx+R-off,cy); ctx.fillText('W',cx-R+off,cy);
+      ctx.font=`${size*0.018*tsMult}px DM Mono,monospace`; ctx.fillStyle=rgba(0.4);
+      [['25%',0.25],['50%',0.5],['75%',0.75],['90%',0.9]].forEach(([lbl,f])=>ctx.fillText(lbl,cx+R*f+size*0.02,cy-size*0.012));
     }
-    if (doCorners) {
-      ctx.strokeStyle=rgba(0.5); ctx.lineWidth=lw;
+    if(doCorners){ ctx.strokeStyle=rgba(0.5); ctx.lineWidth=lw;
       const m=size*0.04;
       [[0,0],[size,0],[0,size],[size,size]].forEach(([x2,y2])=>{
-        const dx=x2===0?m:-m, dy=y2===0?m:-m;
+        const dx=x2===0?m:-m,dy=y2===0?m:-m;
         ctx.beginPath(); ctx.moveTo(x2+dx,y2); ctx.lineTo(x2,y2); ctx.lineTo(x2,y2+dy); ctx.stroke();
       });
     }
   }
 
-  // name overlay
-  if (name) {
-    const fs = size*0.028;
-    ctx.font = `bold ${fs}px sans-serif`;
-    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-    ctx.fillStyle = 'rgba(255,255,255,0.8)';
-    ctx.fillText(name, cx, cy + R*0.15);
+  // name
+  if(name){
+    const fs=size*0.028*tsMult;
+    ctx.font=`bold ${fs}px sans-serif`; ctx.textAlign='center'; ctx.textBaseline='middle';
+    ctx.fillStyle='rgba(255,255,255,0.8)';
+    ctx.fillText(name,cx,cy+R*0.15);
   }
 
   // logo
-  drawLogo(ctx, size, size, dLogoImg);
+  drawLogo(ctx,size,size,dLogoCustom);
 
-  resDisplay.innerHTML = `<b>${size} × ${size}</b> px`;
-  canvasInfo.textContent = `${size}×${size}px · dome pattern · ${domePat}`;
+  resDisplay.innerHTML=`<b>${size} × ${size}</b> px`;
+  canvasInfo.textContent=`${size}×${size}px · dome · ${domePat}`;
   fitCanvas();
 }
 
-// ── FIT CANVAS ──
+// ── FIT ──
 function fitCanvas() {
-  const pad=48;
-  const aW=canvasArea.clientWidth-pad, aH=canvasArea.clientHeight-pad;
-  const cW=canvas.width, cH=canvas.height;
+  const pad=48,aW=canvasArea.clientWidth-pad,aH=canvasArea.clientHeight-pad;
+  const cW=canvas.width,cH=canvas.height;
   if(!cW||!cH) return;
   const scale=Math.min(aW/cW,aH/cH,1);
   canvas.style.width=Math.round(cW*scale)+'px';
@@ -967,232 +912,186 @@ function fitCanvas() {
 }
 
 function draw() {
-  if(mode==='led')            { ledSub==='screen' ? drawScreen() : drawLedCanvas(); }
+  if(mode==='led')        { ledSub==='screen'?drawScreen():drawLedCanvas(); }
   else if(mode==='projection') drawProjection();
   else                         drawDome();
 }
 
-// ── SCREEN LIST UI ──
+// ── SCREEN LIST ──
 function renderScreenList() {
-  const list=document.getElementById('screenList');
-  list.innerHTML='';
+  const list=v('screenList'); list.innerHTML='';
   screenItems.forEach((s,i)=>{
     const col=COLORS[i%COLORS.length];
     const item=document.createElement('div');
-    item.className='screen-item';
-    item.style.borderLeft=`3px solid ${col}`;
-    item.innerHTML=`
-      <div class="screen-item-head">
-        <span class="screen-name" style="color:${col}">${s.name}</span>
-        <button class="screen-remove" data-id="${s.id}">×</button>
-      </div>
+    item.className='screen-item'; item.style.borderLeft=`3px solid ${col}`;
+    item.innerHTML=`<div class="screen-item-head"><span class="screen-name" style="color:${col}">${s.name}</span><button class="screen-remove" data-id="${s.id}">×</button></div>
       <div class="screen-fields">
-        <div class="sf"><label>Width px</label><input type="number" data-id="${s.id}" data-field="w" value="${s.w}" min="1" max="16384"></div>
-        <div class="sf"><label>Height px</label><input type="number" data-id="${s.id}" data-field="h" value="${s.h}" min="1" max="16384"></div>
-        <div class="sf"><label>X offset</label><input type="number" data-id="${s.id}" data-field="x" value="${s.x}" min="-16384" max="16384"></div>
-        <div class="sf"><label>Y offset</label><input type="number" data-id="${s.id}" data-field="y" value="${s.y}" min="-16384" max="16384"></div>
+        <div class="sf"><label>W px</label><input type="number" data-id="${s.id}" data-field="w" value="${s.w}" min="1" max="16384"></div>
+        <div class="sf"><label>H px</label><input type="number" data-id="${s.id}" data-field="h" value="${s.h}" min="1" max="16384"></div>
+        <div class="sf"><label>X off</label><input type="number" data-id="${s.id}" data-field="x" value="${s.x}" min="-16384" max="16384"></div>
+        <div class="sf"><label>Y off</label><input type="number" data-id="${s.id}" data-field="y" value="${s.y}" min="-16384" max="16384"></div>
       </div>`;
     list.appendChild(item);
   });
-  list.querySelectorAll('.screen-remove').forEach(btn=>{
-    btn.addEventListener('click',()=>{ screenItems=screenItems.filter(s=>s.id!==+btn.dataset.id); renderScreenList(); draw(); });
-  });
-  list.querySelectorAll('input[data-field]').forEach(inp=>{
-    inp.addEventListener('input',()=>{
-      const s=screenItems.find(x=>x.id===+inp.dataset.id);
-      if(s) s[inp.dataset.field]=parseInt(inp.value)||0;
-      draw();
-    });
-  });
+  list.querySelectorAll('.screen-remove').forEach(btn=>btn.addEventListener('click',()=>{ screenItems=screenItems.filter(s=>s.id!==+btn.dataset.id); renderScreenList(); draw(); }));
+  list.querySelectorAll('input[data-field]').forEach(inp=>inp.addEventListener('input',()=>{ const s=screenItems.find(x=>x.id===+inp.dataset.id); if(s) s[inp.dataset.field]=parseInt(inp.value)||0; draw(); }));
 }
 
-// ── COLOR PICKER WIRING ──
-function wireColor(colorId, previewId, hexId, redraw) {
-  const colorIn = document.getElementById(colorId);
-  const preview = document.getElementById(previewId);
-  const hexIn   = document.getElementById(hexId);
-  colorIn.addEventListener('input', e=>{
-    preview.style.background = e.target.value;
-    hexIn.value = e.target.value;
-    redraw();
-  });
-  hexIn.addEventListener('input', e=>{
-    const v = e.target.value;
-    if (/^#[0-9a-fA-F]{6}$/.test(v)) {
-      colorIn.value = v;
-      preview.style.background = v;
-      redraw();
-    }
-  });
-  hexIn.addEventListener('blur', e=>{
-    if (!/^#[0-9a-fA-F]{6}$/.test(e.target.value)) {
-      e.target.value = colorIn.value;
-    }
-  });
+// ── COLOR WIRING ──
+function wireColor(colorId,previewId,hexId,cb2) {
+  const ci=v(colorId),pi=v(previewId),hi=v(hexId);
+  ci.addEventListener('input',e=>{ pi.style.background=e.target.value; hi.value=e.target.value; cb2(); });
+  hi.addEventListener('input',e=>{ if(/^#[0-9a-fA-F]{6}$/.test(e.target.value)){ ci.value=e.target.value; pi.style.background=e.target.value; cb2(); } });
+  hi.addEventListener('blur',e=>{ if(!/^#[0-9a-fA-F]{6}$/.test(e.target.value)) e.target.value=ci.value; });
 }
 
-// ── LOGO UPLOAD WIRING ──
-function wireLogoUpload(uploadBtnId, resetBtnId, fileId, thumbId, setter, redraw) {
-  const uploadBtn = document.getElementById(uploadBtnId);
-  const resetBtn  = document.getElementById(resetBtnId);
-  const fileIn    = document.getElementById(fileId);
-  const thumb     = document.getElementById(thumbId);
-
-  uploadBtn.addEventListener('click', ()=>fileIn.click());
-  fileIn.addEventListener('change', e=>{
-    const file = e.target.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = ev=>{
-      const img = new Image();
-      img.onload = ()=>{
+// ── LOGO WIRING ──
+function wireLogoUpload(uploadId,resetId,fileId,thumbId,setter,redraw) {
+  v(uploadId).addEventListener('click',()=>v(fileId).click());
+  v(fileId).addEventListener('change',e=>{
+    const file=e.target.files[0]; if(!file) return;
+    const reader=new FileReader();
+    reader.onload=ev=>{
+      const img=new Image();
+      img.onload=()=>{
         setter(img);
-        thumb.innerHTML = `<img src="${ev.target.result}" style="width:100%;height:100%;object-fit:contain;">`;
+        v(thumbId).innerHTML=`<img src="${ev.target.result}" style="width:100%;height:100%;object-fit:contain;">`;
         redraw();
       };
-      img.src = ev.target.result;
+      img.src=ev.target.result;
     };
     reader.readAsDataURL(file);
   });
-  resetBtn.addEventListener('click', ()=>{
+  v(resetId).addEventListener('click',()=>{
     setter(null);
-    thumb.innerHTML = '<div class="logo-thumb-default">STRA<br>NYOV</div>';
-    fileIn.value = '';
+    v(thumbId).innerHTML=`<img src="../images/str_white.png" style="width:100%;height:100%;object-fit:contain;">`;
+    v(fileId).value='';
     redraw();
   });
 }
 
-// ── EVENT HANDLERS ──
-// mode tabs
-document.querySelectorAll('.mode-tab').forEach(btn=>{
-  btn.addEventListener('click',()=>{
-    mode=btn.dataset.mode;
-    document.querySelectorAll('.mode-tab').forEach(b=>b.classList.remove('active'));
-    btn.classList.add('active');
-    ['sb-led','sb-projection','sb-dome'].forEach(id=>{
-      document.getElementById(id).classList.toggle('sb-hidden', id!=='sb-'+mode);
-    });
-    draw();
-  });
+// ── SLIDER WIRING ──
+function wireSlider(id,valId,cb2) {
+  v(id).addEventListener('input',e=>{ v(valId).textContent=parseFloat(e.target.value).toFixed(1); cb2(); });
+}
+
+// ── HASH ROUTING ──
+function setMode(m) {
+  mode = m;
+  if (window.location.hash.replace('#','') !== m) history.replaceState(null,'','#'+m);
+  document.querySelectorAll('.mode-tab').forEach(b=>b.classList.remove('active'));
+  const tab = document.querySelector(`.mode-tab[data-mode="${m}"]`);
+  if (tab) tab.classList.add('active');
+  ['sb-led','sb-projection','sb-dome'].forEach(id=>v(id).classList.toggle('sb-hidden',id!=='sb-'+m));
+  draw();
+}
+window.addEventListener('hashchange',()=>{
+  const m=window.location.hash.replace('#','');
+  if(['projection','dome'].includes(m)&&m!==mode) setMode(m);
 });
 
-// LED sub-tabs
-document.querySelectorAll('.sub-tab').forEach(btn=>{
-  btn.addEventListener('click',()=>{
-    ledSub=btn.dataset.sub;
-    document.querySelectorAll('.sub-tab').forEach(b=>b.classList.remove('active'));
-    btn.classList.add('active');
-    document.getElementById('sub-screen').classList.toggle('sb-hidden',ledSub!=='screen');
-    document.getElementById('sub-canvas').classList.toggle('sb-hidden',ledSub!=='canvas');
-    draw();
-  });
-});
+// ── EVENTS ──
+document.querySelectorAll('.mode-tab:not(.disabled)').forEach(btn=>btn.addEventListener('click',()=>{
+  setMode(btn.dataset.mode);
+}));
 
-// LED Screen
-['s-modW','s-modH','s-cols','s-rows','s-pitch'].forEach(id=>{
-  document.getElementById(id).addEventListener('input',draw);
-});
-document.getElementById('s-br').addEventListener('input',e=>{
-  br.screen=e.target.value/100;
-  document.getElementById('s-brVal').textContent=e.target.value; draw();
-});
+document.querySelectorAll('.sub-tab').forEach(btn=>btn.addEventListener('click',()=>{
+  ledSub=btn.dataset.sub;
+  document.querySelectorAll('.sub-tab').forEach(b=>b.classList.remove('active')); btn.classList.add('active');
+  v('sub-screen').classList.toggle('sb-hidden',ledSub!=='screen');
+  v('sub-canvas').classList.toggle('sb-hidden',ledSub!=='canvas');
+  draw();
+}));
 
-// LED Canvas
-document.getElementById('addScreen').addEventListener('click',()=>{
+['s-modW','s-modH','s-cols','s-rows','s-pitch'].forEach(id=>v(id).addEventListener('input',draw));
+v('s-br').addEventListener('input',e=>{ br.screen=e.target.value/100; v('s-brVal').textContent=e.target.value; draw(); });
+
+v('addScreen').addEventListener('click',()=>{
   const last=screenItems[screenItems.length-1];
   screenItems.push({id:nextId++,name:`SCR ${screenItems.length+1}`,w:1920,h:1080,x:last?last.x+last.w:0,y:0});
   renderScreenList(); draw();
 });
-document.getElementById('c-br').addEventListener('input',e=>{
-  br.canvas=e.target.value/100;
-  document.getElementById('c-brVal').textContent=e.target.value; draw();
-});
+v('c-br').addEventListener('input',e=>{ br.canvas=e.target.value/100; v('c-brVal').textContent=e.target.value; draw(); });
 
-// Projection inputs
-['p-projW','p-projH','p-cols','p-rows','p-blendH','p-blendV'].forEach(id=>{
-  document.getElementById(id).addEventListener('input',draw);
-});
-document.getElementById('p-name').addEventListener('input',draw);
-['p-grid','p-circles','p-coords','p-rowlabels','p-info','p-overlay'].forEach(id=>{
-  document.getElementById(id).addEventListener('change',draw);
-});
+// When total canvas OR projector res changes: recalc cols + blend to keep canvas fixed
+function recalcFromTotalAndProj() {
+  const totW = parseInt(v('p-totWIn').value)||1;
+  const totH = parseInt(v('p-totHIn').value)||1;
+  const projW = num('p-projW',1920);
+  const projH = num('p-projH',1080);
 
-// Projection mode buttons
-document.getElementById('pm-unified').addEventListener('click',()=>{
-  projMode='unified';
-  document.getElementById('pm-unified').classList.add('active');
-  document.getElementById('pm-individual').classList.remove('active');
+  const cols = Math.max(1, Math.round(totW / projW));
+  const rows = Math.max(1, Math.round(totH / projH));
+  v('p-cols').value = cols;
+  v('p-rows').value = rows;
+
+  if (cols > 1) {
+    const blendH = Math.max(0, Math.min(49, (projW * cols - totW) / (cols - 1) / projW * 100));
+    v('p-blendH').value = blendH.toFixed(2);
+  } else {
+    v('p-blendH').value = 0;
+  }
+  if (rows > 1) {
+    const blendV = Math.max(0, Math.min(49, (projH * rows - totH) / (rows - 1) / projH * 100));
+    v('p-blendV').value = blendV.toFixed(2);
+  } else {
+    v('p-blendV').value = 0;
+  }
   draw();
-});
-document.getElementById('pm-individual').addEventListener('click',()=>{
-  projMode='individual';
-  document.getElementById('pm-individual').classList.add('active');
-  document.getElementById('pm-unified').classList.remove('active');
-  draw();
-});
-
-// Dome presets
-document.querySelectorAll('.preset-btn[data-dome]').forEach(btn=>{
-  btn.addEventListener('click',()=>{
-    document.querySelectorAll('.preset-btn[data-dome]').forEach(b=>b.classList.remove('active'));
-    btn.classList.add('active');
-    document.getElementById('d-size').value=btn.dataset.dome;
-    draw();
-  });
-});
-document.getElementById('d-size').addEventListener('input',e=>{
-  document.querySelectorAll('.preset-btn[data-dome]').forEach(b=>b.classList.toggle('active',b.dataset.dome===e.target.value));
-  draw();
-});
-document.getElementById('d-name').addEventListener('input',draw);
-document.getElementById('d-br').addEventListener('input',e=>{
-  br.dome=e.target.value/100;
-  document.getElementById('d-brVal').textContent=e.target.value; draw();
-});
-['d-circles','d-grid','d-cross','d-radial','d-labels','d-corners'].forEach(id=>{
-  document.getElementById(id).addEventListener('change',draw);
-});
-
-// Dome pattern type
-document.querySelectorAll('.pat-btn[data-dpat]').forEach(btn=>{
-  btn.addEventListener('click',()=>{
-    domePat=btn.dataset.dpat;
-    document.querySelectorAll('.pat-btn[data-dpat]').forEach(b=>b.classList.remove('active'));
-    btn.classList.add('active');
-    draw();
-  });
-});
-
-// Colors
-wireColor('p-color','p-colorPreview','p-colorHex', draw);
-wireColor('d-color','d-colorPreview','d-colorHex', draw);
-
-// Logo uploads
-wireLogoUpload('p-logoUpload','p-logoReset','p-logoFile','p-logoThumb', img=>{ pLogoImg=img; }, draw);
-wireLogoUpload('d-logoUpload','d-logoReset','d-logoFile','d-logoThumb', img=>{ dLogoImg=img; }, draw);
-
-// Downloads
-function dlCanvas(filename) {
-  const link=document.createElement('a'); link.download=filename;
-  link.href=canvas.toDataURL('image/png'); link.click();
 }
-document.getElementById('s-dl').addEventListener('click',()=>dlCanvas(`LED_${canvas.width}x${canvas.height}.png`));
-document.getElementById('c-dl').addEventListener('click',()=>dlCanvas(`LEDCanvas_${canvas.width}x${canvas.height}.png`));
-document.getElementById('p-dl').addEventListener('click',()=>dlCanvas(`Proj_${canvas.width}x${canvas.height}.png`));
-document.getElementById('d-dl').addEventListener('click',()=>dlCanvas(`Dome_${canvas.width}x${canvas.height}.png`));
-document.getElementById('s-fs').addEventListener('click',()=>canvasArea.requestFullscreen?.());
-document.getElementById('c-fs').addEventListener('click',()=>canvasArea.requestFullscreen?.());
-document.getElementById('p-fs').addEventListener('click',()=>canvasArea.requestFullscreen?.());
-document.getElementById('d-fs').addEventListener('click',()=>canvasArea.requestFullscreen?.());
+['p-totWIn','p-totHIn','p-projW','p-projH'].forEach(id=>v(id).addEventListener('input',recalcFromTotalAndProj));
 
-window.addEventListener('resize', fitCanvas);
+// Cols/rows/blend/name tweaks just redraw (total updates in projCalc display)
+['p-cols','p-rows','p-blendH','p-blendV','p-name'].forEach(id=>v(id).addEventListener('input',draw));
+['p-grid','p-circles','p-coords','p-rowlabels','p-cellids','p-projids','p-info','p-overlay'].forEach(id=>v(id).addEventListener('change',draw));
+wireSlider('p-lw','p-lwVal',draw);
+wireSlider('p-ts','p-tsVal',draw);
+wireSlider('p-gridCols','p-gridColsVal',draw);
+wireSlider('p-logoScale','p-logoScaleVal',draw);
+wireColor('p-color','p-colorPreview','p-colorHex',draw);
+wireColor('p-textColor','p-textColorPreview','p-textColorHex',draw);
+wireColor('p-borderColor','p-borderColorPreview','p-borderColorHex',draw);
+wireColor('p-circleColor','p-circleColorPreview','p-circleColorHex',draw);
+wireLogoUpload('p-logoUpload','p-logoReset','p-logoFile','p-logoThumb',img=>pLogoCustom=img,draw);
+
+document.querySelectorAll('.preset-btn[data-dome]').forEach(btn=>btn.addEventListener('click',()=>{
+  document.querySelectorAll('.preset-btn[data-dome]').forEach(b=>b.classList.remove('active')); btn.classList.add('active');
+  v('d-size').value=btn.dataset.dome; draw();
+}));
+v('d-size').addEventListener('input',e=>{
+  document.querySelectorAll('.preset-btn[data-dome]').forEach(b=>b.classList.toggle('active',b.dataset.dome===e.target.value)); draw();
+});
+document.querySelectorAll('.pat-btn[data-dpat]').forEach(btn=>btn.addEventListener('click',()=>{
+  domePat=btn.dataset.dpat;
+  document.querySelectorAll('.pat-btn[data-dpat]').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); draw();
+}));
+['d-circles','d-grid','d-cross','d-radial','d-labels','d-corners'].forEach(id=>v(id).addEventListener('change',draw));
+v('d-name').addEventListener('input',draw);
+v('d-br').addEventListener('input',e=>{ br.dome=e.target.value/100; v('d-brVal').textContent=e.target.value; draw(); });
+wireSlider('d-lw','d-lwVal',draw);
+wireSlider('d-ts','d-tsVal',draw);
+wireColor('d-color','d-colorPreview','d-colorHex',draw);
+wireLogoUpload('d-logoUpload','d-logoReset','d-logoFile','d-logoThumb',img=>dLogoCustom=img,draw);
+
+function dlCanvas(fn) { const a=document.createElement('a'); a.download=fn; a.href=canvas.toDataURL('image/png'); a.click(); }
+v('s-dl').addEventListener('click',()=>dlCanvas(`LED_${canvas.width}x${canvas.height}.png`));
+v('c-dl').addEventListener('click',()=>dlCanvas(`LEDCanvas_${canvas.width}x${canvas.height}.png`));
+v('p-dl').addEventListener('click',()=>dlCanvas(`Proj_${canvas.width}x${canvas.height}.png`));
+v('d-dl').addEventListener('click',()=>dlCanvas(`Dome_${canvas.width}x${canvas.height}.png`));
+v('s-fs').addEventListener('click',()=>canvasArea.requestFullscreen?.());
+v('c-fs').addEventListener('click',()=>canvasArea.requestFullscreen?.());
+v('p-fs').addEventListener('click',()=>canvasArea.requestFullscreen?.());
+v('d-fs').addEventListener('click',()=>canvasArea.requestFullscreen?.());
+
+window.addEventListener('resize',fitCanvas);
 
 // ── INIT ──
-buildPatBtns('pat-screen', LED_PATS, ledPat, 'screen');
-buildPatBtns('pat-canvas', LED_PATS, ledPat, 'canvas');
+buildPatBtns('pat-screen',LED_PATS,ledPat,'screen');
+buildPatBtns('pat-canvas',LED_PATS,ledPat,'canvas');
 renderScreenList();
 projCalc();
-draw();
+const _initHash = window.location.hash.replace('#','');
+setMode(['projection','dome'].includes(_initHash) ? _initHash : 'projection');
 </script>
 </body>
 </html>
