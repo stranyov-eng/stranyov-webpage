@@ -22,200 +22,223 @@
     min-height: 100vh;
     overflow-x: hidden;
     padding: 48px 32px;
-    gap: 64px;
+    gap: 56px;
   }
 
   .glitch-bg {
-    position: fixed;
-    inset: 0;
-    background: repeating-linear-gradient(
-      0deg,
-      transparent,
-      transparent 2px,
-      rgba(240,237,232,0.015) 2px,
-      rgba(240,237,232,0.015) 4px
-    );
-    pointer-events: none;
-    z-index: 0;
+    position: fixed; inset: 0;
+    background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(240,237,232,0.015) 2px, rgba(240,237,232,0.015) 4px);
+    pointer-events: none; z-index: 0;
   }
-
   .noise {
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: 0;
-    opacity: 0.03;
+    position: fixed; inset: 0;
+    pointer-events: none; z-index: 0; opacity: 0.03;
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
     background-size: 128px;
   }
 
   .content {
-    position: relative;
-    z-index: 1;
-    text-align: center;
-    max-width: 600px;
+    position: relative; z-index: 1;
+    text-align: center; max-width: 600px;
   }
-
   .label {
     font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.25em;
+    font-size: 11px; letter-spacing: 0.25em;
     color: rgba(240,237,232,0.35);
-    margin-bottom: 48px;
-    text-transform: uppercase;
+    margin-bottom: 48px; text-transform: uppercase;
   }
-
   .headline {
     font-family: 'Bebas Neue', sans-serif;
     font-size: clamp(72px, 12vw, 120px);
-    line-height: 0.9;
-    letter-spacing: 0.02em;
+    line-height: 0.9; letter-spacing: 0.02em;
     margin-bottom: 40px;
     -webkit-text-stroke: 1px rgba(240,237,232,0.15);
     color: transparent;
   }
-
-  .headline span {
-    display: block;
-    color: #f0ede8;
-    -webkit-text-stroke: 0;
-  }
-
+  .headline span { display: block; color: #f0ede8; -webkit-text-stroke: 0; }
   .message {
-    font-size: 14px;
-    line-height: 1.7;
+    font-size: 14px; line-height: 1.7;
     color: rgba(240,237,232,0.5);
-    margin-bottom: 56px;
-    font-style: italic;
+    margin-bottom: 56px; font-style: italic;
   }
-
   .back {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
+    display: inline-flex; align-items: center; gap: 10px;
     font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.2em;
-    color: rgba(240,237,232,0.6);
-    text-decoration: none;
+    font-size: 11px; letter-spacing: 0.2em;
+    color: rgba(240,237,232,0.6); text-decoration: none;
     text-transform: uppercase;
     border-bottom: 1px solid rgba(240,237,232,0.2);
-    padding-bottom: 4px;
-    transition: color 0.2s, border-color 0.2s;
+    padding-bottom: 4px; transition: color 0.2s, border-color 0.2s;
   }
+  .back:hover { color: #f0ede8; border-color: rgba(240,237,232,0.6); }
 
-  .back:hover {
-    color: #f0ede8;
-    border-color: rgba(240,237,232,0.6);
-  }
-
-  /* GAME */
+  /* ── GAME ── */
   .game {
-    position: relative;
-    z-index: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 24px;
+    position: relative; z-index: 1;
+    display: flex; flex-direction: column;
+    align-items: center; gap: 18px;
   }
-
   .game-label {
     font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.25em;
-    color: rgba(240,237,232,0.2);
-    text-transform: uppercase;
+    font-size: 11px; letter-spacing: 0.25em;
+    color: rgba(240,237,232,0.2); text-transform: uppercase;
   }
+
+  /* difficulty */
+  .diff-btns {
+    display: flex; gap: 2px;
+    background: rgba(240,237,232,0.06);
+    border: 1px solid rgba(240,237,232,0.08);
+    padding: 3px;
+  }
+  .diff-btn {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px; letter-spacing: 0.18em;
+    text-transform: uppercase;
+    padding: 5px 14px; background: none; border: none;
+    color: rgba(240,237,232,0.3); cursor: pointer;
+    transition: color 0.2s, background 0.2s;
+  }
+  .diff-btn:hover { color: rgba(240,237,232,0.7); }
+  .diff-btn.active { background: rgba(240,237,232,0.1); color: #f0ede8; }
 
   .game-status {
     font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.15em;
-    color: rgba(240,237,232,0.45);
-    text-transform: uppercase;
-    min-height: 16px;
-    transition: opacity 0.3s;
+    font-size: 11px; letter-spacing: 0.15em;
+    color: rgba(240,237,232,0.45); text-transform: uppercase;
+    min-height: 16px; transition: opacity 0.3s;
   }
 
   .board {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1px;
-    background: rgba(240,237,232,0.08);
-    border: 1px solid rgba(240,237,232,0.08);
-    position: relative;
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 1px; background: rgba(240,237,232,0.08);
+    border: 1px solid rgba(240,237,232,0.08); position: relative;
   }
-
   .board-end {
-    position: absolute;
-    inset: 0;
-    background: rgba(10,10,10,0.7);
-    display: none;
-    align-items: center;
-    justify-content: center;
-    transition: opacity 0.3s;
-    z-index: 2;
+    position: absolute; inset: 0;
+    background: rgba(10,10,10,0.85);
+    display: none; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 12px; z-index: 2;
   }
   .board-end.visible { display: flex; }
+  .board-end-msg {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px; letter-spacing: 0.2em;
+    color: rgba(240,237,232,0.5); text-transform: uppercase;
+  }
+  .lb-save-wrap {
+    display: flex; gap: 6px; align-items: center;
+  }
+  .lb-name-inp {
+    font-family: 'DM Mono', monospace; font-size: 11px;
+    background: rgba(240,237,232,0.06);
+    border: 1px solid rgba(240,237,232,0.18);
+    color: #f0ede8; padding: 5px 8px; outline: none;
+    width: 110px; letter-spacing: 0.05em;
+    transition: border-color 0.2s;
+  }
+  .lb-name-inp::placeholder { color: rgba(240,237,232,0.2); }
+  .lb-name-inp:focus { border-color: rgba(240,237,232,0.5); }
+  .lb-save-btn {
+    font-family: 'DM Mono', monospace; font-size: 9px;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    background: rgba(240,237,232,0.1);
+    border: 1px solid rgba(240,237,232,0.2);
+    color: rgba(240,237,232,0.7); padding: 5px 10px;
+    cursor: pointer; transition: background 0.2s, color 0.2s;
+  }
+  .lb-save-btn:hover { background: rgba(240,237,232,0.18); color: #f0ede8; }
 
   .cell {
-    width: 80px;
-    height: 80px;
-    background: #0a0a0a;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    width: 80px; height: 80px; background: #0a0a0a;
+    display: flex; align-items: center; justify-content: center;
     font-family: 'Bebas Neue', sans-serif;
-    font-size: 36px;
-    letter-spacing: 0.02em;
-    cursor: pointer;
-    transition: background 0.15s, color 0.15s;
-    color: transparent;
-    user-select: none;
+    font-size: 36px; letter-spacing: 0.02em;
+    cursor: pointer; transition: background 0.15s, color 0.15s;
+    color: transparent; user-select: none;
   }
-
-  .cell:hover:not(.taken) {
-    background: rgba(240,237,232,0.04);
-  }
-
+  .cell:hover:not(.taken) { background: rgba(240,237,232,0.04); }
   .cell.x { color: #f0ede8; }
   .cell.o { color: rgba(240,237,232,0.35); }
-
-  .cell.win {
-    background: rgba(240,237,232,0.07);
-    color: #f0ede8 !important;
-  }
+  .cell.win { background: rgba(240,237,232,0.07); color: #f0ede8 !important; }
 
   .game-reset {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.25em;
-    color: rgba(240,237,232,0.55);
-    text-transform: uppercase;
-    background: none;
-    border: none;
+    font-family: 'DM Mono', monospace; font-size: 11px;
+    letter-spacing: 0.25em; color: rgba(240,237,232,0.55);
+    text-transform: uppercase; background: none; border: none;
     border-bottom: 1px solid rgba(240,237,232,0.25);
-    padding-bottom: 4px;
-    cursor: pointer;
+    padding-bottom: 4px; cursor: pointer;
     transition: color 0.2s, border-color 0.2s;
   }
-
-  .game-reset:hover {
-    color: #f0ede8;
-    border-color: rgba(240,237,232,0.7);
-  }
+  .game-reset:hover { color: #f0ede8; border-color: rgba(240,237,232,0.7); }
 
   .score {
-    display: flex;
-    gap: 32px;
+    display: flex; gap: 32px;
     font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.15em;
-    color: rgba(240,237,232,0.25);
-    text-transform: uppercase;
+    font-size: 10px; letter-spacing: 0.15em;
+    color: rgba(240,237,232,0.25); text-transform: uppercase;
   }
-
   .score span { color: rgba(240,237,232,0.55); }
+
+  /* ── LEADERBOARD ── */
+  .lb-section {
+    position: relative; z-index: 1;
+    width: 100%; max-width: 340px;
+  }
+  .lb-header {
+    display: flex; align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(240,237,232,0.08);
+  }
+  .lb-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px; letter-spacing: 0.28em;
+    color: rgba(240,237,232,0.2); text-transform: uppercase;
+  }
+  .lb-clear {
+    font-family: 'DM Mono', monospace; font-size: 8px;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    background: none; border: none; cursor: pointer;
+    color: rgba(240,237,232,0.15); padding: 0;
+    transition: color 0.2s;
+  }
+  .lb-clear:hover { color: rgba(240,237,232,0.5); }
+  .lb-empty {
+    font-family: 'DM Mono', monospace; font-size: 10px;
+    letter-spacing: 0.1em; color: rgba(240,237,232,0.15);
+    text-align: center; padding: 16px 0; text-transform: uppercase;
+  }
+  .lb-row {
+    display: flex; align-items: center; gap: 12px;
+    padding: 7px 0;
+    border-bottom: 1px solid rgba(240,237,232,0.05);
+  }
+  .lb-rank {
+    font-family: 'DM Mono', monospace; font-size: 9px;
+    color: rgba(240,237,232,0.2); width: 18px; flex-shrink: 0;
+    text-align: right;
+  }
+  .lb-rank.gold   { color: #c8a84b; }
+  .lb-rank.silver { color: rgba(240,237,232,0.5); }
+  .lb-rank.bronze { color: #a0745a; }
+  .lb-player {
+    font-family: 'DM Mono', monospace; font-size: 11px;
+    color: rgba(240,237,232,0.7); flex: 1;
+    letter-spacing: 0.04em; white-space: nowrap;
+    overflow: hidden; text-overflow: ellipsis;
+  }
+  .lb-wins {
+    font-family: 'DM Mono', monospace; font-size: 11px;
+    color: rgba(240,237,232,0.4); flex-shrink: 0;
+  }
+  .lb-diff-tag {
+    font-family: 'DM Mono', monospace; font-size: 8px;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: rgba(240,237,232,0.2); flex-shrink: 0;
+  }
 </style>
 </head>
 <body>
@@ -238,6 +261,11 @@
 
   <div class="game">
     <div class="game-label">Kill time · X vs O</div>
+    <div class="diff-btns">
+      <button class="diff-btn" data-diff="easy">Easy</button>
+      <button class="diff-btn active" data-diff="medium">Medium</button>
+      <button class="diff-btn" data-diff="hard">Hard</button>
+    </div>
     <div class="game-status" id="status">Your turn — X</div>
     <div class="board" id="board">
       <div class="cell" data-i="0"></div>
@@ -250,6 +278,11 @@
       <div class="cell" data-i="7"></div>
       <div class="cell" data-i="8"></div>
       <div class="board-end" id="boardEnd">
+        <div class="board-end-msg" id="boardEndMsg"></div>
+        <div class="lb-save-wrap" id="lbSaveWrap" style="display:none">
+          <input class="lb-name-inp" id="lbNameInp" placeholder="Your name" maxlength="20">
+          <button class="lb-save-btn" id="lbSaveBtn">Save</button>
+        </div>
         <button class="game-reset" id="reset">New game</button>
       </div>
     </div>
@@ -258,25 +291,52 @@
     </div>
   </div>
 
+  <div class="lb-section">
+    <div class="lb-header">
+      <div class="lb-title">Leaderboard</div>
+      <button class="lb-clear" id="lbClear">Clear</button>
+    </div>
+    <div id="lbList"></div>
+  </div>
+
 <script>
   const WINS = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
-  let board, locked, scores = {x:0, o:0, d:0};
+  const LB_KEY = 'ttt_leaderboard';
 
-  const cells    = document.querySelectorAll('.cell');
-  const status   = document.getElementById('status');
-  const scoreX   = document.getElementById('score-x');
-  const scoreO   = document.getElementById('score-o');
-  const scoreD   = document.getElementById('score-d');
-  const boardEnd = document.getElementById('boardEnd');
+  let board, locked, difficulty = 'medium';
+  let scores = {x:0, o:0, d:0};
+  let lastResult = null;
 
+  const cells      = document.querySelectorAll('.cell');
+  const status     = document.getElementById('status');
+  const scoreX     = document.getElementById('score-x');
+  const scoreO     = document.getElementById('score-o');
+  const scoreD     = document.getElementById('score-d');
+  const boardEnd   = document.getElementById('boardEnd');
+  const boardEndMsg= document.getElementById('boardEndMsg');
+  const lbSaveWrap = document.getElementById('lbSaveWrap');
+  const lbNameInp  = document.getElementById('lbNameInp');
+  const lbSaveBtn  = document.getElementById('lbSaveBtn');
+
+  // ── DIFFICULTY ──
+  document.querySelectorAll('.diff-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.diff-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      difficulty = btn.dataset.diff;
+      init();
+    });
+  });
+
+  // ── BOARD ──
   function init() {
     board = Array(9).fill('');
     locked = false;
-    cells.forEach(c => {
-      c.textContent = '';
-      c.className = 'cell';
-    });
+    lastResult = null;
+    cells.forEach(c => { c.textContent = ''; c.className = 'cell'; });
     boardEnd.classList.remove('visible');
+    lbSaveWrap.style.display = 'none';
+    lbNameInp.value = '';
     status.textContent = 'Your turn — X';
   }
 
@@ -288,6 +348,7 @@
     return null;
   }
 
+  // ── AI ──
   function minimax(b, isMax) {
     const res = checkWinner(b);
     if (res) return res.winner === 'o' ? 1 : res.winner === 'x' ? -1 : 0;
@@ -295,15 +356,20 @@
     for (let i = 0; i < 9; i++) {
       if (!b[i]) {
         b[i] = isMax ? 'o' : 'x';
-        const score = minimax(b, !isMax);
+        const s = minimax(b, !isMax);
         b[i] = '';
-        best = isMax ? Math.max(best, score) : Math.min(best, score);
+        best = isMax ? Math.max(best, s) : Math.min(best, s);
       }
     }
     return best;
   }
 
-  function cpuMove() {
+  function randomMove() {
+    const empty = board.map((v,i) => v?null:i).filter(i=>i!==null);
+    return empty[Math.floor(Math.random() * empty.length)];
+  }
+
+  function bestMove() {
     let best = -Infinity, move = -1;
     for (let i = 0; i < 9; i++) {
       if (!board[i]) {
@@ -313,7 +379,20 @@
         if (s > best) { best = s; move = i; }
       }
     }
-    if (move === -1) return;
+    return move;
+  }
+
+  function cpuMove() {
+    let move;
+    if (difficulty === 'easy') {
+      move = randomMove();
+    } else if (difficulty === 'medium') {
+      // 55% optimal, 45% random
+      move = Math.random() < 0.55 ? bestMove() : randomMove();
+    } else {
+      move = bestMove();
+    }
+    if (move === -1 || move === null) return;
     board[move] = 'o';
     cells[move].textContent = 'O';
     cells[move].classList.add('o', 'taken');
@@ -323,16 +402,22 @@
   function resolve() {
     const res = checkWinner(board);
     if (res) {
+      lastResult = res.winner;
       if (res.winner === 'draw') {
         status.textContent = 'Draw — not bad';
-        scores.d++;
-        scoreD.textContent = scores.d;
+        boardEndMsg.textContent = 'Draw';
+        scores.d++; scoreD.textContent = scores.d;
       } else {
         const isPlayer = res.winner === 'x';
         status.textContent = isPlayer ? 'You win — respect' : 'CPU wins — try again';
+        boardEndMsg.textContent = isPlayer ? 'You win' : 'CPU wins';
         res.line.forEach(i => cells[i].classList.add('win'));
-        if (isPlayer) { scores.x++; scoreX.textContent = scores.x; }
-        else           { scores.o++; scoreO.textContent = scores.o; }
+        if (isPlayer) {
+          scores.x++; scoreX.textContent = scores.x;
+          lbSaveWrap.style.display = 'flex';
+        } else {
+          scores.o++; scoreO.textContent = scores.o;
+        }
       }
       locked = true;
       setTimeout(() => boardEnd.classList.add('visible'), 400);
@@ -357,6 +442,57 @@
   });
 
   document.getElementById('reset').addEventListener('click', init);
+
+  // ── LEADERBOARD ──
+  function loadLB() {
+    try { return JSON.parse(localStorage.getItem(LB_KEY)) || []; }
+    catch { return []; }
+  }
+  function saveLB(data) {
+    localStorage.setItem(LB_KEY, JSON.stringify(data));
+  }
+  function renderLB() {
+    const data = loadLB();
+    const list = document.getElementById('lbList');
+    if (!data.length) {
+      list.innerHTML = '<div class="lb-empty">No records yet</div>';
+      return;
+    }
+    const rankClass = ['gold','silver','bronze'];
+    list.innerHTML = data.slice(0, 10).map((e, i) => `
+      <div class="lb-row">
+        <div class="lb-rank ${rankClass[i]||''}">${i+1}</div>
+        <div class="lb-player">${e.name}</div>
+        <div class="lb-diff-tag">${e.diff}</div>
+        <div class="lb-wins">${e.wins}W</div>
+      </div>`).join('');
+  }
+
+  lbSaveBtn.addEventListener('click', () => {
+    const name = lbNameInp.value.trim();
+    if (!name) return;
+    const data = loadLB();
+    const existing = data.find(e => e.name.toLowerCase() === name.toLowerCase());
+    if (existing) {
+      existing.wins++;
+      if (difficulty !== existing.diff) existing.diff = difficulty;
+    } else {
+      data.push({ name, wins: 1, diff: difficulty });
+    }
+    data.sort((a,b) => b.wins - a.wins);
+    saveLB(data);
+    renderLB();
+    lbSaveWrap.style.display = 'none';
+    lbNameInp.value = '';
+  });
+
+  lbNameInp.addEventListener('keydown', e => { if (e.key === 'Enter') lbSaveBtn.click(); });
+
+  document.getElementById('lbClear').addEventListener('click', () => {
+    if (confirm('Clear leaderboard?')) { saveLB([]); renderLB(); }
+  });
+
+  renderLB();
   init();
 </script>
 </body>

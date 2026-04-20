@@ -77,6 +77,66 @@
   .nav-links a:hover { color: var(--white); }
   .nav-links a:hover::after { width: 100%; }
 
+  /* TOOLS DROPDOWN */
+  .nav-tools { position: relative; list-style: none; }
+  .nav-tools-btn {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px; letter-spacing: 0.22em;
+    text-transform: uppercase; font-weight: 400;
+    color: rgba(240,237,232,0.4);
+    background: none; border: none; cursor: pointer;
+    padding: 0; display: flex; align-items: center; gap: 5px;
+    transition: color 0.25s;
+  }
+  .nav-tools-btn:hover { color: var(--white); }
+  .nav-tools-btn .arr {
+    font-size: 8px; opacity: 0.5;
+    transition: transform 0.25s, opacity 0.25s;
+    display: inline-block;
+  }
+  .nav-tools.open .nav-tools-btn { color: var(--white); }
+  .nav-tools.open .arr { transform: rotate(180deg); opacity: 1; }
+
+  .tools-panel {
+    position: absolute; top: calc(100% + 16px); right: 0;
+    background: rgba(12,12,12,0.97);
+    border: 1px solid rgba(240,237,232,0.1);
+    backdrop-filter: blur(16px);
+    padding: 8px;
+    min-width: 220px;
+    opacity: 0; pointer-events: none;
+    transform: translateY(-6px);
+    transition: opacity 0.2s, transform 0.2s;
+    z-index: 200;
+  }
+  .nav-tools.open .tools-panel {
+    opacity: 1; pointer-events: all; transform: translateY(0);
+  }
+  .tools-item {
+    display: flex; align-items: center; gap: 14px;
+    padding: 10px 12px; text-decoration: none;
+    color: rgba(240,237,232,0.5);
+    transition: background 0.15s, color 0.15s;
+  }
+  .tools-item:hover { background: rgba(240,237,232,0.05); color: #f0ede8; }
+  .tools-item-icon {
+    width: 28px; height: 28px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(240,237,232,0.06);
+    border: 1px solid rgba(240,237,232,0.08);
+    font-size: 13px;
+  }
+  .tools-item-info { display: flex; flex-direction: column; gap: 2px; }
+  .tools-item-name {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px; letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .tools-item-desc {
+    font-size: 10px; color: rgba(240,237,232,0.25);
+    letter-spacing: 0.03em;
+  }
+
   /* HERO */
   #hero {
     min-height: 100vh;
@@ -729,8 +789,26 @@
     <li><a href="#work">Projects</a></li>
     <li><a href="#experience">Experience</a></li>
     <li><a href="#contact">Contact</a></li>
-    <li><a href="patterns/led.html" style="color:rgba(240,237,232,0.2);font-size:10px;letter-spacing:0.15em;">Tools ↗</a></li>
   </ul>
+  <li class="nav-tools" id="navTools">
+    <button class="nav-tools-btn" id="navToolsBtn">Tools <span class="arr">▾</span></button>
+    <div class="tools-panel">
+      <a class="tools-item" href="patterns/led.html">
+        <div class="tools-item-icon">⊞</div>
+        <div class="tools-item-info">
+          <div class="tools-item-name">Pattern Gen</div>
+          <div class="tools-item-desc">Test pattern generator · Beta</div>
+        </div>
+      </a>
+      <a class="tools-item" href="oops.html">
+        <div class="tools-item-icon">✕</div>
+        <div class="tools-item-info">
+          <div class="tools-item-name">X vs O</div>
+          <div class="tools-item-desc">Tic-tac-toe · Kill time</div>
+        </div>
+      </a>
+    </div>
+  </li>
   <button class="burger" id="burger" aria-label="Menu">
     <span></span><span></span><span></span>
   </button>
@@ -742,7 +820,8 @@
     <li><a href="#work" class="mob-link">Projects</a></li>
     <li><a href="#experience" class="mob-link">Experience</a></li>
     <li><a href="#contact" class="mob-link">Contact</a></li>
-    <li><a href="patterns/led.html" class="mob-link">Tools</a></li>
+    <li><a href="patterns/led.html" class="mob-link">Pattern Gen</a></li>
+    <li><a href="oops.html" class="mob-link">X vs O</a></li>
   </ul>
 </div>
 
@@ -1510,6 +1589,17 @@ lightbox.addEventListener('click', e => {
 });
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') closeLightbox();
+});
+
+// ── TOOLS DROPDOWN ───────────────────────────────────────
+const navTools = document.getElementById('navTools');
+const navToolsBtn = document.getElementById('navToolsBtn');
+navToolsBtn.addEventListener('click', e => {
+  e.stopPropagation();
+  navTools.classList.toggle('open');
+});
+document.addEventListener('click', e => {
+  if (!navTools.contains(e.target)) navTools.classList.remove('open');
 });
 
 // ── BURGER ───────────────────────────────────────────────────
