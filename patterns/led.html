@@ -39,10 +39,11 @@ canvas { display:block; image-rendering:pixelated; }
 .bottom-panel { display:flex; flex-direction:row; height:215px; flex-shrink:0; border-top:1px solid var(--line); overflow-x:auto; overflow-y:hidden; }
 .bottom-panel::-webkit-scrollbar { height:4px; }
 .bottom-panel::-webkit-scrollbar-thumb { background:rgba(240,237,232,0.08); }
-.bp-mode { display:flex; flex-direction:row; flex-shrink:0; align-items:stretch; }
+.bp-mode { display:flex; flex-direction:row; flex:1; align-items:stretch; }
 .bp-mode.sb-hidden { display:none; }
 
-.bgroup { display:flex; flex-direction:column; padding:14px 16px; flex-shrink:0; }
+.bgroup { display:flex; flex-direction:column; padding:14px 16px; flex:1; min-width:140px; }
+.bgroup-actions { flex:0 0 120px; min-width:120px; }
 .bvdiv { width:1px; background:var(--line); flex-shrink:0; margin:10px 0; }
 .bgroup-title { font-family:'DM Mono',monospace; font-size:8px; letter-spacing:0.25em; color:rgba(240,237,232,0.2); text-transform:uppercase; margin-bottom:9px; flex-shrink:0; }
 
@@ -167,7 +168,7 @@ input[type="range"]::-webkit-slider-thumb { -webkit-appearance:none; width:13px;
 <div id="sb-projection" class="bp-mode">
 
   <!-- Setup -->
-  <div class="bgroup" style="width:210px">
+  <div class="bgroup">
     <div class="bgroup-title">Setup</div>
     <input type="text" class="bg-inp" id="p-name" placeholder="Pattern name" style="margin-bottom:7px">
     <div class="bg-row">
@@ -189,7 +190,7 @@ input[type="range"]::-webkit-slider-thumb { -webkit-appearance:none; width:13px;
   <div class="bvdiv"></div>
 
   <!-- Output -->
-  <div class="bgroup" style="width:175px">
+  <div class="bgroup">
     <div class="bgroup-title">Output</div>
     <div class="bg-row"><span class="bg-lbl" style="width:52px">Blend H</span><span class="f-val" id="p-bHpx">—</span></div>
     <div class="bg-row"><span class="bg-lbl" style="width:52px">Blend V</span><span class="f-val" id="p-bVpx">—</span></div>
@@ -200,7 +201,7 @@ input[type="range"]::-webkit-slider-thumb { -webkit-appearance:none; width:13px;
   <div class="bvdiv"></div>
 
   <!-- Colors -->
-  <div class="bgroup" style="width:148px">
+  <div class="bgroup">
     <div class="bgroup-title">Colors</div>
     <div class="bg-row">
       <span class="bg-lbl" style="width:12px">G</span>
@@ -226,7 +227,7 @@ input[type="range"]::-webkit-slider-thumb { -webkit-appearance:none; width:13px;
   <div class="bvdiv"></div>
 
   <!-- Sliders -->
-  <div class="bgroup" style="width:185px">
+  <div class="bgroup">
     <div class="bgroup-title">Sliders</div>
     <div class="sl-row"><span class="bg-lbl">Line Thickness</span><span class="sl-val"><span id="p-lwVal">1.0</span>×</span></div>
     <input type="range" id="p-lw" class="sl-range" min="0.3" max="5" value="1" step="0.1">
@@ -238,7 +239,7 @@ input[type="range"]::-webkit-slider-thumb { -webkit-appearance:none; width:13px;
   <div class="bvdiv"></div>
 
   <!-- Elements -->
-  <div class="bgroup" style="width:242px">
+  <div class="bgroup">
     <div class="bgroup-title">Elements</div>
     <div class="tog-grid">
       <div class="tog-row"><label class="toggle"><input type="checkbox" id="p-grid" checked><span class="toggle-slider"></span></label><span class="tog-lbl">Grid</span></div>
@@ -254,7 +255,7 @@ input[type="range"]::-webkit-slider-thumb { -webkit-appearance:none; width:13px;
   <div class="bvdiv"></div>
 
   <!-- Logo -->
-  <div class="bgroup" style="width:188px">
+  <div class="bgroup">
     <div class="bgroup-title">Logo</div>
     <div style="display:flex;gap:8px;align-items:flex-start;margin-bottom:8px">
       <div class="logo-thumb" id="p-logoThumb" style="width:52px;height:26px">
@@ -272,7 +273,7 @@ input[type="range"]::-webkit-slider-thumb { -webkit-appearance:none; width:13px;
   <div class="bvdiv"></div>
 
   <!-- Actions -->
-  <div class="bgroup" style="width:118px;justify-content:flex-end">
+  <div class="bgroup bgroup-actions" style="justify-content:flex-end">
     <div style="display:flex;flex-direction:column;gap:6px">
       <button class="btn-primary" id="p-dl">↓ Download</button>
       <button class="btn-secondary" id="p-fs">⤢ Fullscreen</button>
@@ -285,7 +286,7 @@ input[type="range"]::-webkit-slider-thumb { -webkit-appearance:none; width:13px;
 <div id="sb-dome" class="bp-mode sb-hidden">
 
   <!-- Setup -->
-  <div class="bgroup" style="width:210px">
+  <div class="bgroup">
     <div class="bgroup-title">Setup</div>
     <input type="text" class="bg-inp" id="d-name" placeholder="Pattern name" style="margin-bottom:7px">
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-bottom:6px">
@@ -302,7 +303,7 @@ input[type="range"]::-webkit-slider-thumb { -webkit-appearance:none; width:13px;
   <div class="bvdiv"></div>
 
   <!-- Pattern -->
-  <div class="bgroup" style="width:110px">
+  <div class="bgroup">
     <div class="bgroup-title">Pattern</div>
     <div style="display:flex;flex-direction:column;gap:5px">
       <button class="pat-btn active" data-dpat="standard">Standard</button>
@@ -312,7 +313,7 @@ input[type="range"]::-webkit-slider-thumb { -webkit-appearance:none; width:13px;
   <div class="bvdiv"></div>
 
   <!-- Color -->
-  <div class="bgroup" style="width:135px">
+  <div class="bgroup">
     <div class="bgroup-title">Color</div>
     <div class="bg-row">
       <label class="cp-swatch"><div class="cp-preview" id="d-colorPreview" style="background:#ffffff"></div><input type="color" id="d-color" value="#ffffff"></label>
@@ -322,7 +323,7 @@ input[type="range"]::-webkit-slider-thumb { -webkit-appearance:none; width:13px;
   <div class="bvdiv"></div>
 
   <!-- Sliders -->
-  <div class="bgroup" style="width:185px">
+  <div class="bgroup">
     <div class="bgroup-title">Sliders</div>
     <div class="sl-row"><span class="bg-lbl">Line Thickness</span><span class="sl-val"><span id="d-lwVal">1.0</span>×</span></div>
     <input type="range" id="d-lw" class="sl-range" min="0.3" max="5" value="1" step="0.1">
@@ -334,7 +335,7 @@ input[type="range"]::-webkit-slider-thumb { -webkit-appearance:none; width:13px;
   <div class="bvdiv"></div>
 
   <!-- Elements -->
-  <div class="bgroup" style="width:222px">
+  <div class="bgroup">
     <div class="bgroup-title">Elements</div>
     <div class="tog-grid">
       <div class="tog-row"><label class="toggle"><input type="checkbox" id="d-circles" checked><span class="toggle-slider"></span></label><span class="tog-lbl">Circles</span></div>
