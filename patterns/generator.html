@@ -80,7 +80,9 @@ body {
 .mode-tabs {
   display: flex;
   gap: 2px;
-  margin: 0 auto;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
   background: rgba(240,237,232,0.04);
   border: 1px solid var(--line);
   padding: 3px;
@@ -91,7 +93,7 @@ body {
   text-transform: uppercase;
   padding: 6px 20px;
   background: none; border: none;
-  color: var(--dimmer); cursor: none;
+  color: rgba(240,237,232,0.28); cursor: none;
   transition: color 0.2s, background 0.2s;
   white-space: nowrap;
 }
@@ -1475,7 +1477,7 @@ function applyViewTransform() {
   canvasWrap.style.transform = `translate(${viewPanX}px,${viewPanY}px) scale(${viewZoom})`;
   canvasWrap.style.transformOrigin = 'center center';
   const effectiveZoom = currentScale * viewZoom;
-  canvasZoom.textContent = effectiveZoom >= 0.995 ? '100%' : `${Math.round(effectiveZoom*100)}%`;
+  canvasZoom.textContent = Math.abs(effectiveZoom - 1) < 0.005 ? '100%' : `${Math.round(effectiveZoom*100)}%`;
 }
 
 function resetView() {
@@ -1490,7 +1492,7 @@ function resetView() {
   canvas.style.height = Math.round(cH*currentScale)+'px';
   const canvasWrap = document.getElementById('canvasWrap');
   canvasWrap.style.transform = '';
-  canvasZoom.textContent = currentScale >= 0.995 ? '100%' : `${Math.round(currentScale*100)}%`;
+  canvasZoom.textContent = Math.abs(currentScale - 1) < 0.005 ? '100%' : `${Math.round(currentScale*100)}%`;
 }
 
 function draw() {
