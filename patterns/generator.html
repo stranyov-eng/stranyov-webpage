@@ -669,6 +669,15 @@ input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.3); }
 <!-- ══ PROJECTION ══ -->
 <div id="sb-projection" class="bp-mode">
 
+  <!-- Sub-mode toggle -->
+  <div style="display:flex;flex-direction:column;justify-content:center;gap:3px;padding:10px 8px;flex-shrink:0;border-right:1px solid var(--line)">
+    <button class="pat-btn active" id="proj-sub-screen">Screen</button>
+    <button class="pat-btn" id="proj-sub-canvas">Canvas</button>
+  </div>
+
+  <!-- ── SCREEN panel ── -->
+  <div id="proj-screen-panel" style="display:contents">
+
   <!-- Setup -->
   <div class="bgroup" style="min-width:200px">
     <div class="bgroup-title">Setup</div>
@@ -788,9 +797,48 @@ input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.3); }
   <!-- Actions -->
   <div class="bgroup bgroup-actions">
     <button class="btn-primary" id="p-dl" style="margin-bottom:6px">↓ Download</button>
+    <button class="btn-secondary" id="p-addcanvas" style="margin-bottom:4px">+ Add to Canvas</button>
     <button class="btn-secondary" id="p-fs" style="margin-bottom:4px">⤢ Fullscreen</button>
     <button class="btn-secondary" id="p-reset">↺ Defaults</button>
   </div>
+
+  </div><!-- /proj-screen-panel -->
+
+  <!-- ── CANVAS panel ── -->
+  <div id="proj-canvas-panel" style="display:none;flex-direction:row;flex:1">
+
+    <!-- Canvas size -->
+    <div class="bgroup" style="min-width:170px">
+      <div class="bgroup-title">Canvas</div>
+      <input type="text" class="bg-inp bg-wide" id="pc-name" placeholder="Canvas name" style="margin-bottom:7px">
+      <div class="bg-row">
+        <span class="bg-lbl" style="width:14px">W</span>
+        <input type="number" class="bg-inp bg-med" id="pc-w" value="5760" min="1" max="65536">
+      </div>
+      <div class="bg-row">
+        <span class="bg-lbl" style="width:14px">H</span>
+        <input type="number" class="bg-inp bg-med" id="pc-h" value="1080" min="1" max="65536">
+      </div>
+      <div class="f-divider" style="margin-top:7px"></div>
+      <div class="bg-row" style="margin-top:5px"><span class="bg-lbl" style="width:60px">Screens</span><span class="f-val" id="pc-count">0</span></div>
+    </div>
+
+    <!-- Projector list -->
+    <div class="bgroup" style="flex:1;min-width:300px">
+      <div class="bgroup-title">Screens</div>
+      <div id="pc-list" style="display:flex;flex-direction:column;gap:4px;overflow-y:auto;max-height:170px">
+        <div id="pc-empty" style="font-family:'DM Mono',monospace;font-size:9px;color:rgba(240,237,232,0.2);padding:8px 0">No screens added — use Screen → + Add to Canvas</div>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="bgroup bgroup-actions">
+      <button class="btn-primary" id="pc-dl" style="margin-bottom:6px">↓ Download</button>
+      <button class="btn-secondary" id="pc-fs" style="margin-bottom:4px">⤢ Fullscreen</button>
+      <button class="btn-secondary" id="pc-clear">✕ Clear All</button>
+    </div>
+
+  </div><!-- /proj-canvas-panel -->
 
 </div><!-- /projection -->
 
@@ -902,6 +950,7 @@ let totWCustom = null, totHCustom = null;
 let lLogoCustom = null, lLogoPos = 'br', lCellIdFmt = 'alpha';
 let ledSubMode = 'screen', canvasScreens = [], ledCanvasNextId = 1;
 let ledMask = new Set(), maskMode = false, maskPainting = false, maskErase = false;
+let projSubMode = 'screen', projCanvasScreens = [], projCanvasNextId = 1;
 
 const defaultLogoImg = new Image();
 defaultLogoImg.onload = () => draw();
@@ -997,63 +1046,71 @@ function projCalc() {
 }
 
 // ── PROJECTION DRAW ──
-function drawProjection() {
+function projSnapshot() {
   const {projW,projH,cols2,rows2,bHpx,bVpx,totW,totH} = projCalc();
-  canvas.width = Math.max(totW,1); canvas.height = Math.max(totH,1);
+  return {
+    projW, projH, cols2, rows2, bHpx, bVpx, totW, totH,
+    name: v('p-name').value.trim(),
+    color: v('p-color').value,
+    textColor: v('p-textColor').value,
+    borderColor: v('p-borderColor').value,
+    circleColor: v('p-circleColor').value,
+    lwMult: num('p-lw',1), tsMult: num('p-ts',1),
+    gridCols: Math.max(2, Math.round(num('p-gridCols',12))),
+    showGrid: v('p-grid').checked, showCircles: v('p-circles').checked,
+    showCoords: v('p-coords').checked, showRowLabels: v('p-rowlabels').checked,
+    showCellIds: v('p-cellids').checked, showProjIds: v('p-projids').checked,
+    showInfo: v('p-info').checked, showOverlay: v('p-overlay').checked,
+    showSafe: v('p-safearea').checked, showSmpte: v('p-smpte').checked,
+    logoImg: pLogoCustom, logoScale: num('p-logoScale',100)/100, logoPos: pLogoPos
+  };
+}
 
-  const color = v('p-color').value;
-  const lwMult = num('p-lw',1), tsMult = num('p-ts',1);
-  const showGrid     = v('p-grid').checked;
-  const showCircles  = v('p-circles').checked;
-  const showCoords   = v('p-coords').checked;
-  const showRowLabels= v('p-rowlabels').checked;
-  const showCellIds  = v('p-cellids').checked;
-  const showProjIds  = v('p-projids').checked;
-  const showInfo     = v('p-info').checked;
-  const showOverlay  = v('p-overlay').checked;
-  const showSafe     = v('p-safearea').checked;
-  const showSmpte    = v('p-smpte').checked;
-  const name         = v('p-name').value.trim();
+function drawProjectionToCtx(ctx2, sc) {
+  const {projW,projH,cols2,rows2,bHpx,bVpx,totW,totH,
+    name,color,textColor,borderColor,circleColor,
+    lwMult,tsMult,gridCols,
+    showGrid,showCircles,showCoords,showRowLabels,showCellIds,showProjIds,
+    showInfo,showOverlay,showSafe,showSmpte,logoImg,logoScale,logoPos} = sc;
 
-  const [cr,cg,cb]   = hexToRgb(color);
-  const [tcr,tcg,tcb] = hexToRgb(v('p-textColor').value);
-  const [bcr,bcg,bcb] = hexToRgb(v('p-borderColor').value);
-  const [ccr,ccg,ccb] = hexToRgb(v('p-circleColor').value);
+  const [cr,cg,cb]    = hexToRgb(color);
+  const [tcr,tcg,tcb] = hexToRgb(textColor);
+  const [bcr,bcg,bcb] = hexToRgb(borderColor);
+  const [ccr,ccg,ccb] = hexToRgb(circleColor);
   const noW = projW - bHpx, noH = projH - bVpx;
   const baseLw = Math.max(1, totW/1200)*lwMult;
-  const gridCols = Math.max(2, Math.round(num('p-gridCols',12)));
   const gridRows = Math.max(1, Math.round(gridCols*totH/totW));
   const cellW = totW/gridCols, cellH = totH/gridRows;
 
-  ctx.fillStyle = '#000'; ctx.fillRect(0,0,totW,totH);
+  ctx2.fillStyle = '#000'; ctx2.fillRect(0,0,totW,totH);
 
 
   if (showGrid) {
     for (let c=0;c<=gridCols;c++) {
       const x = c*cellW, isC = (c===gridCols/2);
-      ctx.strokeStyle = `rgba(${cr},${cg},${cb},${isC?1:0.65})`;
-      ctx.lineWidth = isC ? baseLw*2.5 : baseLw;
-      ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,totH); ctx.stroke();
+      ctx2.strokeStyle = `rgba(${cr},${cg},${cb},${isC?1:0.65})`;
+      ctx2.lineWidth = isC ? baseLw*2.5 : baseLw;
+      ctx2.beginPath(); ctx2.moveTo(x,0); ctx2.lineTo(x,totH); ctx2.stroke();
     }
     for (let r=0;r<=gridRows;r++) {
       const y = r*cellH, isC = (r===gridRows/2);
-      ctx.strokeStyle = `rgba(${cr},${cg},${cb},${isC?1:0.65})`;
-      ctx.lineWidth = isC ? baseLw*2.5 : baseLw;
-      ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(totW,y); ctx.stroke();
+      ctx2.strokeStyle = `rgba(${cr},${cg},${cb},${isC?1:0.65})`;
+      ctx2.lineWidth = isC ? baseLw*2.5 : baseLw;
+      ctx2.beginPath(); ctx2.moveTo(0,y); ctx2.lineTo(totW,y); ctx2.stroke();
     }
   }
 
   if (showCoords) {
     const halfCols = gridCols/2;
     const fs = Math.max(8, cellW*0.28)*tsMult;
-    ctx.font=`${fs}px DM Mono,monospace`;
-    ctx.fillStyle=`rgba(${tcr},${tcg},${tcb},0.8)`;
+    ctx2.font=`${fs}px DM Mono,monospace`;
+    ctx2.fillStyle=`rgba(${tcr},${tcg},${tcb},0.8)`;
     for (let c=0;c<=gridCols;c++) {
       if(c===0||c===gridCols) continue;
       const coord = Math.round(c-halfCols); if(coord===0) continue;
       const x = c*cellW; const label = coord>0?`+${coord}`:`${coord}`;
-      ctx.textAlign='center'; ctx.textBaseline='top'; ctx.fillText(label,x,3);
-      ctx.textBaseline='bottom'; ctx.fillText(label,x,totH-3);
+      ctx2.textAlign='center'; ctx2.textBaseline='top'; ctx2.fillText(label,x,3);
+      ctx2.textBaseline='bottom'; ctx2.fillText(label,x,totH-3);
     }
   }
 
@@ -1061,87 +1118,86 @@ function drawProjection() {
     const upper='ABCDEFGHIJKLMNOP', lower='abcdefghijklmnop';
     const halfRows = gridRows/2;
     const fs = Math.max(8,cellH*0.32)*tsMult;
-    ctx.font=`${fs}px DM Mono,monospace`; ctx.fillStyle=`rgba(${tcr},${tcg},${tcb},0.8)`;
+    ctx2.font=`${fs}px DM Mono,monospace`; ctx2.fillStyle=`rgba(${tcr},${tcg},${tcb},0.8)`;
     for (let r=0;r<=gridRows;r++) {
       if(r===0||r===gridRows) continue;
       const fromCenter = r-halfRows; if(fromCenter===0) continue;
       let label = fromCenter<0 ? upper[Math.round(-fromCenter)-1] : lower[Math.round(fromCenter)-1];
       if(!label) continue;
       const y = r*cellH;
-      ctx.textAlign='left'; ctx.textBaseline='middle'; ctx.fillText(label,4,y);
-      ctx.textAlign='right'; ctx.fillText(label,totW-4,y);
+      ctx2.textAlign='left'; ctx2.textBaseline='middle'; ctx2.fillText(label,4,y);
+      ctx2.textAlign='right'; ctx2.fillText(label,totW-4,y);
     }
   }
 
   if (showCellIds) {
     const colLetters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     const fs = Math.max(7, Math.min(cellW,cellH)*0.18)*tsMult;
-    ctx.font=`${fs}px DM Mono,monospace`;
-    ctx.fillStyle=`rgba(${tcr},${tcg},${tcb},0.45)`;
-    ctx.textAlign='left'; ctx.textBaseline='top';
+    ctx2.font=`${fs}px DM Mono,monospace`;
+    ctx2.fillStyle=`rgba(${tcr},${tcg},${tcb},0.45)`;
+    ctx2.textAlign='left'; ctx2.textBaseline='top';
     for (let r=0;r<gridRows;r++)
       for (let c=0;c<gridCols;c++)
-        ctx.fillText((colLetters[r]||'?')+(c+1), c*cellW+4, r*cellH+4);
+        ctx2.fillText((colLetters[r]||'?')+(c+1), c*cellW+4, r*cellH+4);
   }
 
   if (showCircles) {
-    ctx.strokeStyle=`rgba(${ccr},${ccg},${ccb},0.7)`;
-    ctx.lineWidth=baseLw*1.5;
-    const cellH = totH / rows2;
+    ctx2.strokeStyle=`rgba(${ccr},${ccg},${ccb},0.7)`;
+    ctx2.lineWidth=baseLw*1.5;
+    const rowCellH = totH / rows2;
     for (let r=0;r<rows2;r++) for (let c=0;c<cols2;c++) {
-      const cx2=c*noW+projW/2, cy2=r*cellH+cellH/2;
-      const R=Math.min(projW,cellH)/2*0.998;
-      ctx.beginPath(); ctx.arc(cx2,cy2,R,0,Math.PI*2); ctx.stroke();
+      const pcx=c*noW+projW/2, pcy=r*rowCellH+rowCellH/2;
+      const R=Math.min(projW,rowCellH)/2*0.998;
+      ctx2.beginPath(); ctx2.arc(pcx,pcy,R,0,Math.PI*2); ctx2.stroke();
     }
   }
 
   if (showProjIds) {
     const fs = Math.min(projW,projH)*0.12*tsMult;
-    ctx.font=`bold ${fs}px Bebas Neue,sans-serif`;
-    ctx.textAlign='center'; ctx.textBaseline='middle';
-    ctx.fillStyle=`rgba(${tcr},${tcg},${tcb},0.08)`;
+    ctx2.font=`bold ${fs}px Bebas Neue,sans-serif`;
+    ctx2.textAlign='center'; ctx2.textBaseline='middle';
+    ctx2.fillStyle=`rgba(${tcr},${tcg},${tcb},0.08)`;
     for (let r=0;r<rows2;r++) for (let c=0;c<cols2;c++)
-      ctx.fillText(`P${r*cols2+c+1}`, c*noW+projW/2, r*noH+projH*0.5);
+      ctx2.fillText(`P${r*cols2+c+1}`, c*noW+projW/2, r*noH+projH*0.5);
   }
 
   if (showInfo || name) {
-    const cx2=totW/2, cy2=totH/2;
+    const icx=totW/2, icy=totH/2;
     if (name) {
       const fs=Math.min(totW*0.052,totH*0.088)*tsMult;
-      ctx.font=`bold ${fs}px Bebas Neue,sans-serif`;
-      ctx.textAlign='center'; ctx.textBaseline='middle';
-      ctx.fillStyle=`rgba(${tcr},${tcg},${tcb},0.9)`;
-      ctx.fillText(name,cx2,cy2-(showInfo?fs*1.1:0));
+      ctx2.font=`bold ${fs}px Bebas Neue,sans-serif`;
+      ctx2.textAlign='center'; ctx2.textBaseline='middle';
+      ctx2.fillStyle=`rgba(${tcr},${tcg},${tcb},0.9)`;
+      ctx2.fillText(name,icx,icy-(showInfo?fs*1.1:0));
     }
     if (showInfo) {
       const fs=Math.max(10,Math.min(totW*0.022,totH*0.038))*tsMult;
-      ctx.font=`${fs}px DM Mono,monospace`;
-      ctx.textAlign='center'; ctx.fillStyle=`rgba(${tcr},${tcg},${tcb},0.45)`;
+      ctx2.font=`${fs}px DM Mono,monospace`;
+      ctx2.textAlign='center'; ctx2.fillStyle=`rgba(${tcr},${tcg},${tcb},0.45)`;
       const yo=name?fs*1.5:0;
-      ctx.fillText(`${totW}px × ${totH}px`,cx2,cy2+yo);
-      ctx.fillText(`${(totW/totH).toFixed(2)}:1`,cx2,cy2+yo+fs*1.6);
-      ctx.fillText(`${gridCols}×${gridRows} grid`,cx2,cy2+yo+fs*3.2);
+      ctx2.fillText(`${totW}px × ${totH}px`,icx,icy+yo);
+      ctx2.fillText(`${(totW/totH).toFixed(2)}:1`,icx,icy+yo+fs*1.6);
+      ctx2.fillText(`${gridCols}×${gridRows} grid`,icx,icy+yo+fs*3.2);
     }
   }
 
   if (showOverlay) {
-    ctx.strokeStyle=`rgba(${bcr},${bcg},${bcb},0.3)`;
-    ctx.lineWidth=Math.max(1,totW/600)*lwMult;
+    ctx2.strokeStyle=`rgba(${bcr},${bcg},${bcb},0.3)`;
+    ctx2.lineWidth=Math.max(1,totW/600)*lwMult;
     for (let r=0;r<rows2;r++) for (let c=0;c<cols2;c++)
-      ctx.strokeRect(c*noW+0.5,r*noH+0.5,projW-1,projH-1);
+      ctx2.strokeRect(c*noW+0.5,r*noH+0.5,projW-1,projH-1);
     if (bHpx>0)
       for (let c=0;c<cols2-1;c++) for (let r=0;r<rows2;r++) {
-        ctx.fillStyle='rgba(0,180,255,0.12)'; ctx.fillRect((c+1)*noW,r*noH,bHpx,projH);
+        ctx2.fillStyle='rgba(0,180,255,0.12)'; ctx2.fillRect((c+1)*noW,r*noH,bHpx,projH);
       }
     if (bVpx>0)
       for (let r=0;r<rows2-1;r++) for (let c=0;c<cols2;c++) {
-        ctx.fillStyle='rgba(255,100,0,0.12)'; ctx.fillRect(c*noW,(r+1)*noH,projW,bVpx);
+        ctx2.fillStyle='rgba(255,100,0,0.12)'; ctx2.fillRect(c*noW,(r+1)*noH,projW,bVpx);
       }
   }
 
-  if (showSafe) drawSafeAreas(ctx, totW, totH);
+  if (showSafe) drawSafeAreas(ctx2, totW, totH);
 
-  // color bars — centered below info text
   if (showSmpte) {
     const infoFs = Math.max(10, Math.min(totW*0.022, totH*0.038)) * tsMult;
     const nameFs = Math.min(totW*0.052, totH*0.088) * tsMult;
@@ -1149,16 +1205,24 @@ function drawProjection() {
     if (name && showInfo) baseY += infoFs * 4.5;
     else if (name) baseY += nameFs * 0.6;
     else if (showInfo) baseY += infoFs * 4.5;
-    drawSMPTEBars(ctx, totW, totH, baseY);
+    drawSMPTEBars(ctx2, totW, totH, baseY);
   }
 
-  // border
-  ctx.strokeStyle=`rgba(${bcr},${bcg},${bcb},0.6)`;
-  ctx.lineWidth=Math.max(2,totW/480)*lwMult;
-  ctx.strokeRect(1,1,totW-2,totH-2);
+  ctx2.strokeStyle=`rgba(${bcr},${bcg},${bcb},0.6)`;
+  ctx2.lineWidth=Math.max(2,totW/480)*lwMult;
+  ctx2.strokeRect(1,1,totW-2,totH-2);
 
-  drawLogo(ctx,totW,totH,pLogoCustom,num('p-logoScale',100)/100,pLogoPos);
+  drawLogo(ctx2,totW,totH,logoImg,logoScale,logoPos);
+}
 
+function drawProjection() {
+  const sc = projSnapshot();
+  canvas.width = Math.max(sc.totW,1); canvas.height = Math.max(sc.totH,1);
+  drawProjectionToCtx(ctx, sc);
+  const {bHpx,bVpx,totW,totH,cols2,rows2} = sc;
+  v('p-bHpx').textContent=`${bHpx} px`; v('p-bVpx').textContent=`${bVpx} px`;
+  if(document.activeElement!==v('p-totWIn')) v('p-totWIn').value=totW;
+  if(document.activeElement!==v('p-totHIn')) v('p-totHIn').value=totH;
   resDisplay.innerHTML=`<b>${totW} × ${totH}</b> px`;
   canvasInfo.textContent=`${totW}×${totH}px · ${cols2}×${rows2} projectors · blend ${bHpx}×${bVpx}px`;
   fitCanvas();
@@ -1365,6 +1429,67 @@ function ledSubSwitch(m) {
   draw();
 }
 
+// ── PROJECTION CANVAS ──
+function drawProjCanvas() {
+  const cW = Math.max(1, parseInt(v('pc-w').value)||1920);
+  const cH = Math.max(1, parseInt(v('pc-h').value)||1080);
+  canvas.width = cW; canvas.height = cH;
+  ctx.fillStyle = '#000'; ctx.fillRect(0,0,cW,cH);
+  for (const sc of projCanvasScreens) {
+    const off = document.createElement('canvas');
+    off.width = sc.totW; off.height = sc.totH;
+    drawProjectionToCtx(off.getContext('2d'), sc);
+    ctx.drawImage(off, sc.x, sc.y);
+  }
+  v('pc-count').textContent = projCanvasScreens.length;
+  resDisplay.innerHTML = `<b>${cW} × ${cH}</b> px`;
+  canvasInfo.textContent = `Canvas ${cW}×${cH}px · ${projCanvasScreens.length} screen${projCanvasScreens.length!==1?'s':''}`;
+  fitCanvas();
+}
+
+function renderProjList() {
+  const list = v('pc-list');
+  list.querySelectorAll('.pc-item').forEach(el=>el.remove());
+  v('pc-empty').style.display = projCanvasScreens.length ? 'none' : '';
+  projCanvasScreens.forEach(sc => {
+    const item = document.createElement('div');
+    item.className = 'pc-item';
+    item.style.cssText = 'display:flex;align-items:center;gap:5px;padding:3px 0;border-bottom:1px solid rgba(240,237,232,0.05)';
+    item.innerHTML = `
+      <span style="font-family:'DM Mono',monospace;font-size:9px;color:rgba(240,237,232,0.4);flex:0 0 70px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${sc.name||'PROJ'}</span>
+      <span style="font-family:'DM Mono',monospace;font-size:8px;color:rgba(240,237,232,0.22);white-space:nowrap">${sc.totW}×${sc.totH}</span>
+      <span class="bg-lbl">X</span>
+      <input type="number" class="bg-inp" style="width:54px" value="${sc.x}" data-pcid="${sc.id}" data-field="x">
+      <span class="bg-lbl">Y</span>
+      <input type="number" class="bg-inp" style="width:54px" value="${sc.y}" data-pcid="${sc.id}" data-field="y">
+      <button style="background:none;border:1px solid rgba(240,237,232,0.1);color:rgba(240,237,232,0.3);font-size:10px;padding:2px 7px;cursor:none;transition:color 0.15s,border-color 0.15s;flex-shrink:0" data-pcid="${sc.id}" class="pc-del">✕</button>
+    `;
+    list.appendChild(item);
+  });
+  list.querySelectorAll('input[data-pcid]').forEach(inp => {
+    inp.addEventListener('input', () => {
+      const sc = projCanvasScreens.find(s=>s.id===parseInt(inp.dataset.pcid));
+      if (sc) { sc[inp.dataset.field] = parseInt(inp.value)||0; drawProjCanvas(); }
+    });
+  });
+  list.querySelectorAll('.pc-del').forEach(btn => {
+    btn.addEventListener('click', () => {
+      projCanvasScreens = projCanvasScreens.filter(s=>s.id!==parseInt(btn.dataset.pcid));
+      renderProjList(); drawProjCanvas();
+    });
+  });
+  v('pc-count').textContent = projCanvasScreens.length;
+}
+
+function projSubSwitch(m) {
+  projSubMode = m;
+  v('proj-sub-screen').classList.toggle('active', m==='screen');
+  v('proj-sub-canvas').classList.toggle('active', m==='canvas');
+  v('proj-screen-panel').style.display = m==='screen' ? 'contents' : 'none';
+  v('proj-canvas-panel').style.display = m==='canvas' ? 'flex' : 'none';
+  draw();
+}
+
 // ── DOME DRAW ──
 function drawDome() {
   const size=num('d-size',2048);
@@ -1499,7 +1624,7 @@ function resetView() {
 
 function draw() {
   if(mode==='led') { if(ledSubMode==='canvas') drawLedCanvas(); else drawLed(); }
-  else if(mode==='projection') drawProjection();
+  else if(mode==='projection') { if(projSubMode==='canvas') drawProjCanvas(); else drawProjection(); }
   else drawDome();
 }
 
@@ -1715,6 +1840,21 @@ document.querySelectorAll('#sb-projection .logo-pos-btn').forEach(btn => {
   });
 });
 
+v('proj-sub-screen').addEventListener('click', ()=>projSubSwitch('screen'));
+v('proj-sub-canvas').addEventListener('click', ()=>projSubSwitch('canvas'));
+v('p-addcanvas').addEventListener('click', () => {
+  const sc = projSnapshot();
+  sc.id = projCanvasNextId++;
+  sc.x = 0; sc.y = 0;
+  projCanvasScreens.push(sc);
+  renderProjList();
+  notify(`Added "${sc.name||'PROJ '+sc.id}" to canvas`);
+});
+['pc-w','pc-h','pc-name'].forEach(id=>v(id).addEventListener('input',()=>{ if(projSubMode==='canvas') drawProjCanvas(); }));
+v('pc-dl').addEventListener('click', ()=>{ const n=(v('pc-name').value.trim()||'Proj_Canvas').replace(/\s+/g,'_'); dlCanvas(`${n}_${canvas.width}x${canvas.height}.png`); });
+v('pc-fs').addEventListener('click', ()=>{ if(!document.fullscreenElement) canvasArea.requestFullscreen(); else document.exitFullscreen(); });
+v('pc-clear').addEventListener('click', ()=>{ projCanvasScreens=[]; renderProjList(); drawProjCanvas(); notify('Canvas cleared'); });
+
 // ── LED EVENTS ──
 v('led-sub-screen').addEventListener('click', ()=>ledSubSwitch('screen'));
 v('led-sub-canvas').addEventListener('click', ()=>ledSubSwitch('canvas'));
@@ -1854,6 +1994,45 @@ v('d-reset').addEventListener('click', () => {
 });
 
 
+
+// ── MATH INPUT ──
+function mathEval(expr) {
+  const clean = String(expr).replace(/[^0-9+\-*/.() ]/g, '').trim();
+  if (!clean) return null;
+  try {
+    const result = Function('"use strict"; return (' + clean + ')')();
+    return isFinite(result) ? Math.round(result * 1000) / 1000 : null;
+  } catch(e) { return null; }
+}
+function applyMath(inp) {
+  const result = mathEval(inp.value);
+  if (result !== null) {
+    inp.type = 'number';
+    inp.value = result;
+    inp.dispatchEvent(new Event('input', { bubbles: true }));
+    inp.dispatchEvent(new Event('change', { bubbles: true }));
+  } else {
+    inp.type = 'number';
+  }
+}
+document.querySelectorAll('input[type="number"]').forEach(inp => {
+  inp.addEventListener('keydown', e => {
+    const isOp = ['+', '*', '/', '(', ')'].includes(e.key) ||
+                 (e.key === '-' && inp.value.trim() !== '');
+    if (isOp && inp.type === 'number') {
+      inp.type = 'text';
+      const len = inp.value.length;
+      inp.setSelectionRange(len, len);
+    }
+    if (e.key === 'Enter' && inp.type === 'text') {
+      e.preventDefault();
+      applyMath(inp);
+    }
+  });
+  inp.addEventListener('blur', () => {
+    if (inp.type === 'text') applyMath(inp);
+  });
+});
 
 // ── RESIZE ──
 window.addEventListener('resize', fitCanvas);
