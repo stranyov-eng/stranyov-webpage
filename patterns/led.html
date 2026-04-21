@@ -129,6 +129,7 @@ body {
 .canvas-wrap {
   position: relative;
   box-shadow: 0 0 0 1px rgba(240,237,232,0.1), 0 8px 48px rgba(0,0,0,0.8);
+  will-change: transform;
 }
 canvas { display:block; image-rendering:pixelated; }
 .canvas-meta {
@@ -397,6 +398,12 @@ input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.3); }
 /* LED hidden stubs */
 .screen-item,.screen-item-head,.screen-fields,.sf { display:none; }
 
+/* LED color presets */
+.l-cpre { display:flex; width:100%; height:18px; border:1px solid rgba(240,237,232,0.1); cursor:none; transition:border-color 0.15s; padding:0; overflow:hidden; background:none; }
+.l-cpre span { flex:1; display:block; }
+.l-cpre:hover { border-color:rgba(240,237,232,0.4); }
+.l-cpre.active { border-color:var(--white); outline:1px solid var(--white); }
+
 /* ── NOTIFICATION ── */
 .notif {
   position: fixed;
@@ -451,7 +458,7 @@ input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.3); }
     <div class="topbar-badge">Beta</div>
   </div>
   <div class="mode-tabs">
-    <button class="mode-tab disabled" data-mode="led">LED</button>
+    <button class="mode-tab" data-mode="led">LED</button>
     <button class="mode-tab active" data-mode="projection">Projection</button>
     <button class="mode-tab" data-mode="dome">Dome</button>
   </div>
@@ -475,30 +482,187 @@ input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.3); }
 <!-- ══ BOTTOM PANEL ══ -->
 <div class="bottom-panel" id="bottomPanel">
 
-<!-- LED stubs (hidden, JS compat) -->
+<!-- ══ LED ══ -->
 <div id="sb-led" class="bp-mode sb-hidden">
-  <div style="display:none">
-    <input id="s-modW" type="number" value="96">
-    <input id="s-modH" type="number" value="96">
-    <input id="s-cols" type="number" value="6">
-    <input id="s-rows" type="number" value="4">
-    <input id="s-pitch" type="number" value="3.9">
-    <input id="s-br" type="range" min="0" max="100" value="100">
-    <span id="s-brVal">100</span>
-    <div id="pat-screen"></div>
-    <button id="s-dl"></button>
-    <button id="s-fs"></button>
-    <div id="sub-screen"></div>
-    <div id="sub-canvas"></div>
-    <div id="screenList"></div>
-    <button id="addScreen"></button>
-    <input id="c-br" type="range" min="0" max="100" value="100">
-    <span id="c-brVal">100</span>
-    <div id="pat-canvas"></div>
-    <button id="c-dl"></button>
-    <button id="c-fs"></button>
+
+  <!-- Sub-mode toggle -->
+  <div style="display:flex;flex-direction:column;justify-content:center;gap:3px;padding:10px 8px;flex-shrink:0;border-right:1px solid var(--line)">
+    <button class="pat-btn active" id="led-sub-screen">Screen</button>
+    <button class="pat-btn" id="led-sub-canvas">Canvas</button>
   </div>
-</div>
+
+  <!-- ── SCREEN panel ── -->
+  <div id="led-screen-panel" style="display:contents">
+
+    <!-- Setup -->
+    <div class="bgroup" style="min-width:190px">
+      <div class="bgroup-title">Setup</div>
+      <input type="text" class="bg-inp bg-wide" id="l-name" placeholder="Pattern name" style="margin-bottom:7px">
+      <div class="bg-row">
+        <span class="bg-lbl" style="width:52px">Cell px</span>
+        <input type="number" class="bg-inp" id="l-cellW" value="96" min="4" max="512">
+        <input type="number" class="bg-inp" id="l-cellH" value="96" min="4" max="512">
+      </div>
+      <div class="bg-row">
+        <span class="bg-lbl" style="width:52px">Cols×Rows</span>
+        <input type="number" class="bg-inp" id="l-cols" value="6" min="0.5" max="256" step="0.5">
+        <input type="number" class="bg-inp" id="l-rows" value="4" min="0.5" max="256" step="0.5">
+      </div>
+    </div>
+
+    <!-- Output -->
+    <div class="bgroup">
+      <div class="bgroup-title">Output</div>
+      <div class="bg-row"><span class="bg-lbl" style="width:50px">Total W</span><span class="f-val" id="l-totW">—</span></div>
+      <div class="bg-row"><span class="bg-lbl" style="width:50px">Total H</span><span class="f-val" id="l-totH">—</span></div>
+      <div class="f-divider"></div>
+      <div class="bg-row"><span class="bg-lbl" style="width:50px">Cells</span><span class="f-val" id="l-cells">—</span></div>
+    </div>
+
+    <!-- Colors -->
+    <div class="bgroup">
+      <div class="bgroup-title">Colors</div>
+      <div class="bg-row">
+        <span class="bg-lbl" style="width:40px">Cell A</span>
+        <label class="cp-swatch"><div class="cp-preview" id="l-c1Preview" style="background:#1a1a1a"></div><input type="color" id="l-color1" value="#1a1a1a"></label>
+        <input class="cp-hex" id="l-color1Hex" value="#1a1a1a" maxlength="7">
+      </div>
+      <div class="bg-row">
+        <span class="bg-lbl" style="width:40px">Cell B</span>
+        <label class="cp-swatch"><div class="cp-preview" id="l-c2Preview" style="background:#2e2e2e"></div><input type="color" id="l-color2" value="#2e2e2e"></label>
+        <input class="cp-hex" id="l-color2Hex" value="#2e2e2e" maxlength="7">
+      </div>
+      <div class="bg-row">
+        <span class="bg-lbl" style="width:40px">Grid</span>
+        <label class="cp-swatch"><div class="cp-preview" id="l-gcPreview" style="background:#ff3333"></div><input type="color" id="l-gridColor" value="#ff3333"></label>
+        <input class="cp-hex" id="l-gridColorHex" value="#ff3333" maxlength="7">
+      </div>
+      <div class="bg-row">
+        <span class="bg-lbl" style="width:40px">Text</span>
+        <label class="cp-swatch"><div class="cp-preview" id="l-tcPreview" style="background:#ffffff"></div><input type="color" id="l-textColor" value="#ffffff"></label>
+        <input class="cp-hex" id="l-textColorHex" value="#ffffff" maxlength="7">
+      </div>
+      <div class="bg-lbl" style="margin-top:7px;margin-bottom:4px">Presets</div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:3px">
+        <button class="l-cpre" data-c1="#ff2020" data-c2="#3c3c3c" title="Red &amp; Gray"><span style="background:#ff2020"></span><span style="background:#3c3c3c"></span></button>
+        <button class="l-cpre" data-c1="#ff00dd" data-c2="#3c3c3c" title="Magenta &amp; Gray"><span style="background:#ff00dd"></span><span style="background:#3c3c3c"></span></button>
+        <button class="l-cpre" data-c1="#00ff44" data-c2="#3c3c3c" title="Green &amp; Gray"><span style="background:#00ff44"></span><span style="background:#3c3c3c"></span></button>
+        <button class="l-cpre" data-c1="#00ffff" data-c2="#3c3c3c" title="Cyan &amp; Gray"><span style="background:#00ffff"></span><span style="background:#3c3c3c"></span></button>
+        <button class="l-cpre" data-c1="#0055ff" data-c2="#3c3c3c" title="Blue &amp; Gray"><span style="background:#0055ff"></span><span style="background:#3c3c3c"></span></button>
+        <button class="l-cpre" data-c1="#ffff00" data-c2="#3c3c3c" title="Yellow &amp; Gray"><span style="background:#ffff00"></span><span style="background:#3c3c3c"></span></button>
+        <button class="l-cpre" data-c1="#ff8800" data-c2="#3c3c3c" title="Orange &amp; Gray"><span style="background:#ff8800"></span><span style="background:#3c3c3c"></span></button>
+        <button class="l-cpre" data-c1="#c8c8c8" data-c2="#323232" title="Monochrome"><span style="background:#c8c8c8"></span><span style="background:#323232"></span></button>
+      </div>
+    </div>
+
+    <!-- Adjust -->
+    <div class="bgroup">
+      <div class="bgroup-title">Adjust</div>
+      <div class="sl-row"><span class="bg-lbl">Line thickness</span><span class="sl-val"><span id="l-lwVal">1</span>px</span></div>
+      <input type="range" id="l-lw" class="sl-range" min="1" max="5" value="1" step="1">
+      <div class="sl-row"><span class="bg-lbl">Text size</span><span class="sl-val"><span id="l-tsVal">1.0</span>×</span></div>
+      <input type="range" id="l-ts" class="sl-range" min="0.3" max="3" value="1" step="0.1">
+    </div>
+
+    <!-- Elements -->
+    <div class="bgroup" style="min-width:175px">
+      <div class="bgroup-title">Elements</div>
+      <div class="tog-grid">
+        <div class="tog-row"><label class="toggle"><input type="checkbox" id="l-grid" checked><span class="toggle-slider"></span></label><span class="tog-lbl">Grid</span></div>
+        <div class="tog-row"><label class="toggle"><input type="checkbox" id="l-cellids" checked><span class="toggle-slider"></span></label><span class="tog-lbl">Cell IDs</span></div>
+        <div class="tog-row"><label class="toggle"><input type="checkbox" id="l-circle" checked><span class="toggle-slider"></span></label><span class="tog-lbl">Circle</span></div>
+        <div class="tog-row"><label class="toggle"><input type="checkbox" id="l-info" checked><span class="toggle-slider"></span></label><span class="tog-lbl">Info Text</span></div>
+        <div class="tog-row"><label class="toggle"><input type="checkbox" id="l-border" checked><span class="toggle-slider"></span></label><span class="tog-lbl">Border</span></div>
+      </div>
+      <div class="bg-lbl" style="margin-top:8px;margin-bottom:4px">ID Format</div>
+      <div style="display:flex;gap:3px">
+        <button class="preset-btn active" id="l-fmt-alpha" style="flex:1;font-size:10px;padding:5px 4px">A1</button>
+        <button class="preset-btn" id="l-fmt-num" style="flex:1;font-size:10px;padding:5px 4px">1-1</button>
+      </div>
+    </div>
+
+    <!-- Mask -->
+    <div class="bgroup" style="min-width:140px">
+      <div class="bgroup-title">Mask</div>
+      <div style="display:flex;gap:3px;margin-bottom:6px">
+        <button class="preset-btn" id="l-mask-paint" style="flex:1;font-size:10px;padding:5px 4px">✏ Paint</button>
+        <button class="preset-btn" id="l-mask-clear" style="flex:1;font-size:10px;padding:5px 4px">✕ Clear</button>
+      </div>
+      <div style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:0.08em;color:rgba(240,237,232,0.3);line-height:1.7;margin-bottom:6px">LEFT CLICK — PAINT<br>RIGHT CLICK — ERASE</div>
+      <div class="bg-row"><span class="bg-lbl" style="width:50px">Masked</span><span class="f-val" id="l-mask-count">0</span></div>
+    </div>
+
+    <!-- Logo -->
+    <div class="bgroup">
+      <div class="bgroup-title">Logo</div>
+      <div style="display:flex;gap:8px;align-items:flex-start;margin-bottom:8px">
+        <div class="logo-thumb" id="l-logoThumb" style="width:52px;height:26px">
+          <img src="../images/str_white.png" style="width:100%;height:100%;object-fit:contain;">
+        </div>
+        <div style="display:flex;flex-direction:column;gap:4px;flex:1">
+          <button class="btn-secondary" id="l-logoUpload">↑ Upload</button>
+          <button class="btn-secondary" id="l-logoReset">↺ Reset</button>
+        </div>
+      </div>
+      <div class="sl-row"><span class="bg-lbl">Scale</span><span class="sl-val"><span id="l-logoScaleVal">100</span>%</span></div>
+      <input type="range" id="l-logoScale" class="sl-range" min="20" max="300" value="100" step="5">
+      <div class="bg-lbl" style="margin-top:6px;margin-bottom:5px">Position</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:3px;width:80px">
+        <button class="logo-pos-btn" data-pos="tl" title="Top Left">↖</button>
+        <button class="logo-pos-btn" data-pos="tr" title="Top Right">↗</button>
+        <button class="logo-pos-btn" data-pos="bl" title="Bottom Left">↙</button>
+        <button class="logo-pos-btn active" data-pos="br" title="Bottom Right">↘</button>
+      </div>
+      <input type="file" id="l-logoFile" accept="image/*" style="display:none;">
+    </div>
+
+    <!-- Actions -->
+    <div class="bgroup bgroup-actions" style="min-width:130px">
+      <button class="btn-primary" id="l-dl" style="margin-bottom:6px">↓ Download</button>
+      <button class="btn-secondary" id="l-addcanvas" style="margin-bottom:4px">+ Add to Canvas</button>
+      <button class="btn-secondary" id="l-fs" style="margin-bottom:4px">⤢ Fullscreen</button>
+      <button class="btn-secondary" id="l-reset">↺ Defaults</button>
+    </div>
+
+  </div><!-- /led-screen-panel -->
+
+  <!-- ── CANVAS panel ── -->
+  <div id="led-canvas-panel" style="display:none;flex-direction:row;flex:1">
+
+    <!-- Canvas size -->
+    <div class="bgroup" style="min-width:170px">
+      <div class="bgroup-title">Canvas</div>
+      <input type="text" class="bg-inp bg-wide" id="lc-name" placeholder="Canvas name" style="margin-bottom:7px">
+      <div class="bg-row">
+        <span class="bg-lbl" style="width:14px">W</span>
+        <input type="number" class="bg-inp bg-med" id="lc-w" value="1920" min="1" max="65536">
+      </div>
+      <div class="bg-row">
+        <span class="bg-lbl" style="width:14px">H</span>
+        <input type="number" class="bg-inp bg-med" id="lc-h" value="1080" min="1" max="65536">
+      </div>
+      <div class="f-divider" style="margin-top:7px"></div>
+      <div class="bg-row" style="margin-top:5px"><span class="bg-lbl" style="width:50px">Screens</span><span class="f-val" id="lc-count">0</span></div>
+    </div>
+
+    <!-- Screen list -->
+    <div class="bgroup" style="flex:1;min-width:300px">
+      <div class="bgroup-title">Screens</div>
+      <div id="lc-list" style="display:flex;flex-direction:column;gap:4px;overflow-y:auto;max-height:170px">
+        <div id="lc-empty" style="font-family:'DM Mono',monospace;font-size:9px;color:rgba(240,237,232,0.2);padding:8px 0">No screens added — use Screen → + Add to Canvas</div>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="bgroup bgroup-actions">
+      <button class="btn-primary" id="lc-dl" style="margin-bottom:6px">↓ Download</button>
+      <button class="btn-secondary" id="lc-fs" style="margin-bottom:4px">⤢ Fullscreen</button>
+      <button class="btn-secondary" id="lc-clear">✕ Clear All</button>
+    </div>
+
+  </div><!-- /led-canvas-panel -->
+
+</div><!-- /led -->
 
 <!-- ══ PROJECTION ══ -->
 <div id="sb-projection" class="bp-mode">
@@ -727,7 +891,13 @@ let nextId = 3;
 let pLogoCustom = null, dLogoCustom = null;
 let pLogoPos = 'br'; // tr, tl, br, bl
 let currentScale = 1;
+let viewZoom = 1, viewPanX = 0, viewPanY = 0;
+let panning = false, panStartX = 0, panStartY = 0;
+let lastCanvasW = 0, lastCanvasH = 0;
 let totWCustom = null, totHCustom = null;
+let lLogoCustom = null, lLogoPos = 'br', lCellIdFmt = 'alpha';
+let ledSubMode = 'screen', canvasScreens = [], ledCanvasNextId = 1;
+let ledMask = new Set(), maskMode = false, maskPainting = false, maskErase = false;
 
 const defaultLogoImg = new Image();
 defaultLogoImg.onload = () => draw();
@@ -990,6 +1160,207 @@ function drawProjection() {
   fitCanvas();
 }
 
+// ── LED DRAW CORE ──
+function drawScreenToCtx(ctx2, sc, totW, totH) {
+  const { cellW, cellH, cols, rows, color1, color2, gridColor, textColor,
+          lwMult, tsMult, showGrid, showCellIds, showCircle, showInfo, showBorder,
+          name, cellIdFmt, logoImg, logoScale, logoPos, mask = null } = sc;
+  const [gr, gg, gb] = hexToRgb(gridColor);
+  const [tr2, tg2, tb2] = hexToRgb(textColor);
+  const baseLw = lwMult; // direct pixels
+  const ceilCols = Math.ceil(cols), ceilRows = Math.ceil(rows);
+
+  ctx2.fillStyle = '#000'; ctx2.fillRect(0, 0, totW, totH);
+
+  for (let r = 0; r < ceilRows; r++)
+    for (let c = 0; c < ceilCols; c++) {
+      const cw = Math.min(cellW, totW - c * cellW);
+      const ch = Math.min(cellH, totH - r * cellH);
+      if (cw <= 0 || ch <= 0) continue;
+      ctx2.fillStyle = (mask && mask.has(`${r},${c}`)) ? '#000' : ((r + c) % 2 === 0 ? color1 : color2);
+      ctx2.fillRect(c * cellW, r * cellH, cw, ch);
+    }
+
+  if (showGrid) {
+    ctx2.strokeStyle = `rgba(${gr},${gg},${gb},0.65)`; ctx2.lineWidth = baseLw;
+    for (let c = 0; c <= ceilCols; c++) {
+      const x = Math.min(c * cellW, totW);
+      ctx2.beginPath(); ctx2.moveTo(x, 0); ctx2.lineTo(x, totH); ctx2.stroke();
+    }
+    for (let r = 0; r <= ceilRows; r++) {
+      const y = Math.min(r * cellH, totH);
+      ctx2.beginPath(); ctx2.moveTo(0, y); ctx2.lineTo(totW, y); ctx2.stroke();
+    }
+  }
+
+  if (showCellIds) {
+    const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    const fs = Math.max(7, Math.min(cellW, cellH) * 0.22) * tsMult;
+    ctx2.font = `${fs}px DM Mono,monospace`;
+    ctx2.textAlign = 'center'; ctx2.textBaseline = 'middle';
+    ctx2.fillStyle = `rgba(${tr2},${tg2},${tb2},0.7)`;
+    for (let r = 0; r < ceilRows; r++)
+      for (let c = 0; c < ceilCols; c++) {
+        const cw = Math.min(cellW, totW - c * cellW);
+        const ch = Math.min(cellH, totH - r * cellH);
+        if (cw <= 0 || ch <= 0) continue;
+        const label = cellIdFmt === 'alpha'
+          ? (letters[r % 26] || '?') + (c + 1)
+          : (r + 1) + '-' + (c + 1);
+        ctx2.fillText(label, c * cellW + cw / 2, r * cellH + ch / 2);
+      }
+  }
+
+  if (showCircle) {
+    ctx2.strokeStyle = `rgba(${gr},${gg},${gb},0.8)`; ctx2.lineWidth = baseLw * 1.5;
+    ctx2.beginPath(); ctx2.arc(totW/2, totH/2, Math.min(totW,totH)/2*0.998, 0, Math.PI*2); ctx2.stroke();
+  }
+
+  // Mask overlay — covers grid lines, cell IDs, circle. Info text & border stay on top.
+  if (mask && mask.size > 0) {
+    ctx2.fillStyle = '#000';
+    for (const key of mask) {
+      const [mr, mc] = key.split(',').map(Number);
+      const cw = Math.min(cellW, totW - mc * cellW);
+      const ch = Math.min(cellH, totH - mr * cellH);
+      if (cw > 0 && ch > 0) ctx2.fillRect(mc * cellW, mr * cellH, cw, ch);
+    }
+  }
+
+  if (showInfo || name) {
+    const cx = totW/2, cy = totH/2;
+    const nameFs = Math.min(totW*0.052, totH*0.088)*tsMult;
+    const infoFs = Math.max(10, Math.min(totW*0.022, totH*0.038))*tsMult;
+    // background rect — computed from actual text bounds (textBaseline = middle)
+    let textTop, textBot;
+    if (name && showInfo) {
+      textTop = cy - nameFs*1.6;
+      textBot = cy + infoFs*3.6;
+    } else if (name) {
+      textTop = cy - nameFs*0.5;
+      textBot = cy + nameFs*0.5;
+    } else {
+      textTop = cy - infoFs*0.5;
+      textBot = cy + infoFs*2.1;
+    }
+    const bgPad = Math.max(infoFs, nameFs) * 0.55;
+    const bgW = totW * 0.54;
+    ctx2.fillStyle = 'rgba(0,0,0,0.58)';
+    ctx2.fillRect(cx - bgW/2, textTop - bgPad, bgW, (textBot - textTop) + bgPad*2);
+    if (name) {
+      ctx2.font = `bold ${nameFs}px Bebas Neue,sans-serif`;
+      ctx2.textAlign = 'center'; ctx2.textBaseline = 'middle';
+      ctx2.fillStyle = `rgba(${tr2},${tg2},${tb2},0.9)`;
+      ctx2.fillText(name, cx, cy-(showInfo?nameFs*1.1:0));
+    }
+    if (showInfo) {
+      ctx2.font = `${infoFs}px DM Mono,monospace`; ctx2.textAlign = 'center';
+      ctx2.fillStyle = `rgba(${tr2},${tg2},${tb2},0.55)`;
+      const yo = name ? infoFs*1.5 : 0;
+      ctx2.fillText(`${totW} × ${totH} px`, cx, cy+yo);
+      ctx2.fillText(`${cols}×${rows} cells · ${cellW}×${cellH}px`, cx, cy+yo+infoFs*1.6);
+    }
+  }
+
+  if (showBorder) {
+    ctx2.strokeStyle = `rgba(${gr},${gg},${gb},0.6)`;
+    ctx2.lineWidth = Math.max(1, lwMult);
+    ctx2.strokeRect(1, 1, totW-2, totH-2);
+  }
+
+  drawLogo(ctx2, totW, totH, logoImg, logoScale, logoPos);
+}
+
+function ledScreenConfig() {
+  const cellW = num('l-cellW', 96), cellH = num('l-cellH', 96);
+  const cols = num('l-cols', 6), rows = num('l-rows', 4);
+  return { cellW, cellH, cols, rows,
+    color1: v('l-color1').value, color2: v('l-color2').value,
+    gridColor: v('l-gridColor').value, textColor: v('l-textColor').value,
+    lwMult: num('l-lw',1), tsMult: num('l-ts',1),
+    showGrid: v('l-grid').checked, showCellIds: v('l-cellids').checked,
+    showCircle: v('l-circle').checked, showInfo: v('l-info').checked,
+    showBorder: v('l-border').checked,
+    name: v('l-name').value.trim(), cellIdFmt: lCellIdFmt,
+    logoImg: lLogoCustom, logoScale: num('l-logoScale',100)/100, logoPos: lLogoPos,
+    mask: ledMask };
+}
+
+function drawLed() {
+  const sc = ledScreenConfig();
+  const totW = Math.max(1, Math.ceil(sc.cellW * sc.cols));
+  const totH = Math.max(1, Math.ceil(sc.cellH * sc.rows));
+  canvas.width = totW; canvas.height = totH;
+  drawScreenToCtx(ctx, sc, totW, totH);
+  v('l-totW').textContent = totW; v('l-totH').textContent = totH;
+  v('l-cells').textContent = Math.ceil(sc.cols) * Math.ceil(sc.rows);
+  resDisplay.innerHTML = `<b>${totW} × ${totH}</b> px`;
+  canvasInfo.textContent = `${totW}×${totH}px · ${sc.cols}×${sc.rows} cells · ${sc.cellW}×${sc.cellH}px each`;
+  fitCanvas();
+}
+
+function drawLedCanvas() {
+  const cW = Math.max(1, parseInt(v('lc-w').value)||1920);
+  const cH = Math.max(1, parseInt(v('lc-h').value)||1080);
+  canvas.width = cW; canvas.height = cH;
+  ctx.fillStyle = '#000'; ctx.fillRect(0,0,cW,cH);
+  for (const sc of canvasScreens) {
+    const scW = Math.max(1, Math.ceil(sc.cellW * sc.cols));
+    const scH = Math.max(1, Math.ceil(sc.cellH * sc.rows));
+    const off = document.createElement('canvas');
+    off.width = scW; off.height = scH;
+    drawScreenToCtx(off.getContext('2d'), sc, scW, scH);
+    ctx.drawImage(off, sc.x, sc.y);
+  }
+  v('lc-count').textContent = canvasScreens.length;
+  resDisplay.innerHTML = `<b>${cW} × ${cH}</b> px`;
+  canvasInfo.textContent = `Canvas ${cW}×${cH}px · ${canvasScreens.length} screen${canvasScreens.length!==1?'s':''}`;
+  fitCanvas();
+}
+
+function renderScreenList() {
+  const list = v('lc-list');
+  list.querySelectorAll('.lc-item').forEach(el=>el.remove());
+  v('lc-empty').style.display = canvasScreens.length ? 'none' : '';
+  canvasScreens.forEach(sc => {
+    const item = document.createElement('div');
+    item.className = 'lc-item';
+    item.style.cssText = 'display:flex;align-items:center;gap:5px;padding:3px 0;border-bottom:1px solid rgba(240,237,232,0.05)';
+    item.innerHTML = `
+      <span style="font-family:'DM Mono',monospace;font-size:9px;color:rgba(240,237,232,0.4);flex:0 0 70px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${sc.name||'SCR'}</span>
+      <span style="font-family:'DM Mono',monospace;font-size:8px;color:rgba(240,237,232,0.22);white-space:nowrap">${Math.ceil(sc.cellW*sc.cols)}×${Math.ceil(sc.cellH*sc.rows)}</span>
+      <span class="bg-lbl">X</span>
+      <input type="number" class="bg-inp" style="width:54px" value="${sc.x}" data-scid="${sc.id}" data-field="x">
+      <span class="bg-lbl">Y</span>
+      <input type="number" class="bg-inp" style="width:54px" value="${sc.y}" data-scid="${sc.id}" data-field="y">
+      <button style="background:none;border:1px solid rgba(240,237,232,0.1);color:rgba(240,237,232,0.3);font-size:10px;padding:2px 7px;cursor:none;transition:color 0.15s,border-color 0.15s;flex-shrink:0" data-scid="${sc.id}" class="lc-del">✕</button>
+    `;
+    list.appendChild(item);
+  });
+  list.querySelectorAll('input[data-scid]').forEach(inp => {
+    inp.addEventListener('input', () => {
+      const sc = canvasScreens.find(s=>s.id===parseInt(inp.dataset.scid));
+      if (sc) { sc[inp.dataset.field] = parseInt(inp.value)||0; drawLedCanvas(); }
+    });
+  });
+  list.querySelectorAll('.lc-del').forEach(btn => {
+    btn.addEventListener('click', () => {
+      canvasScreens = canvasScreens.filter(s=>s.id!==parseInt(btn.dataset.scid));
+      renderScreenList(); drawLedCanvas();
+    });
+  });
+  v('lc-count').textContent = canvasScreens.length;
+}
+
+function ledSubSwitch(m) {
+  ledSubMode = m;
+  v('led-sub-screen').classList.toggle('active', m==='screen');
+  v('led-sub-canvas').classList.toggle('active', m==='canvas');
+  v('led-screen-panel').style.display = m==='screen' ? 'contents' : 'none';
+  v('led-canvas-panel').style.display = m==='canvas' ? 'flex' : 'none';
+  draw();
+}
+
 // ── DOME DRAW ──
 function drawDome() {
   const size=num('d-size',2048);
@@ -1079,28 +1450,97 @@ function drawDome() {
 // ── FIT CANVAS ──
 function fitCanvas() {
   const pad=32;
-  const panelH = document.getElementById('bottomPanel').offsetHeight;
   const aW = canvasArea.clientWidth-pad;
   const aH = canvasArea.clientHeight-pad;
   const cW = canvas.width, cH = canvas.height;
   if(!cW||!cH) return;
+  const didChange = (cW !== lastCanvasW || cH !== lastCanvasH);
+  if (didChange) { lastCanvasW = cW; lastCanvasH = cH; resetView(); return; }
   currentScale = Math.min(aW/cW, aH/cH, 1);
   canvas.style.width  = Math.round(cW*currentScale)+'px';
   canvas.style.height = Math.round(cH*currentScale)+'px';
+  applyViewTransform();
+}
+
+function applyViewTransform() {
+  const cW = canvas.width, cH = canvas.height;
+  if(!cW||!cH) return;
+  const pad=32;
+  const aW = canvasArea.clientWidth-pad;
+  const aH = canvasArea.clientHeight-pad;
+  currentScale = Math.min(aW/cW, aH/cH, 1);
+  canvas.style.width  = Math.round(cW*currentScale)+'px';
+  canvas.style.height = Math.round(cH*currentScale)+'px';
+  const canvasWrap = document.getElementById('canvasWrap');
+  canvasWrap.style.transform = `translate(${viewPanX}px,${viewPanY}px) scale(${viewZoom})`;
+  canvasWrap.style.transformOrigin = 'center center';
+  const effectiveZoom = currentScale * viewZoom;
+  canvasZoom.textContent = effectiveZoom >= 0.995 ? '100%' : `${Math.round(effectiveZoom*100)}%`;
+}
+
+function resetView() {
+  viewZoom = 1; viewPanX = 0; viewPanY = 0;
+  const cW = canvas.width, cH = canvas.height;
+  if(!cW||!cH) return;
+  const pad=32;
+  const aW = canvasArea.clientWidth-pad;
+  const aH = canvasArea.clientHeight-pad;
+  currentScale = Math.min(aW/cW, aH/cH, 1);
+  canvas.style.width  = Math.round(cW*currentScale)+'px';
+  canvas.style.height = Math.round(cH*currentScale)+'px';
+  const canvasWrap = document.getElementById('canvasWrap');
+  canvasWrap.style.transform = '';
   canvasZoom.textContent = currentScale >= 0.995 ? '100%' : `${Math.round(currentScale*100)}%`;
 }
 
 function draw() {
-  if(mode==='led') return;
+  if(mode==='led') { if(ledSubMode==='canvas') drawLedCanvas(); else drawLed(); }
   else if(mode==='projection') drawProjection();
   else drawDome();
 }
 
+// ── ZOOM / PAN ──
+canvasArea.addEventListener('wheel', e => {
+  e.preventDefault();
+  const factor = e.deltaY < 0 ? 1.12 : 1/1.12;
+  const newZoom = Math.max(0.25, Math.min(16, viewZoom * factor));
+  const ar = canvasArea.getBoundingClientRect();
+  const mx = e.clientX - ar.left - ar.width/2;
+  const my = e.clientY - ar.top  - ar.height/2;
+  viewPanX = mx + (viewPanX - mx) * (newZoom / viewZoom);
+  viewPanY = my + (viewPanY - my) * (newZoom / viewZoom);
+  viewZoom = newZoom;
+  applyViewTransform();
+}, { passive: false });
+
+canvasArea.addEventListener('mousedown', e => {
+  if (e.button !== 1) return;
+  e.preventDefault();
+  panning = true;
+  panStartX = e.clientX - viewPanX;
+  panStartY = e.clientY - viewPanY;
+  canvasArea.style.cursor = 'grabbing';
+});
+window.addEventListener('mousemove', e => {
+  if (!panning) return;
+  viewPanX = e.clientX - panStartX;
+  viewPanY = e.clientY - panStartY;
+  applyViewTransform();
+});
+window.addEventListener('mouseup', e => {
+  if (e.button !== 1 || !panning) return;
+  panning = false;
+  canvasArea.style.cursor = '';
+});
+canvasArea.addEventListener('dblclick', e => {
+  if (e.button === 0) resetView();
+});
+
 // ── CURSOR COORDS ON CANVAS ──
 canvas.addEventListener('mousemove', e => {
   const rect = canvas.getBoundingClientRect();
-  const x = Math.round((e.clientX-rect.left)/currentScale);
-  const y = Math.round((e.clientY-rect.top)/currentScale);
+  const x = Math.round((e.clientX-rect.left) * (canvas.width / rect.width));
+  const y = Math.round((e.clientY-rect.top)  * (canvas.height / rect.height));
   canvasCoords.style.display = 'block';
   canvasCoords.textContent = `${x} × ${y}`;
 });
@@ -1203,7 +1643,7 @@ function setMode(m) {
 }
 window.addEventListener('hashchange', () => {
   const m=window.location.hash.replace('#','');
-  if(['projection','dome'].includes(m)&&m!==mode) setMode(m);
+  if(['led','projection','dome'].includes(m)&&m!==mode) setMode(m);
 });
 document.querySelectorAll('.mode-tab:not(.disabled)').forEach(btn=>btn.addEventListener('click',()=>setMode(btn.dataset.mode)));
 
@@ -1241,7 +1681,7 @@ wireColor('p-textColor','p-textColorPreview','p-textColorHex',draw);
 wireColor('p-borderColor','p-borderColorPreview','p-borderColorHex',draw);
 wireColor('p-circleColor','p-circleColorPreview','p-circleColorHex',draw);
 wireLogoUpload('p-logoUpload','p-logoReset','p-logoFile','p-logoThumb',img=>pLogoCustom=img,draw);
-v('p-dl').addEventListener('click',()=>dlCanvas(`Projection_${canvas.width}x${canvas.height}.png`));
+v('p-dl').addEventListener('click',()=>{ const n=(v('p-name').value.trim()||'Projection').replace(/\s+/g,'_'); dlCanvas(`${n}_${canvas.width}x${canvas.height}.png`); });
 v('p-fs').addEventListener('click',()=>{ if(!document.fullscreenElement) canvasArea.requestFullscreen(); else document.exitFullscreen(); });
 v('p-reset').addEventListener('click', () => {
   v('p-projW').value=1920; v('p-projH').value=1080;
@@ -1259,17 +1699,117 @@ v('p-reset').addEventListener('click', () => {
   ['p-cellids','p-safearea','p-smpte'].forEach(id=>v(id).checked=false);
   v('p-name').value=''; pLogoCustom=null; pLogoPos='br'; resetCustomTotals();
   v('p-logoThumb').innerHTML='<img src="../images/str_white.png" style="width:100%;height:100%;object-fit:contain;">';
-  document.querySelectorAll('.logo-pos-btn').forEach(b=>b.classList.toggle('active',b.dataset.pos==='br'));
+  document.querySelectorAll('#sb-projection .logo-pos-btn').forEach(b=>b.classList.toggle('active',b.dataset.pos==='br'));
   notify('Reset to defaults'); draw();
 });
-document.querySelectorAll('.logo-pos-btn').forEach(btn => {
+document.querySelectorAll('#sb-projection .logo-pos-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     pLogoPos = btn.dataset.pos;
-    document.querySelectorAll('.logo-pos-btn').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('#sb-projection .logo-pos-btn').forEach(b=>b.classList.remove('active'));
     btn.classList.add('active');
     draw();
   });
 });
+
+// ── LED EVENTS ──
+v('led-sub-screen').addEventListener('click', ()=>ledSubSwitch('screen'));
+v('led-sub-canvas').addEventListener('click', ()=>ledSubSwitch('canvas'));
+
+['l-cellW','l-cellH','l-cols','l-rows','l-name'].forEach(id=>v(id).addEventListener('input',draw));
+['l-grid','l-cellids','l-circle','l-info','l-border'].forEach(id=>v(id).addEventListener('change',draw));
+v('l-lw').addEventListener('input', e=>{ v('l-lwVal').textContent=e.target.value; draw(); });
+wireSlider('l-ts','l-tsVal',draw);
+wireSlider('l-logoScale','l-logoScaleVal',draw);
+wireColor('l-color1','l-c1Preview','l-color1Hex',draw);
+wireColor('l-color2','l-c2Preview','l-color2Hex',draw);
+wireColor('l-gridColor','l-gcPreview','l-gridColorHex',draw);
+wireColor('l-textColor','l-tcPreview','l-textColorHex',draw);
+wireLogoUpload('l-logoUpload','l-logoReset','l-logoFile','l-logoThumb',img=>lLogoCustom=img,draw);
+document.querySelectorAll('#sb-led .logo-pos-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    lLogoPos = btn.dataset.pos;
+    document.querySelectorAll('#sb-led .logo-pos-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active'); draw();
+  });
+});
+document.querySelectorAll('.l-cpre').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const c1 = btn.dataset.c1, c2 = btn.dataset.c2;
+    v('l-color1').value=c1; v('l-c1Preview').style.background=c1; v('l-color1Hex').value=c1;
+    v('l-color2').value=c2; v('l-c2Preview').style.background=c2; v('l-color2Hex').value=c2;
+    document.querySelectorAll('.l-cpre').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active'); draw();
+  });
+});
+v('l-fmt-alpha').addEventListener('click', ()=>{ lCellIdFmt='alpha'; v('l-fmt-alpha').classList.add('active'); v('l-fmt-num').classList.remove('active'); draw(); });
+v('l-fmt-num').addEventListener('click',   ()=>{ lCellIdFmt='num';   v('l-fmt-num').classList.add('active'); v('l-fmt-alpha').classList.remove('active'); draw(); });
+v('l-addcanvas').addEventListener('click', () => {
+  const sc = ledScreenConfig();
+  const id = ledCanvasNextId++;
+  canvasScreens.push({ ...sc, id, name: sc.name||`SCR ${id}`, x:0, y:0, mask: new Set(ledMask) });
+  renderScreenList();
+  ledSubSwitch('canvas');
+  notify(`Added "${sc.name||'SCR '+id}" to canvas`);
+});
+v('l-dl').addEventListener('click', ()=>{ const n=(v('l-name').value.trim()||'LED_Screen').replace(/\s+/g,'_'); dlCanvas(`${n}_${canvas.width}x${canvas.height}.png`); });
+v('l-fs').addEventListener('click', ()=>{ if(!document.fullscreenElement) canvasArea.requestFullscreen(); else document.exitFullscreen(); });
+v('l-reset').addEventListener('click', () => {
+  v('l-cellW').value=96; v('l-cellH').value=96;
+  v('l-cols').value=6; v('l-rows').value=4;
+  v('l-lw').value=1; v('l-lwVal').textContent='1';
+  v('l-ts').value=1; v('l-tsVal').textContent='1.0';
+  v('l-color1').value='#1a1a1a'; v('l-c1Preview').style.background='#1a1a1a'; v('l-color1Hex').value='#1a1a1a';
+  v('l-color2').value='#2e2e2e'; v('l-c2Preview').style.background='#2e2e2e'; v('l-color2Hex').value='#2e2e2e';
+  v('l-gridColor').value='#ff3333'; v('l-gcPreview').style.background='#ff3333'; v('l-gridColorHex').value='#ff3333';
+  v('l-textColor').value='#ffffff'; v('l-tcPreview').style.background='#ffffff'; v('l-textColorHex').value='#ffffff';
+  ['l-grid','l-cellids','l-circle','l-info','l-border'].forEach(id=>v(id).checked=true);
+  lCellIdFmt='alpha'; v('l-fmt-alpha').classList.add('active'); v('l-fmt-num').classList.remove('active');
+  v('l-name').value=''; lLogoCustom=null; lLogoPos='br';
+  v('l-logoThumb').innerHTML='<img src="../images/str_white.png" style="width:100%;height:100%;object-fit:contain;">';
+  v('l-logoScale').value=100; v('l-logoScaleVal').textContent='100';
+  document.querySelectorAll('#sb-led .logo-pos-btn').forEach(b=>b.classList.toggle('active',b.dataset.pos==='br'));
+  ledMask.clear(); v('l-mask-count').textContent=0;
+  maskMode=false; v('l-mask-paint').classList.remove('active'); canvas.style.cursor='';
+  notify('Reset to defaults'); draw();
+});
+
+// Mask events
+v('l-mask-paint').addEventListener('click', () => {
+  maskMode = !maskMode;
+  v('l-mask-paint').classList.toggle('active', maskMode);
+  canvas.style.cursor = maskMode ? 'crosshair' : '';
+});
+v('l-mask-clear').addEventListener('click', () => {
+  ledMask.clear(); v('l-mask-count').textContent = 0; draw();
+});
+function maskCellAt(e) {
+  if (!maskPainting || !maskMode || mode !== 'led' || ledSubMode !== 'screen') return;
+  const rect = canvas.getBoundingClientRect();
+  const cx = (e.clientX - rect.left) * (canvas.width  / rect.width);
+  const cy = (e.clientY - rect.top)  * (canvas.height / rect.height);
+  const cellW = num('l-cellW', 96), cellH = num('l-cellH', 96);
+  const r = Math.floor(cy / cellH), c = Math.floor(cx / cellW);
+  if (r < 0 || c < 0) return;
+  const key = `${r},${c}`;
+  if (maskErase) ledMask.delete(key); else ledMask.add(key);
+  v('l-mask-count').textContent = ledMask.size;
+  draw();
+}
+canvas.addEventListener('mousedown', e => {
+  if (!maskMode || mode !== 'led' || ledSubMode !== 'screen') return;
+  e.preventDefault(); maskPainting = true; maskErase = e.button === 2;
+  maskCellAt(e);
+});
+canvas.addEventListener('mousemove', maskCellAt);
+canvas.addEventListener('mouseup', () => { maskPainting = false; });
+canvas.addEventListener('mouseleave', () => { maskPainting = false; });
+canvas.addEventListener('contextmenu', e => { if (maskMode) e.preventDefault(); });
+
+// Canvas sub-panel events
+['lc-w','lc-h','lc-name'].forEach(id=>v(id).addEventListener('input',()=>{ if(ledSubMode==='canvas') drawLedCanvas(); }));
+v('lc-dl').addEventListener('click', ()=>{ const n=(v('lc-name').value.trim()||'LED_Canvas').replace(/\s+/g,'_'); dlCanvas(`${n}_${canvas.width}x${canvas.height}.png`); });
+v('lc-fs').addEventListener('click', ()=>{ if(!document.fullscreenElement) canvasArea.requestFullscreen(); else document.exitFullscreen(); });
+v('lc-clear').addEventListener('click', ()=>{ canvasScreens=[]; renderScreenList(); drawLedCanvas(); notify('Canvas cleared'); });
 
 // ── DOME EVENTS ──
 document.querySelectorAll('.preset-btn[data-dome]').forEach(btn=>btn.addEventListener('click',()=>{
@@ -1292,7 +1832,7 @@ wireSlider('d-ts','d-tsVal',draw);
 wireSlider('d-logoScale','d-logoScaleVal',draw);
 wireColor('d-color','d-colorPreview','d-colorHex',draw);
 wireLogoUpload('d-logoUpload','d-logoReset','d-logoFile','d-logoThumb',img=>dLogoCustom=img,draw);
-v('d-dl').addEventListener('click',()=>dlCanvas(`Dome_${canvas.width}x${canvas.height}.png`));
+v('d-dl').addEventListener('click',()=>{ const n=(v('d-name').value.trim()||'Dome').replace(/\s+/g,'_'); dlCanvas(`${n}_${canvas.width}x${canvas.height}.png`); });
 v('d-fs').addEventListener('click',()=>{ if(!document.fullscreenElement) canvasArea.requestFullscreen(); else document.exitFullscreen(); });
 v('d-reset').addEventListener('click', () => {
   v('d-size').value=2048;
@@ -1316,7 +1856,7 @@ window.addEventListener('resize', fitCanvas);
 
 // ── INIT ──
 const hash = window.location.hash.replace('#','');
-setMode(['projection','dome'].includes(hash) ? hash : 'projection');
+setMode(['led','projection','dome'].includes(hash) ? hash : 'projection');
 </script>
 </body>
 </html>
