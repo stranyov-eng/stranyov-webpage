@@ -4,7 +4,7 @@
     "rr_nov25.png",
     "gotf.png",
     "rr_apr25.png",
-yt    "lexus.png",
+    "lexus.png",
     "huracan.png",
     "joy_25.png"
   ],
@@ -311,7 +311,7 @@ yt    "lexus.png",
     "title": "IN TO TSEH",
     "meta": "NIzhniy-Novgorod, Russia · 2021",
     "role": "Disguise Engineer · Sila Sveta",
-    "category": "disguise"
+    "category": "disguise",
     "image": "tseh.png",
     "link": "https://www.silasveta.com/projects/in-to-tseh",
     "wide": false
@@ -404,6 +404,78 @@ yt    "lexus.png",
     "category": "disguise",
     "image": "eqc.png",
     "link": "https://www.silasveta.com/projects/mercedes-eqc",
+    "wide": false
+  },
+  {
+    "title": "Signal Festival 2019",
+    "meta": "Nikola-Lenivets, Russia · 2019",
+    "role": "VJ · Sila Sveta",
+    "category": "vj",
+    "image": "signal_2019.png",
+    "link": "https://www.youtube.com/watch?v=jAje8_JevBI",
+    "wide": false
+  },
+  {
+    "title": "Signal Festival 2020",
+    "meta": "Nikola-Lenivets, Russia · 2020",
+    "role": "VJ · Sila Sveta",
+    "category": "vj",
+    "image": "signal_2020.png",
+    "link": "https://www.youtube.com/watch?v=zJgDNUM1slk",
+    "wide": false
+  },
+  {
+    "title": "EPIZODE",
+    "meta": "Vietnam · 2019",
+    "role": "VJ · Sila Sveta",
+    "category": "vj",
+    "image": "epizode.png",
+    "link": "https://www.youtube.com/watch?v=S2Tj1nA14dU",
+    "wide": false
+  },
+  {
+    "title": "DRËMA",
+    "meta": "Moscow, Russia · 2019",
+    "role": "VJ · Sila Sveta",
+    "category": "vj",
+    "image": "drema.png",
+    "link": "https://www.youtube.com/watch?v=YJl8t78xUi8",
+    "wide": false
+  },
+  {
+    "title": "Show for Polina Gagarina",
+    "meta": "Minsk · Saint Petersburg · Moscow · 2019",
+    "role": "Disguise Engineer · Sila Sveta",
+    "category": "disguise",
+    "image": "gagarina.png",
+    "link": "https://www.youtube.com/watch?v=08xjx8B3T7k",
+    "wide": false
+  },
+  {
+    "title": "Show for Ivan Dorn",
+    "meta": "Saint Petersburg · Moscow · Kyiv · 2019",
+    "role": "VJ · Sila Sveta",
+    "category": "vj",
+    "image": "dorn.png",
+    "link": "https://www.youtube.com/watch?v=L-zkFufzcy4",
+    "wide": false
+  },
+  {
+    "title": "Art Takes Time",
+    "meta": "Moscow, Russia · 2019",
+    "role": "Disguise Engineer · Sila Sveta",
+    "category": "disguise",
+    "image": "arttakestime.png",
+    "link": "https://www.youtube.com/watch?v=IgfRsSvwk3Q",
+    "wide": false
+  },
+  {
+    "title": "Wing of the East",
+    "meta": "Vladivostok, Russia · 2018",
+    "role": "Disguise Engineer · Sila Sveta · qLAb",
+    "category": "disguise",
+    "image": "wingsofeast.png",
+    "link": "https://www.youtube.com/watch?v=RqX_sGXaHPc",
     "wide": false
   }
   ]
