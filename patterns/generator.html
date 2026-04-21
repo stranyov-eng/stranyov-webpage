@@ -1628,6 +1628,7 @@ function draw() {
   if(mode==='led') { if(ledSubMode==='canvas') drawLedCanvas(); else drawLed(); }
   else if(mode==='projection') { if(projSubMode==='canvas') drawProjCanvas(); else drawProjection(); }
   else drawDome();
+  schedSave();
 }
 
 // ── ZOOM / PAN ──
@@ -2037,12 +2038,109 @@ function attachMathInput(inp) {
 }
 document.querySelectorAll('input[type="number"]').forEach(attachMathInput);
 
+// ── PERSISTENCE ──
+const LS_KEY = 'tpg_v1';
+let _saveTimer = null;
+function schedSave() {
+  clearTimeout(_saveTimer);
+  _saveTimer = setTimeout(saveState, 400);
+}
+
+function saveState() {
+  const state = { mode, ledSubMode, projSubMode, pLogoPos, lLogoPos, lCellIdFmt, domePat, totWCustom, totHCustom };
+  document.querySelectorAll('input[id]').forEach(el => {
+    if (el.type === 'checkbox') state['cb_' + el.id] = el.checked;
+    else if (el.type !== 'file') state['v_' + el.id] = el.value;
+  });
+  state.canvasScreens = canvasScreens.map(({logoImg, ...r}) => r);
+  state.projCanvasScreens = projCanvasScreens.map(({logoImg, ...r}) => r);
+  state.ledMask = [...ledMask];
+  try { localStorage.setItem(LS_KEY, JSON.stringify(state)); } catch(e) {}
+}
+
+function loadState() {
+  try {
+    const raw = localStorage.getItem(LS_KEY);
+    if (!raw) return false;
+    const s = JSON.parse(raw);
+
+    // Restore input values
+    Object.keys(s).forEach(k => {
+      if (k.startsWith('v_')) { const el = document.getElementById(k.slice(2)); if (el && el.type !== 'file') el.value = s[k]; }
+      else if (k.startsWith('cb_')) { const el = document.getElementById(k.slice(3)); if (el) el.checked = s[k]; }
+    });
+
+    // State vars
+    if (s.pLogoPos) pLogoPos = s.pLogoPos;
+    if (s.lLogoPos) lLogoPos = s.lLogoPos;
+    if (s.lCellIdFmt) lCellIdFmt = s.lCellIdFmt;
+    if (s.totWCustom !== undefined) totWCustom = s.totWCustom;
+    if (s.totHCustom !== undefined) totHCustom = s.totHCustom;
+    if (s.domePat) domePat = s.domePat;
+
+    // Canvas screens
+    if (s.canvasScreens) { canvasScreens = s.canvasScreens; ledCanvasNextId = canvasScreens.reduce((m,sc)=>Math.max(m,sc.id),0)+1; renderScreenList(); }
+    if (s.projCanvasScreens) { projCanvasScreens = s.projCanvasScreens; projCanvasNextId = projCanvasScreens.reduce((m,sc)=>Math.max(m,sc.id),0)+1; renderProjList(); }
+    if (s.ledMask) { ledMask = new Set(s.ledMask); v('l-mask-count').textContent = ledMask.size; }
+
+    // Sync color previews
+    [['p-color','p-colorPreview','p-colorHex'],['p-textColor','p-textColorPreview','p-textColorHex'],
+     ['p-borderColor','p-borderColorPreview','p-borderColorHex'],['p-circleColor','p-circleColorPreview','p-circleColorHex'],
+     ['l-color1','l-c1Preview','l-color1Hex'],['l-color2','l-c2Preview','l-color2Hex'],
+     ['l-gridColor','l-gcPreview','l-gridColorHex'],['l-textColor','l-tcPreview','l-textColorHex'],
+     ['d-color','d-colorPreview','d-colorHex']
+    ].forEach(([inp,prev,hex]) => {
+      const val = v(inp) && v(inp).value; if (!val) return;
+      if (v(prev)) v(prev).style.background = val;
+      if (v(hex)) v(hex).value = val;
+    });
+
+    // Sync slider display values
+    [['p-lw','p-lwVal'],['p-ts','p-tsVal'],['p-gridCols','p-gridColsVal'],['p-logoScale','p-logoScaleVal'],
+     ['l-lw','l-lwVal'],['l-ts','l-tsVal'],['l-logoScale','l-logoScaleVal'],
+     ['d-lw','d-lwVal'],['d-ts','d-tsVal'],['d-logoScale','d-logoScaleVal']
+    ].forEach(([sid,vid]) => { if (v(sid) && v(vid)) v(vid).textContent = v(sid).value; });
+
+    // Sync active preset buttons
+    const pw = v('p-projW').value, ph = v('p-projH').value;
+    document.querySelectorAll('.preset-btn[data-projw]').forEach(b=>b.classList.toggle('active',b.dataset.projw===pw&&b.dataset.projh===ph));
+    document.querySelectorAll('.preset-btn[data-dome]').forEach(b=>b.classList.toggle('active',b.dataset.dome===v('d-size').value));
+    document.querySelectorAll('#sb-projection .logo-pos-btn').forEach(b=>b.classList.toggle('active',b.dataset.pos===pLogoPos));
+    document.querySelectorAll('#sb-led .logo-pos-btn').forEach(b=>b.classList.toggle('active',b.dataset.pos===lLogoPos));
+    v('l-fmt-alpha').classList.toggle('active', lCellIdFmt==='alpha');
+    v('l-fmt-num').classList.toggle('active', lCellIdFmt==='num');
+    document.querySelectorAll('.pat-btn[data-dpat]').forEach(b=>b.classList.toggle('active',b.dataset.dpat===domePat));
+
+    // Sub-mode panels (no draw yet)
+    const lsm = s.ledSubMode || 'screen';
+    ledSubMode = lsm;
+    v('led-sub-screen').classList.toggle('active', lsm==='screen');
+    v('led-sub-canvas').classList.toggle('active', lsm==='canvas');
+    v('led-screen-panel').style.display = lsm==='screen' ? 'contents' : 'none';
+    v('led-canvas-panel').style.display = lsm==='canvas' ? 'flex' : 'none';
+
+    const psm = s.projSubMode || 'screen';
+    projSubMode = psm;
+    v('proj-sub-screen').classList.toggle('active', psm==='screen');
+    v('proj-sub-canvas').classList.toggle('active', psm==='canvas');
+    v('proj-screen-panel').style.display = psm==='screen' ? 'contents' : 'none';
+    v('proj-canvas-panel').style.display = psm==='canvas' ? 'flex' : 'none';
+
+    // Set mode triggers draw
+    const hash = window.location.hash.replace('#','');
+    setMode(['led','projection','dome'].includes(hash) ? hash : (s.mode || 'projection'));
+    return true;
+  } catch(e) { return false; }
+}
+
 // ── RESIZE ──
 window.addEventListener('resize', fitCanvas);
 
 // ── INIT ──
-const hash = window.location.hash.replace('#','');
-setMode(['led','projection','dome'].includes(hash) ? hash : 'projection');
+if (!loadState()) {
+  const hash = window.location.hash.replace('#','');
+  setMode(['led','projection','dome'].includes(hash) ? hash : 'projection');
+}
 </script>
 </body>
 </html>
