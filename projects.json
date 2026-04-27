@@ -17,7 +17,8 @@
     "category": "disguise",
     "image": "joy_26.avif",
     "link": "https://hellocharlie.com/project/the-joy-awards-2026/",
-    "wide": false
+    "wide": false,
+    "description": "A prestigious entertainment awards ceremony held in Riyadh, Saudi Arabia. Served as Disguise Engineer for PRG, operating media servers to deliver large-scale real-time video mapping across the event's production."
   },
   {
     "title": "Rave Rebels | The Ship",
@@ -26,7 +27,8 @@
     "category": "vj",
     "image": "rr_nov25.png",
     "link": "https://www.silasveta.com/projects/rave-rebels-2025-the-ship",
-    "wide": false
+    "wide": false,
+    "description": "An immersive electronic music event staged aboard The Ship venue in Brussels, Belgium. Performed as VJ for Sila Sveta, delivering a live visual set with real-time video mixing and manipulation."
   },
   {
     "title": "GOTF Opening Ceremony",
@@ -35,7 +37,8 @@
     "category": "disguise",
     "image": "gotf.png",
     "link": "https://www.youtube.com/watch?v=uQtXQmlZ1A0",
-    "wide": true
+    "wide": true,
+    "description": "The opening ceremony for the Games of the Future held in Abu Dhabi, UAE. Served as Disguise Engineer, managing media server operations to support the high-profile ceremonial production."
   },
   {
     "title": "President's Cup",
@@ -44,7 +47,8 @@
     "category": "disguise",
     "image": "pres_cup.png",
     "link": "https://www.linkedin.com/posts/done-dusted_presidentscup-doneanddusted-uae2025-ugcPost-7337907230450601984-DQIK/?utm_source=share&utm_medium=member_desktop&rcm=ACoAAAlTO5UBD-j7drvCRrCIG6DWEdS04Zefigs",
-    "wide": false
+    "wide": false,
+    "description": "A major sporting event held in Abu Dhabi, UAE, requiring complex AV production. Served as Disguise Engineer for PRG, operating disguise media servers to control video content across the large-scale show."
   },
   {
     "title": "EWC 25 Opening Ceremony",
@@ -53,7 +57,8 @@
     "category": "disguise",
     "image": "ewc25.png",
     "link": "",
-    "wide": false
+    "wide": false,
+    "description": "The opening ceremony of the Esports World Cup 2025 in Riyadh, Saudi Arabia. Served as Disguise Engineer for PRG, running real-time video mapping and show control for the high-profile international broadcast event."
   },
   {
     "title": "The Last Crescendo",
@@ -62,7 +67,8 @@
     "category": "disguise",
     "image": "tlc.png",
     "link": "",
-    "wide": false
+    "wide": false,
+    "description": "A large-scale live entertainment production staged in Riyadh, Saudi Arabia. Served as Disguise Engineer for PRG, managing media server systems for real-time video playback and show control."
   },
   {
     "title": "Joy Awards 25",
@@ -71,7 +77,8 @@
     "category": "disguise",
     "image": "joy_25.png",
     "link": "https://hellocharlie.com/project/joy-awards-2025/",
-    "wide": false
+    "wide": false,
+    "description": "The 2025 edition of the Joy Awards entertainment ceremony in Riyadh, Saudi Arabia. Served as Disguise Engineer for PRG, overseeing disguise media server operations across the full production."
   },
   {
     "title": "F1 Concerts 2025",
@@ -80,7 +87,8 @@
     "category": "disguise",
     "image": "f1_conc_25.png",
     "link": "",
-    "wide": false
+    "wide": false,
+    "description": "Concert events staged alongside the Formula 1 Grand Prix weekend in Abu Dhabi, UAE. Served as Disguise Engineer for PRG, operating video systems to support live performance productions at scale."
   },
   {
     "title": "Rave Rebels | Deus Ex Machina",
@@ -89,7 +97,8 @@
     "category": "vj",
     "image": "rr_apr25.png",
     "link": "https://www.silasveta.com/projects/rave-rabels-2025-belgium",
-    "wide": false
+    "wide": false,
+    "description": "An electronic music event at the Deus Ex Machina venue in Brussels, Belgium. Performed as VJ for Sila Sveta, providing a live real-time visual set integrated with the event's audiovisual experience."
   },
   {
     "title": "Rodina Restaurant",
@@ -98,7 +107,8 @@
     "category": "integration",
     "image": "rodina.png",
     "link": "https://rodinadubai.com/",
-    "wide": false
+    "wide": false,
+    "description": "A permanent AV installation project for a restaurant venue in Dubai, UAE. Served as Video Systems Engineer for Vivid Studios, designing and deploying the venue's integrated video distribution infrastructure."
   },
   {
     "title": "Blume Restaurant",
@@ -107,7 +117,8 @@
     "category": "integration",
     "image": "blume.png",
     "link": "https://blumedubai.com/blume-dubai-mall/",
-    "wide": false
+    "wide": false,
+    "description": "A permanent video systems installation for a dining venue in Dubai, UAE. Served as Video Systems Engineer for Vivid Studios, responsible for the design and operation of the integrated AV systems."
   },
   {
     "title": "Woohoo Restaurant",
@@ -116,7 +127,8 @@
     "category": "integration",
     "image": "woohoo.png",
     "link": "https://stageprecision.com/blogs/showcase/woohoo-restaurant?srsltid=AfmBOopunXeSZrgFTrnsFqXcLTvAMPr-V9hrYCz2fydyssA9VfDXy5Qy",
-    "wide": false
+    "wide": false,
+    "description": "An AV integration project for a restaurant venue in Dubai, UAE. Served as Video Systems Engineer for Vivid Studios, delivering a complete video distribution and playback system for the permanent installation."
   },
   {
     "title": "Latino Night",
@@ -125,7 +137,8 @@
     "category": "disguise",
     "image": "latino.png",
     "link": "",
-    "wide": false
+    "wide": false,
+    "description": "A live entertainment event held in Riyadh, Saudi Arabia. Served as Disguise Engineer for PRG, operating media servers to manage real-time video content and show control throughout the production."
   },
   {
     "title": "F1 Concerts 2024",
@@ -134,7 +147,8 @@
     "category": "disguise",
     "image": "f1_conc_24.png",
     "link": "",
-    "wide": false
+    "wide": false,
+    "description": "Concert productions accompanying the Formula 1 Grand Prix in Abu Dhabi, UAE. Served as Disguise Engineer for PRG, handling media server operations for live performance video systems at the 2024 edition."
   },
   {
     "title": "Usyk vs Fury 2",
@@ -143,7 +157,8 @@
     "category": "disguise",
     "image": "usyk2.png",
     "link": "",
-    "wide": false
+    "wide": false,
+    "description": "The high-profile heavyweight boxing rematch staged in Riyadh, Saudi Arabia. Served as Disguise Engineer for PRG, managing the large-scale video mapping and show control systems for the global broadcast event."
   },
   {
     "title": "Six Kings Slam",
@@ -152,7 +167,8 @@
     "category": "disguise",
     "image": "sks.png",
     "link": "",
-    "wide": false
+    "wide": false,
+    "description": "An elite tennis exhibition event held in Riyadh, Saudi Arabia, featuring top-ranked players. Served as Disguise Engineer for PRG, operating disguise media servers for the event's complex video production."
   },
   {
     "title": "Ambani's Wedding",
@@ -161,7 +177,8 @@
     "category": "disguise",
     "image": "ambani.png",
     "link": "https://www.facebook.com/100089378779878/videos/1446005386117333/",
-    "wide": false
+    "wide": false,
+    "description": "One of the most extravagant private weddings in the world, held in Mumbai, India. Served as Disguise Engineer for Blue I, managing media server systems for large-scale video mapping across multi-day celebrations."
   },
   {
     "title": "Luxuria Karaoke Club",
@@ -170,7 +187,8 @@
     "category": "integration",
     "image": "luxuria.png",
     "link": "",
-    "wide": false
+    "wide": false,
+    "description": "A permanent AV installation for an upscale karaoke venue in Dubai, UAE. Served as Video Systems Engineer for Vivid Studios, designing and implementing the venue's integrated video distribution and playback systems."
   },
   {
     "title": "Tutankhamun — The Immersive Experience",
@@ -179,7 +197,8 @@
     "category": "disguise",
     "image": "tut.png",
     "link": "https://gem.eg/en/whats-on/temporary-exhibitions/the-immersive-exhibition/",
-    "wide": true
+    "wide": true,
+    "description": "A large-scale immersive projection experience in Cairo, Egypt, exploring the world of ancient Egypt through Tutankhamun's legacy. Served as Projection Engineer for Sila Sveta, managing projection mapping systems for the installation."
   },
   {
     "title": "Bridge of Love — The Link",
@@ -188,7 +207,8 @@
     "category": "integration",
     "image": "bol.png",
     "link": "https://www.onezaabeel.com/the-link/",
-    "wide": false
+    "wide": false,
+    "description": "A permanent AV integration project for The Link attraction at One Za'abeel in Dubai, UAE. Served as Disguise Engineer for Vivid Studios, operating media server systems for the video production and installation."
   },
   {
     "title": "Qatar Expo 2023 Opening Ceremony",
@@ -197,7 +217,8 @@
     "category": "disguise",
     "image": "qeo.png",
     "link": "https://www.youtube.com/watch?v=WyP2VQ7UL5I",
-    "wide": false
+    "wide": false,
+    "description": "The opening ceremony of the Qatar Expo 2023 held in Doha. Served as Disguise Engineer for Andrey Fomin Production, managing media server operations for the large-scale ceremonial event."
   },
   {
     "title": "Flag Day 2023",
@@ -206,7 +227,8 @@
     "category": "disguise",
     "image": "flagday.png",
     "link": "",
-    "wide": false
+    "wide": false,
+    "description": "A national celebration event held in Riyadh, Saudi Arabia. Served as Disguise Engineer for PRG, operating disguise media servers to manage video content and show control across the ceremonial production."
   },
   {
     "title": "Gamers 8",
@@ -215,7 +237,8 @@
     "category": "disguise",
     "image": "gamers8.png",
     "link": "",
-    "wide": false
+    "wide": false,
+    "description": "A major esports and gaming festival held in Riyadh, Saudi Arabia. Served as Video Systems Engineer for PRG, handling video infrastructure and systems operation across the multi-day tournament and entertainment event."
   },
   {
     "title": "The Weaving",
@@ -224,7 +247,8 @@
     "category": "integration",
     "image": "weaving.png",
     "link": "https://www.delivered.global/projects/the-weaving",
-    "wide": false
+    "wide": false,
+    "description": "A permanent video art installation in Dubai, UAE. Served as Disguise Engineer, overseeing the media server systems for the AV installation and content delivery."
   },
   {
     "title": "Zenon Restaurant",
@@ -233,7 +257,8 @@
     "category": "integration",
     "image": "zenon.png",
     "link": "https://zenonrestaurant.com/",
-    "wide": false
+    "wide": false,
+    "description": "A permanent AV installation for a restaurant venue in Dubai, UAE. Served as Resolume Engineer for Vivid Studios, designing and operating the Resolume Arena-based video system for the venue's integrated media environment."
   },
   {
     "title": "FIFA Fan Festival 2022",
@@ -242,7 +267,8 @@
     "category": "disguise",
     "image": "fifa22.png",
     "link": "https://qatar.fischerappelt.com/cases/fff",
-    "wide": false
+    "wide": false,
+    "description": "The official FIFA Fan Festival held during the 2022 World Cup in Doha, Qatar, welcoming hundreds of thousands of visitors. Served as Disguise Engineer for PRG, managing media server operations for large-scale live video productions."
   },
   {
     "title": "ADIPEC 2022",
@@ -251,7 +277,8 @@
     "category": "disguise",
     "image": "adipec22.png",
     "link": "",
-    "wide": false
+    "wide": false,
+    "description": "The Abu Dhabi International Petroleum Exhibition and Conference, one of the world's largest energy industry events. Served as Disguise Engineer for PRG, operating video systems across complex exhibition and stage productions."
   },
   {
     "title": "Banyan Tree Hotel Opening",
@@ -260,7 +287,8 @@
     "category": "disguise",
     "image": "alula.png",
     "link": "",
-    "wide": false
+    "wide": false,
+    "description": "The grand opening of the Banyan Tree Hotel in the heritage destination of Al Ula, Saudi Arabia. Served as Disguise Engineer for PRG, managing media server systems for the high-profile hospitality launch event."
   },
   {
     "title": "KPOP Festival — Saranghae KSA",
@@ -269,7 +297,8 @@
     "category": "disguise",
     "image": "kpop.png",
     "link": "https://www.prg.com/en-gb/news/2022/q3/kpop",
-    "wide": false
+    "wide": false,
+    "description": "A K-pop music festival held in Jeddah, Saudi Arabia, bringing top Korean acts to a large live audience. Served as Disguise Engineer for PRG, handling real-time video mapping and show control for the concert production."
   },
   {
     "title": "Rage on the Red Sea",
@@ -278,7 +307,8 @@
     "category": "disguise",
     "image": "rrs.png",
     "link": "",
-    "wide": false
+    "wide": false,
+    "description": "A large-scale music festival staged on the shores of Jeddah, Saudi Arabia. Served as Video Systems Engineer for PRG, managing video distribution and systems operation across the multi-stage outdoor event."
   },
   {
     "title": "IN TO POLELAB",
@@ -287,7 +317,8 @@
     "category": "disguise",
     "image": "pole.png",
     "link": "https://www.silasveta.com/projects/in-to-polyelab",
-    "wide": false
+    "wide": false,
+    "description": "An immersive audiovisual installation produced by Sila Sveta in Moscow, Russia. Served as Disguise Engineer, operating media server systems to deliver real-time video mapping throughout the experiential environment."
   },
   {
     "title": "Beyond — Lexus LX Launch",
@@ -296,7 +327,8 @@
     "category": "disguise",
     "image": "lexus.png",
     "link": "https://www.silasveta.com/projects/beyond-lexus-lx",
-    "wide": false
+    "wide": false,
+    "description": "A high-concept product launch event for the Lexus LX in Riyadh, Saudi Arabia. Served as Disguise Engineer for Sila Sveta, managing media server and video mapping systems to create an immersive reveal experience."
   },
   {
     "title": "First Man In Space",
@@ -305,7 +337,8 @@
     "category": "disguise",
     "image": "baikonur.png",
     "link": "https://www.silasveta.com/projects/first-man-in-space",
-    "wide": false
+    "wide": false,
+    "description": "A large-scale commemorative show staged at the Baikonur Cosmodrome in Kazakhstan, honoring the legacy of human spaceflight. Served as Disguise Engineer for Sila Sveta, operating media servers for the outdoor projection production."
   },
   {
     "title": "IN TO TSEH",
@@ -314,7 +347,8 @@
     "category": "disguise",
     "image": "tseh.png",
     "link": "https://www.silasveta.com/projects/in-to-tseh",
-    "wide": false
+    "wide": false,
+    "description": "An immersive audiovisual installation by Sila Sveta held at a former industrial site in Nizhny Novgorod, Russia. Served as Disguise Engineer, managing disguise media server systems for the large-scale projection environment."
   },
   {
     "title": "NECHTO",
@@ -323,7 +357,8 @@
     "category": "vj",
     "image": "nechto.png",
     "link": "https://www.silasveta.com/projects/nechto",
-    "wide": false
+    "wide": false,
+    "description": "A live electronic music and visual event held in Kyiv, Ukraine. Performed as VJ for Sila Sveta, delivering a real-time live visual set with dynamic video mixing integrated into the club production."
   },
   {
     "title": "Space Ark",
@@ -332,7 +367,8 @@
     "category": "vj",
     "image": "spaceark.png",
     "link": "https://www.silasveta.com/projects/space-ark",
-    "wide": false
+    "wide": false,
+    "description": "A large-scale outdoor audiovisual event held in Yerevan, Armenia. Performed as VJ for Sila Sveta, providing live visual performance with real-time video manipulation as part of the immersive show experience."
   },
   {
     "title": "Sila Sveta in Tretyakov Gallery",
@@ -341,7 +377,8 @@
     "category": "disguise",
     "image": "tretyakovka.png",
     "link": "https://www.silasveta.com/projects/sila-sveta-in-tretyakov-gallery",
-    "wide": false
+    "wide": false,
+    "description": "An audiovisual art installation presented at the renowned Tretyakov Gallery in Moscow, Russia. Served as Disguise Engineer for Sila Sveta, managing media server systems for the gallery-scale projection and video mapping."
   },
   {
     "title": "Levitation 2",
@@ -350,7 +387,8 @@
     "category": "disguise",
     "image": "levitation.png",
     "link": "https://www.silasveta.com/projects/levitation-2",
-    "wide": false
+    "wide": false,
+    "description": "An immersive audiovisual show by Sila Sveta staged in Moscow, Russia. Served as Disguise Engineer, operating disguise media servers to power the large-scale real-time video mapping and show control."
   },
   {
     "title": "IN TO",
@@ -359,7 +397,8 @@
     "category": "disguise",
     "image": "into.png",
     "link": "https://www.silasveta.com/projects/in-to",
-    "wide": false
+    "wide": false,
+    "description": "An immersive audiovisual installation by Sila Sveta presented in Perm, Russia. Served as Disguise Engineer, managing media server operations for the projection mapping and video content delivery across the experience."
   },
   {
     "title": "American University in Cairo",
@@ -368,7 +407,8 @@
     "category": "vj",
     "image": "auc.png",
     "link": "https://www.silasveta.com/projects/the-american-university-in-cairo",
-    "wide": false
+    "wide": false,
+    "description": "A video installation project for the American University in Cairo, Egypt. Served as Resolume Engineer for Sila Sveta, operating Resolume Arena-based systems to deliver the AV content for the university environment."
   },
   {
     "title": "Arma XII",
@@ -377,7 +417,8 @@
     "category": "vj",
     "image": "arma.png",
     "link": "https://www.silasveta.com/projects/arma-xll",
-    "wide": false
+    "wide": false,
+    "description": "A major electronic music event held at the Arma venue in Moscow, Russia. Performed as VJ for Sila Sveta, delivering a live real-time visual set with video mixing and manipulation for the large club production."
   },
   {
     "title": "Trans Studio Theme Park",
@@ -386,7 +427,8 @@
     "category": "integration",
     "image": "transstudio.png",
     "link": "https://www.silasveta.com/projects/trans-studio",
-    "wide": false
+    "wide": false,
+    "description": "A permanent AV integration project for the Trans Studio Theme Park in Jakarta, Indonesia. Served as Disguise Engineer for Sila Sveta, implementing and operating media server systems across multiple theme park attractions."
   },
   {
     "title": "Lamborghini Huracán Launch",
@@ -395,7 +437,8 @@
     "category": "disguise",
     "image": "huracan.png",
     "link": "https://www.silasveta.com/projects/lamborghini-huracan",
-    "wide": false
+    "wide": false,
+    "description": "The global launch events for the Lamborghini Huracán held across Berlin and Milan. Served as Disguise Engineer for Sila Sveta, managing media server and video mapping systems to create an immersive automotive reveal experience."
   },
   {
     "title": "Mercedes EQC Launch",
@@ -404,7 +447,8 @@
     "category": "disguise",
     "image": "eqc.png",
     "link": "https://www.silasveta.com/projects/mercedes-eqc",
-    "wide": false
+    "wide": false,
+    "description": "The launch event for the Mercedes-Benz EQC electric vehicle held in Beijing, China. Served as Disguise Engineer for Sila Sveta, operating disguise systems to deliver precise video mapping for the high-profile product reveal."
   },
   {
     "title": "Signal Festival 2019",
@@ -413,7 +457,8 @@
     "category": "vj",
     "image": "signal_2019.png",
     "link": "https://www.youtube.com/watch?v=jAje8_JevBI",
-    "wide": false
+    "wide": false,
+    "description": "A large outdoor audiovisual and art festival held at Nikola-Lenivets, Russia. Performed as VJ for Sila Sveta, delivering live visual sets with real-time video mixing across the multi-day open-air event."
   },
   {
     "title": "Signal Festival 2020",
@@ -422,7 +467,8 @@
     "category": "vj",
     "image": "signal_2020.png",
     "link": "https://www.youtube.com/watch?v=zJgDNUM1slk",
-    "wide": false
+    "wide": false,
+    "description": "The 2020 edition of the Signal Festival at Nikola-Lenivets, Russia. Performed as VJ for Sila Sveta, providing live video performance and real-time visual mixing for the outdoor audiovisual festival."
   },
   {
     "title": "EPIZODE",
@@ -431,7 +477,8 @@
     "category": "vj",
     "image": "epizode.png",
     "link": "https://www.youtube.com/watch?v=S2Tj1nA14dU",
-    "wide": false
+    "wide": false,
+    "description": "A long-running electronic music festival held in Vietnam, known for its immersive production values. Performed as VJ for Sila Sveta, delivering extended live visual sets with real-time video manipulation across the festival."
   },
   {
     "title": "DRËMA",
@@ -440,7 +487,8 @@
     "category": "vj",
     "image": "drema.png",
     "link": "https://www.youtube.com/watch?v=YJl8t78xUi8",
-    "wide": false
+    "wide": false,
+    "description": "An electronic music event held in Moscow, Russia. Performed as VJ for Sila Sveta, executing a live real-time visual set with dynamic video mixing integrated into the audiovisual production."
   },
   {
     "title": "Show for Polina Gagarina",
@@ -449,7 +497,8 @@
     "category": "disguise",
     "image": "gagarina.png",
     "link": "https://www.youtube.com/watch?v=08xjx8B3T7k",
-    "wide": false
+    "wide": false,
+    "description": "A touring concert show for Russian pop star Polina Gagarina, staged across Minsk, Saint Petersburg, and Moscow. Served as Disguise Engineer for Sila Sveta, managing media server systems for the multi-city theatrical concert production."
   },
   {
     "title": "Show for Ivan Dorn",
@@ -458,7 +507,8 @@
     "category": "vj",
     "image": "dorn.png",
     "link": "https://www.youtube.com/watch?v=L-zkFufzcy4",
-    "wide": false
+    "wide": false,
+    "description": "A touring live concert show for artist Ivan Dorn, performed across Saint Petersburg, Moscow, and Kyiv. Served as VJ for Sila Sveta, delivering live real-time visual performances throughout the multi-city tour."
   },
   {
     "title": "Art Takes Time",
@@ -467,7 +517,8 @@
     "category": "disguise",
     "image": "arttakestime.png",
     "link": "https://www.youtube.com/watch?v=IgfRsSvwk3Q",
-    "wide": false
+    "wide": false,
+    "description": "An audiovisual art project staged in Moscow, Russia. Served as Disguise Engineer for Sila Sveta, operating media server systems to manage video mapping and content delivery for the immersive installation."
   },
   {
     "title": "Wing of the East",
@@ -476,7 +527,8 @@
     "category": "disguise",
     "image": "wingsofeast.png",
     "link": "https://www.youtube.com/watch?v=RqX_sGXaHPc",
-    "wide": false
+    "wide": false,
+    "description": "A large-scale audiovisual show staged in Vladivostok, Russia, produced by Sila Sveta and qLAb. Served as Disguise Engineer, managing disguise media server systems for the ambitious outdoor projection mapping production."
   }
   ]
 }
