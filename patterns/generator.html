@@ -63,6 +63,7 @@ body {
   flex-shrink: 0;
   gap: 16px;
   background: rgba(10,10,10,0.95);
+  -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
 }
 .topbar-left { display:flex; align-items:center; gap:14px; flex-shrink:0; }
@@ -204,6 +205,7 @@ body {
 .modal-overlay {
   position: fixed; inset: 0;
   background: rgba(0,0,0,0.75);
+  -webkit-backdrop-filter: blur(6px);
   backdrop-filter: blur(6px);
   z-index: 1000;
   display: flex; align-items: center; justify-content: center;
@@ -341,6 +343,7 @@ canvas { display:block; image-rendering:pixelated; }
   border: 1px solid var(--line);
   padding: 3px 10px;
   white-space: nowrap;
+  -webkit-backdrop-filter: blur(4px);
   backdrop-filter: blur(4px);
 }
 .canvas-zoom {
@@ -352,6 +355,7 @@ canvas { display:block; image-rendering:pixelated; }
   background: rgba(10,10,10,0.6);
   border: 1px solid var(--line);
   padding: 3px 8px;
+  -webkit-backdrop-filter: blur(4px);
   backdrop-filter: blur(4px);
 }
 .canvas-coords {
@@ -363,6 +367,7 @@ canvas { display:block; image-rendering:pixelated; }
   background: rgba(10,10,10,0.6);
   border: 1px solid var(--line);
   padding: 3px 8px;
+  -webkit-backdrop-filter: blur(4px);
   backdrop-filter: blur(4px);
   display: none;
 }
@@ -607,6 +612,7 @@ input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.3); }
   transform: translateX(-50%) translateY(8px);
   background: rgba(240,237,232,0.1);
   border: 1px solid rgba(240,237,232,0.2);
+  -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
   font-family: 'DM Mono', monospace;
   font-size: 10px; letter-spacing: 0.15em;
@@ -766,7 +772,7 @@ input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.3); }
   </div>
 
   <!-- ── SCREEN panel ── -->
-  <div id="led-screen-panel" style="display:contents">
+  <div id="led-screen-panel" style="display:flex;flex-direction:row;flex:1;align-items:stretch">
 
     <!-- Setup -->
     <div class="bgroup" style="min-width:190px">
@@ -948,7 +954,7 @@ input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.3); }
   </div>
 
   <!-- ── SCREEN panel ── -->
-  <div id="proj-screen-panel" style="display:contents">
+  <div id="proj-screen-panel" style="display:flex;flex-direction:row;flex:1;align-items:stretch">
 
   <!-- Setup -->
   <div class="bgroup" style="min-width:200px">
@@ -1698,7 +1704,7 @@ function ledSubSwitch(m) {
   ledSubMode = m;
   v('led-sub-screen').classList.toggle('active', m==='screen');
   v('led-sub-canvas').classList.toggle('active', m==='canvas');
-  v('led-screen-panel').style.display = m==='screen' ? 'contents' : 'none';
+  v('led-screen-panel').style.display = m==='screen' ? 'flex' : 'none';
   v('led-canvas-panel').style.display = m==='canvas' ? 'flex' : 'none';
   draw();
 }
@@ -1761,7 +1767,7 @@ function projSubSwitch(m) {
   projSubMode = m;
   v('proj-sub-screen').classList.toggle('active', m==='screen');
   v('proj-sub-canvas').classList.toggle('active', m==='canvas');
-  v('proj-screen-panel').style.display = m==='screen' ? 'contents' : 'none';
+  v('proj-screen-panel').style.display = m==='screen' ? 'flex' : 'none';
   v('proj-canvas-panel').style.display = m==='canvas' ? 'flex' : 'none';
   draw();
 }
@@ -2088,7 +2094,7 @@ wireColor('p-borderColor','p-borderColorPreview','p-borderColorHex',draw);
 wireColor('p-circleColor','p-circleColorPreview','p-circleColorHex',draw);
 wireLogoUpload('p-logoUpload','p-logoReset','p-logoFile','p-logoThumb',img=>pLogoCustom=img,draw);
 v('p-dl').addEventListener('click',()=>{ const n=(v('p-name').value.trim()||'Projection').replace(/\s+/g,'_'); dlCanvas(`${n}_${canvas.width}x${canvas.height}.png`); });
-v('p-fs').addEventListener('click',()=>{ if(!document.fullscreenElement) canvasArea.requestFullscreen(); else document.exitFullscreen(); });
+v('p-fs').addEventListener('click',()=>{ const fs=document.fullscreenElement||document.webkitFullscreenElement; if(!fs) (canvasArea.requestFullscreen||canvasArea.webkitRequestFullscreen).call(canvasArea); else (document.exitFullscreen||document.webkitExitFullscreen).call(document); });
 v('p-reset').addEventListener('click', () => {
   v('p-projW').value=1920; v('p-projH').value=1080;
   document.querySelectorAll('.preset-btn[data-projw]').forEach(b=>b.classList.toggle('active',b.dataset.projw==='1920'&&b.dataset.projh==='1080'));
@@ -2129,7 +2135,7 @@ v('p-addcanvas').addEventListener('click', () => {
 });
 ['pc-w','pc-h','pc-name'].forEach(id=>v(id).addEventListener('input',()=>{ if(projSubMode==='canvas') drawProjCanvas(); }));
 v('pc-dl').addEventListener('click', ()=>{ const n=(v('pc-name').value.trim()||'Proj_Canvas').replace(/\s+/g,'_'); dlCanvas(`${n}_${canvas.width}x${canvas.height}.png`); });
-v('pc-fs').addEventListener('click', ()=>{ if(!document.fullscreenElement) canvasArea.requestFullscreen(); else document.exitFullscreen(); });
+v('pc-fs').addEventListener('click', ()=>{ const fs=document.fullscreenElement||document.webkitFullscreenElement; if(!fs) (canvasArea.requestFullscreen||canvasArea.webkitRequestFullscreen).call(canvasArea); else (document.exitFullscreen||document.webkitExitFullscreen).call(document); });
 v('pc-clear').addEventListener('click', ()=>{ projCanvasScreens=[]; renderProjList(); drawProjCanvas(); notify('Canvas cleared'); });
 
 // ── LED EVENTS ──
@@ -2172,7 +2178,7 @@ v('l-addcanvas').addEventListener('click', () => {
   notify(`Added "${sc.name||'SCR '+id}" to canvas`);
 });
 v('l-dl').addEventListener('click', ()=>{ const n=(v('l-name').value.trim()||'LED_Screen').replace(/\s+/g,'_'); dlCanvas(`${n}_${canvas.width}x${canvas.height}.png`); });
-v('l-fs').addEventListener('click', ()=>{ if(!document.fullscreenElement) canvasArea.requestFullscreen(); else document.exitFullscreen(); });
+v('l-fs').addEventListener('click', ()=>{ const fs=document.fullscreenElement||document.webkitFullscreenElement; if(!fs) (canvasArea.requestFullscreen||canvasArea.webkitRequestFullscreen).call(canvasArea); else (document.exitFullscreen||document.webkitExitFullscreen).call(document); });
 v('l-reset').addEventListener('click', () => {
   v('l-cellW').value=96; v('l-cellH').value=96;
   v('l-cols').value=6; v('l-rows').value=4;
