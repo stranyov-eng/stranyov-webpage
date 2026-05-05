@@ -858,7 +858,9 @@ input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.3); }
       <div class="bgroup-title">Adjust</div>
       <div class="sl-row"><span class="bg-lbl">Line thickness</span><span class="sl-val"><span id="l-lwVal">1</span>px</span></div>
       <input type="range" id="l-lw" class="sl-range" min="1" max="5" value="1" step="1">
-      <div class="sl-row"><span class="bg-lbl">Text size</span><span class="sl-val"><span id="l-tsVal">1.0</span>×</span></div>
+      <div class="sl-row"><span class="bg-lbl">Info block size</span><span class="sl-val"><span id="l-ntsVal">1.0</span>×</span></div>
+      <input type="range" id="l-nts" class="sl-range" min="0.3" max="3" value="1" step="0.1">
+      <div class="sl-row"><span class="bg-lbl">Cell texts size</span><span class="sl-val"><span id="l-tsVal">1.0</span>×</span></div>
       <input type="range" id="l-ts" class="sl-range" min="0.3" max="3" value="1" step="0.1">
     </div>
 
@@ -1043,7 +1045,9 @@ input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.3); }
     <div class="bgroup-title">Adjust</div>
     <div class="sl-row"><span class="bg-lbl">Line thickness</span><span class="sl-val"><span id="p-lwVal">1.0</span>×</span></div>
     <input type="range" id="p-lw" class="sl-range" min="0.3" max="5" value="1" step="0.1">
-    <div class="sl-row"><span class="bg-lbl">Text size</span><span class="sl-val"><span id="p-tsVal">1.0</span>×</span></div>
+    <div class="sl-row"><span class="bg-lbl">Info block size</span><span class="sl-val"><span id="p-ntsVal">1.0</span>×</span></div>
+    <input type="range" id="p-nts" class="sl-range" min="0.3" max="3" value="1" step="0.1">
+    <div class="sl-row"><span class="bg-lbl">Cell texts size</span><span class="sl-val"><span id="p-tsVal">1.0</span>×</span></div>
     <input type="range" id="p-ts" class="sl-range" min="0.3" max="3" value="1" step="0.1">
     <div class="sl-row"><span class="bg-lbl">Grid columns</span><span class="sl-val"><span id="p-gridColsVal">12</span></span></div>
     <input type="range" id="p-gridCols" class="sl-range" min="2" max="64" value="12" step="1">
@@ -1351,7 +1355,7 @@ function projSnapshot() {
     textColor: v('p-textColor').value,
     borderColor: v('p-borderColor').value,
     circleColor: v('p-circleColor').value,
-    lwMult: num('p-lw',1), tsMult: num('p-ts',1),
+    lwMult: num('p-lw',1), tsMult: num('p-ts',1), nameMult: num('p-nts',1),
     gridCols: Math.max(2, Math.round(num('p-gridCols',12))),
     showGrid: v('p-grid').checked, showCircles: v('p-circles').checked,
     showCoords: v('p-coords').checked, showRowLabels: v('p-rowlabels').checked,
@@ -1365,7 +1369,7 @@ function projSnapshot() {
 function drawProjectionToCtx(ctx2, sc) {
   const {projW,projH,cols2,rows2,bHpx,bVpx,totW,totH,
     name,color,textColor,borderColor,circleColor,
-    lwMult,tsMult,gridCols,
+    lwMult,tsMult,nameMult,gridCols,
     showGrid,showCircles,showCoords,showRowLabels,showCellIds,showProjIds,
     showInfo,showOverlay,showSafe,showSmpte,logoImg,logoScale,logoPos} = sc;
 
@@ -1459,21 +1463,25 @@ function drawProjectionToCtx(ctx2, sc) {
 
   if (showInfo || name) {
     const icx=totW/2, icy=totH/2;
+    const nfs = name    ? Math.min(totW*0.052,totH*0.088)*nameMult : 0;
+    const ifs = showInfo? Math.max(10,Math.min(totW*0.022,totH*0.038))*nameMult : 0;
+    const gap = (name && showInfo) ? ifs*0.8 : 0;
+    const blockH = (name?nfs*1.2:0) + gap + (showInfo?ifs*4.8:0);
+    let y = icy - blockH/2;
     if (name) {
-      const fs=Math.min(totW*0.052,totH*0.088)*tsMult;
-      ctx2.font=`bold ${fs}px Bebas Neue,sans-serif`;
+      ctx2.font=`bold ${nfs}px Bebas Neue,sans-serif`;
       ctx2.textAlign='center'; ctx2.textBaseline='middle';
       ctx2.fillStyle=`rgba(${tcr},${tcg},${tcb},0.9)`;
-      ctx2.fillText(name,icx,icy-(showInfo?fs*1.1:0));
+      ctx2.fillText(name,icx,y+nfs*0.6);
+      y += nfs*1.2 + gap;
     }
     if (showInfo) {
-      const fs=Math.max(10,Math.min(totW*0.022,totH*0.038))*tsMult;
-      ctx2.font=`${fs}px DM Mono,monospace`;
-      ctx2.textAlign='center'; ctx2.fillStyle=`rgba(${tcr},${tcg},${tcb},0.45)`;
-      const yo=name?fs*1.5:0;
-      ctx2.fillText(`${totW}px × ${totH}px`,icx,icy+yo);
-      ctx2.fillText(`${(totW/totH).toFixed(2)}:1`,icx,icy+yo+fs*1.6);
-      ctx2.fillText(`${gridCols}×${gridRows} grid`,icx,icy+yo+fs*3.2);
+      ctx2.font=`${ifs}px DM Mono,monospace`;
+      ctx2.textAlign='center'; ctx2.textBaseline='middle';
+      ctx2.fillStyle=`rgba(${tcr},${tcg},${tcb},0.45)`;
+      ctx2.fillText(`${totW}px × ${totH}px`,icx,y+ifs*0.5);
+      ctx2.fillText(`${(totW/totH).toFixed(2)}:1`,icx,y+ifs*0.5+ifs*1.6);
+      ctx2.fillText(`${gridCols}×${gridRows} grid`,icx,y+ifs*0.5+ifs*3.2);
     }
   }
 
@@ -1496,7 +1504,7 @@ function drawProjectionToCtx(ctx2, sc) {
 
   if (showSmpte) {
     const infoFs = Math.max(10, Math.min(totW*0.022, totH*0.038)) * tsMult;
-    const nameFs = Math.min(totW*0.052, totH*0.088) * tsMult;
+    const nameFs = Math.min(totW*0.052, totH*0.088) * nameMult;
     let baseY = totH / 2;
     if (name && showInfo) baseY += infoFs * 4.5;
     else if (name) baseY += nameFs * 0.6;
@@ -1527,7 +1535,7 @@ function drawProjection() {
 // ── LED DRAW CORE ──
 function drawScreenToCtx(ctx2, sc, totW, totH) {
   const { cellW, cellH, cols, rows, color1, color2, gridColor, textColor,
-          lwMult, tsMult, showGrid, showCellIds, showCircle, showInfo, showBorder,
+          lwMult, tsMult, nameMult, showGrid, showCellIds, showCircle, showInfo, showBorder,
           name, cellIdFmt, logoImg, logoScale, logoPos, mask = null } = sc;
   const [gr, gg, gb] = hexToRgb(gridColor);
   const [tr2, tg2, tb2] = hexToRgb(textColor);
@@ -1593,36 +1601,40 @@ function drawScreenToCtx(ctx2, sc, totW, totH) {
 
   if (showInfo || name) {
     const cx = totW/2, cy = totH/2;
-    const nameFs = Math.min(totW*0.052, totH*0.088)*tsMult;
-    const infoFs = Math.max(10, Math.min(totW*0.022, totH*0.038))*tsMult;
-    // background rect — computed from actual text bounds (textBaseline = middle)
-    let textTop, textBot;
-    if (name && showInfo) {
-      textTop = cy - nameFs*1.6;
-      textBot = cy + infoFs*3.6;
-    } else if (name) {
-      textTop = cy - nameFs*0.5;
-      textBot = cy + nameFs*0.5;
-    } else {
-      textTop = cy - infoFs*0.5;
-      textBot = cy + infoFs*2.1;
+    const nameFs = name     ? Math.min(totW*0.052, totH*0.088)*(nameMult||1) : 0;
+    const infoFs = showInfo ? Math.max(10, Math.min(totW*0.022, totH*0.038))*(nameMult||1) : 0;
+    const gap = (name && showInfo) ? infoFs*0.8 : 0;
+    const blockH = (name?nameFs*1.2:0) + gap + (showInfo?infoFs*3.2:0);
+    // measure actual text widths for bg rect
+    let maxTW = 0;
+    if (name) { ctx2.font=`bold ${nameFs}px Bebas Neue,sans-serif`; maxTW=Math.max(maxTW,ctx2.measureText(name).width); }
+    if (showInfo) {
+      ctx2.font=`${infoFs}px DM Mono,monospace`;
+      maxTW=Math.max(maxTW,ctx2.measureText(`${totW} × ${totH} px`).width);
+      maxTW=Math.max(maxTW,ctx2.measureText(`${cols}×${rows} cells · ${cellW}×${cellH}px`).width);
     }
-    const bgPad = Math.max(infoFs, nameFs) * 0.55;
-    const bgW = totW * 0.54;
+    const bgPadX = Math.max(infoFs, nameFs) * 0.45;
+    const bgPadY = Math.max(infoFs, nameFs) * 0.35;
+    const bgW = Math.min(totW, maxTW + bgPadX*2);
+    const bgX = Math.max(0, cx - bgW/2);
+    const bgY = Math.max(0, cy - blockH/2 - bgPadY);
+    const bgH = Math.min(totH - bgY, blockH + bgPadY*2);
     ctx2.fillStyle = 'rgba(0,0,0,0.58)';
-    ctx2.fillRect(cx - bgW/2, textTop - bgPad, bgW, (textBot - textTop) + bgPad*2);
+    ctx2.fillRect(bgX, bgY, Math.min(totW - bgX, bgW), bgH);
+    let y = cy - blockH/2;
     if (name) {
       ctx2.font = `bold ${nameFs}px Bebas Neue,sans-serif`;
       ctx2.textAlign = 'center'; ctx2.textBaseline = 'middle';
       ctx2.fillStyle = `rgba(${tr2},${tg2},${tb2},0.9)`;
-      ctx2.fillText(name, cx, cy-(showInfo?nameFs*1.1:0));
+      ctx2.fillText(name, cx, y + nameFs*0.6);
+      y += nameFs*1.2 + gap;
     }
     if (showInfo) {
-      ctx2.font = `${infoFs}px DM Mono,monospace`; ctx2.textAlign = 'center';
+      ctx2.font = `${infoFs}px DM Mono,monospace`;
+      ctx2.textAlign = 'center'; ctx2.textBaseline = 'middle';
       ctx2.fillStyle = `rgba(${tr2},${tg2},${tb2},0.55)`;
-      const yo = name ? infoFs*1.5 : 0;
-      ctx2.fillText(`${totW} × ${totH} px`, cx, cy+yo);
-      ctx2.fillText(`${cols}×${rows} cells · ${cellW}×${cellH}px`, cx, cy+yo+infoFs*1.6);
+      ctx2.fillText(`${totW} × ${totH} px`, cx, y + infoFs*0.5);
+      ctx2.fillText(`${cols}×${rows} cells · ${cellW}×${cellH}px`, cx, y + infoFs*0.5 + infoFs*1.6);
     }
   }
 
@@ -1641,7 +1653,7 @@ function ledScreenConfig() {
   return { cellW, cellH, cols, rows,
     color1: v('l-color1').value, color2: v('l-color2').value,
     gridColor: v('l-gridColor').value, textColor: v('l-textColor').value,
-    lwMult: num('l-lw',1), tsMult: num('l-ts',1),
+    lwMult: num('l-lw',1), tsMult: num('l-ts',1), nameMult: num('l-nts',1),
     showGrid: v('l-grid').checked, showCellIds: v('l-cellids').checked,
     showCircle: v('l-circle').checked, showInfo: v('l-info').checked,
     showBorder: v('l-border').checked,
@@ -2103,6 +2115,7 @@ function resetCustomTotals() { totWCustom = null; totHCustom = null; }
 ['p-cols','p-rows'].forEach(id=>v(id).addEventListener('input',()=>{ resetCustomTotals(); draw(); }));
 ['p-grid','p-circles','p-coords','p-rowlabels','p-cellids','p-projids','p-info','p-overlay','p-safearea','p-smpte'].forEach(id=>v(id).addEventListener('change',draw));
 wireSlider('p-lw','p-lwVal',draw);
+wireSlider('p-nts','p-ntsVal',draw);
 wireSlider('p-ts','p-tsVal',draw);
 wireSlider('p-gridCols','p-gridColsVal',draw);
 wireSlider('p-logoScale','p-logoScaleVal',draw);
@@ -2119,6 +2132,7 @@ v('p-reset').addEventListener('click', () => {
   v('p-cols').value=3; v('p-rows').value=1;
   v('p-blendH').value=20; v('p-blendV').value=20;
   v('p-lw').value=1; v('p-lwVal').textContent='1.0';
+  v('p-nts').value=1; v('p-ntsVal').textContent='1.0';
   v('p-ts').value=1; v('p-tsVal').textContent='1.0';
   v('p-gridCols').value=12; v('p-gridColsVal').textContent='12';
   v('p-color').value='#ff3333'; v('p-colorPreview').style.background='#ff3333'; v('p-colorHex').value='#ff3333';
@@ -2163,6 +2177,7 @@ v('led-sub-canvas').addEventListener('click', ()=>ledSubSwitch('canvas'));
 ['l-cellW','l-cellH','l-cols','l-rows','l-name'].forEach(id=>v(id).addEventListener('input',draw));
 ['l-grid','l-cellids','l-circle','l-info','l-border'].forEach(id=>v(id).addEventListener('change',draw));
 v('l-lw').addEventListener('input', e=>{ v('l-lwVal').textContent=e.target.value; draw(); });
+wireSlider('l-nts','l-ntsVal',draw);
 wireSlider('l-ts','l-tsVal',draw);
 wireSlider('l-logoScale','l-logoScaleVal',draw);
 wireColor('l-color1','l-c1Preview','l-color1Hex',draw);
@@ -2201,6 +2216,7 @@ v('l-reset').addEventListener('click', () => {
   v('l-cellW').value=96; v('l-cellH').value=96;
   v('l-cols').value=6; v('l-rows').value=4;
   v('l-lw').value=1; v('l-lwVal').textContent='1';
+  v('l-nts').value=1; v('l-ntsVal').textContent='1.0';
   v('l-ts').value=1; v('l-tsVal').textContent='1.0';
   v('l-color1').value='#1a1a1a'; v('l-c1Preview').style.background='#1a1a1a'; v('l-color1Hex').value='#1a1a1a';
   v('l-color2').value='#2e2e2e'; v('l-c2Preview').style.background='#2e2e2e'; v('l-color2Hex').value='#2e2e2e';
@@ -2393,8 +2409,8 @@ function loadState() {
     });
 
     // Sync slider display values
-    [['p-lw','p-lwVal'],['p-ts','p-tsVal'],['p-gridCols','p-gridColsVal'],['p-logoScale','p-logoScaleVal'],
-     ['l-lw','l-lwVal'],['l-ts','l-tsVal'],['l-logoScale','l-logoScaleVal'],
+    [['p-lw','p-lwVal'],['p-nts','p-ntsVal'],['p-ts','p-tsVal'],['p-gridCols','p-gridColsVal'],['p-logoScale','p-logoScaleVal'],
+     ['l-lw','l-lwVal'],['l-nts','l-ntsVal'],['l-ts','l-tsVal'],['l-logoScale','l-logoScaleVal'],
      ['d-lw','d-lwVal'],['d-ts','d-tsVal'],['d-logoScale','d-logoScaleVal']
     ].forEach(([sid,vid]) => { if (v(sid) && v(vid)) v(vid).textContent = v(sid).value; });
 
